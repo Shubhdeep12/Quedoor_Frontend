@@ -10,7 +10,7 @@ const manrope = Manrope({
 
 export const metadata: Metadata = {
 	title: 'Quedoor',
-	description: 'A social media app for Students to clear doubts.',
+	description: 'A social   media app for Students to clear doubts.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
