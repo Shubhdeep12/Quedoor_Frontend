@@ -6,8 +6,9 @@ const NotFound: FC<IconProps> = ({
   height = 128,
   width = 128,
   size = 128,
+  ...props
 }) => {
-  return <svg width={size || width} height={size || height} viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  return <svg width={size || width} height={size || height} viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
   <g clip-path="url(#clip0_8_7800)">
   <path d="M47.6097 46.5987C47.6097 42.2613 51.1259 38.7451 55.4633 38.7451H107.256C111.594 38.7451 115.11 42.2613 115.11 46.5987V46.5987C115.11 50.9361 111.594 54.4523 107.256 54.4523H55.4633C51.1259 54.4523 47.6097 50.9361 47.6097 46.5987V46.5987Z" fill="#DDEBFD"/>
   <rect x="30.2755" y="29.1746" width="75.058" height="18.5237" rx="9.26183" fill="#DDEBFD"/>

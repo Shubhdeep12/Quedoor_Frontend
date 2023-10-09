@@ -4,7 +4,7 @@
 import { ReactNode, createContext, useState, useEffect, FC } from 'react';
 
 import { getStoredToken, getUserData } from '@/utils/misc';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import PageLoader from '@/components/PageLoader';
 ;
 
@@ -33,7 +33,7 @@ export const AuthContext = createContext<AuthContext>({
 });
 
 const AuthProvider: FC<AuthContextProps> = ({ children }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<IUser | null>(null);
 
@@ -52,7 +52,7 @@ const AuthProvider: FC<AuthContextProps> = ({ children }) => {
     if (localToken && userData) {
       setUser(JSON.parse(userData))
     }
-    else router.push("/login")
+    // else router.push("/login")
     setLoading(false)
   }
 
