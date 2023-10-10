@@ -1,4 +1,5 @@
 import MobileComingSoon from './MobileComingSoon';
+import Navbar from './Navbar';
 
 type MainProps = {
 	children?: React.ReactNode;
@@ -16,6 +17,7 @@ export default function MainContent({ children }: MainProps) {
 			// overflow-x-hidden
 			// px-2
 		>
+			<Navbar />
 			<div className='hidden laptop:block'>{children}</div>
 			<MobileComingSoon />
 		</main>

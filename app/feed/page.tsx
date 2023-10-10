@@ -1,9 +1,5 @@
-import Navbar from './components/Navbar';
+'use client';
 
 export default function feed() {
-	return (
-		<>
-			<Navbar />
-		</>
-	);
+	return <>aaa</>;
 }
