@@ -11,6 +11,8 @@ export default function MainContent({ children }: MainProps) {
       animate-page-transition
       [animation-delay:150ms]
       w-full
+			h-screen
+			bg-neutral-100
       '
 			// pt-[110px]
 			// pb-10
@@ -18,7 +20,7 @@ export default function MainContent({ children }: MainProps) {
 			// px-2
 		>
 			<Navbar />
-			<div className='hidden laptop:block'>{children}</div>
+			<div className='hidden laptop:block max-w-laptop mx-auto'>{children}</div>
 			<MobileComingSoon />
 		</main>
 	);
