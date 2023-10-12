@@ -37,14 +37,14 @@ export default function Navbar() {
 						className='flex flex-col p-2 gap-0.5 items-center cursor-pointer'
 						onClick={() => router.push('/feed')}
 					>
-						{pathname.startsWith('/feed') ? <FeedFilled className='fill-orange-400' /> : <FeedOutlined />}
+						{pathname.startsWith('/feed') ? <FeedFilled className='fill-primary-light' /> : <FeedOutlined />}
 						<Text className='text-sm text-neutral-500'>Feed</Text>
 					</button>
 					<button
 						className='flex flex-col p-2 gap-0.5 items-center cursor-pointer'
 						onClick={() => router.push('/profile')}
 					>
-						{pathname.startsWith('/profile') ? <AvatarFilled className='fill-orange-400' /> : <AvatarOutlined />}
+						{pathname.startsWith('/profile') ? <AvatarFilled className='fill-primary-light' /> : <AvatarOutlined />}
 						<Text className='text-sm text-neutral-500'>Profile</Text>
 					</button>
 				</div>
@@ -65,14 +65,8 @@ export default function Navbar() {
 								<div className='flex flex-col gap-1 items-center px-4 py-5'>
 									<Avatar size='xl' name={user?.name} src={user?.profileImg} />
 									<div className='flex flex-col gap-0.5 items-center'>
-										<Text className='font-bold text-sm'>
-											{/* {user?.name} */}
-											Shubhdeep Chhabra
-										</Text>
-										<Text className='text-xs'>
-											{/* {user?.email} */}
-											chhabrashubhdeep@gmail.com
-										</Text>
+										<Text className='font-bold text-sm'>{user?.name}</Text>
+										<Text className='text-xs'>{user?.email}</Text>
 									</div>
 								</div>
 								<Button variant='outline' rounded='full' className='w-fit'>

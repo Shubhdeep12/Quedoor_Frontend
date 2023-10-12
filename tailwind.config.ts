@@ -8,6 +8,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: {
+          light: 'rgb(251, 146, 60)',
+        }
+      },
       fontFamily: {
 				sans: ['var(--font-manrope)'],
       },

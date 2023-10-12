@@ -49,6 +49,14 @@ const AuthProvider: FC<AuthContextProps> = ({ children }) => {
 			setUser(JSON.parse(userData));
 		}
 		// else router.push("/login")
+		setUser({
+			name: 'Shubhdeep Chhabra',
+			email: 'chhabrashubhdeep@gmail.com',
+			id: '11',
+			profileImg: 'https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg',
+			coverImg:
+				'https://marketplace.canva.com/EAFLlL2ki8I/1/0/1600w/canva-neon-minimalist-motivational-inspirational-quote-facebook-cover-IN_ZZM_uhQM.jpg',
+		});
 		setLoading(false);
 	};
 
