@@ -10,7 +10,7 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          light: '#D08CEA',
+          light: '#942381',
         }
       },
       fontFamily: {

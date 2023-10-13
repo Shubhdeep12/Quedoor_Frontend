@@ -1,11 +1,11 @@
-export const setStoredToken = (token: string) => localStorage.setItem('quedoor-token', token);
+export const setItem = (key = '', data: string) => localStorage.setItem(key, data);
 
-export const getStoredToken = () => localStorage.getItem('quedoor-token');
+export const getItem = (key='') => localStorage.getItem(key);
 
 export const clearToken = () => localStorage.removeItem('quedoor-token');
 
-export const setStoredUser = (userData: string) => localStorage.setItem('quedoor-user', userData);
+export const setCookie = (key = '', data: string) => localStorage.setItem(key, data);
 
-export const getUserData = () => localStorage.getItem('quedoor-user');
+export const getCookie = (key='') => localStorage.getItem(key);
 
 export const clearUserData = () => localStorage.removeItem('quedoor-user');

@@ -3,11 +3,14 @@
 import { type PropsWithChildren } from 'react';
 import AuthProvider from './AuthProvider';
 import ChakraUIProvider from './ChakraUIProvider';
+import ReactQueryProvider from './ReactQueryProvider';
 
 const Providers = (props: PropsWithChildren) => {
 	return (
 		<AuthProvider>
-			<ChakraUIProvider>{props.children}</ChakraUIProvider>
+			<ReactQueryProvider>
+				<ChakraUIProvider>{props.children}</ChakraUIProvider>
+			</ReactQueryProvider>
 		</AuthProvider>
 	);
 };

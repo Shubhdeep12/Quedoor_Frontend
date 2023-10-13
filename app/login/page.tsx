@@ -11,17 +11,27 @@ import {
 	ListItem,
 	Tooltip,
 	UnorderedList,
+	useToast,
 } from '@chakra-ui/react';
 import { ChangeEvent, FormEvent, FormEventHandler, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import clsx from 'clsx';
+import { login, register } from '@/queries/login';
+import useAuth from '@/hooks/useAuth';
+import { setItem } from '@/utils/misc';
+import { useRouter } from 'next/navigation';
+import PageLoader from '@/components/PageLoader';
 
 export default function Login() {
+	const { user, updateUser, loading } = useAuth();
+	const router = useRouter();
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const [username, setUsername] = useState<string>('');
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [isLoginView, setIsLoginView] = useState<boolean>(true);
+
+	const toast = useToast();
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
 		switch (type) {
@@ -40,8 +50,49 @@ export default function Login() {
 		}
 	};
 
-	const handleSubmit: FormEventHandler = (e: FormEvent<HTMLInputElement>) => {
+	const handleSubmit: FormEventHandler = async (e: FormEvent<HTMLInputElement>) => {
 		e.preventDefault();
+		if (!isLoginView) {
+			const res = await register({ email, password, name: username });
+			if (!res.success) {
+				toast({
+					title: 'Failed to register! Please try again.',
+					status: 'error',
+					isClosable: true,
+					position: 'top-right',
+				});
+			} else {
+				toast({
+					title: 'User created successfully.',
+					status: 'success',
+					isClosable: true,
+					position: 'top-right',
+				});
+
+				setIsLoginView(true);
+			}
+		} else {
+			const res = await login({ email, password, name: username });
+			if (res.status > 300) {
+				toast({
+					title: 'Failed to register! Please try again.',
+					status: 'error',
+					isClosable: true,
+					position: 'top-right',
+				});
+			} else {
+				toast({
+					title: 'User created successfully.',
+					status: 'success',
+					isClosable: true,
+					position: 'top-right',
+				});
+				updateUser(res.data);
+				setItem('quedoor-user', JSON.stringify(res.data));
+				setItem('quedoor-token', res.data.access_token);
+				router.push('/feed');
+			}
+		}
 
 		return false;
 	};
@@ -60,6 +111,18 @@ export default function Login() {
 		setIsLoginView((prev) => !prev);
 		resetFields();
 	};
+
+	if (loading) {
+		return (
+			<div className='h-screen w-screen'>
+				<PageLoader />
+			</div>
+		);
+	}
+	console.log({ user });
+	if (user && user.id) {
+		router.push('/feed');
+	}
 
 	return (
 		<main className='flex min-h-screen flex-col items-center justify-center'>

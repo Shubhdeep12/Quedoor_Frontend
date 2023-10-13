@@ -60,7 +60,7 @@ export default function Navbar() {
 				</div> */}
 
 				<div className='flex items-center gap-8 flex-1 justify-end'>
-					<button className='flex flex-1 max-w-md justify-between items-center hover:bg-slate-50 cursor-pointer transition-all border border-neutral-200 rounded-md py-3 px-5'>
+					<button className='flex flex-1 max-w-md justify-between items-center hover:bg-neutral-100 cursor-pointer transition-all border border-neutral-200 rounded-lg py-3 px-5'>
 						<Text className='text-sm text-neutral-500'>Search post using image, text, etc.</Text>
 						<LuSearch size={16} />
 					</button>
