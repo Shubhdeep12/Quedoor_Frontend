@@ -12,7 +12,7 @@ export default function MainContent({ children }: MainProps) {
       [animation-delay:150ms]
       w-full
 			h-screen
-			bg-neutral-100
+			
       '
 			// pt-[110px]
 			// pb-10
@@ -20,7 +20,7 @@ export default function MainContent({ children }: MainProps) {
 			// px-2
 		>
 			<Navbar />
-			<div className='hidden laptop:block max-w-laptop mx-auto'>{children}</div>
+			<div className='hidden laptop:block'>{children}</div>
 			<MobileComingSoon />
 		</main>
 	);

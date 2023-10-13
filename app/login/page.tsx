@@ -62,7 +62,7 @@ export default function Login() {
 	};
 
 	return (
-		<main className='flex min-h-screen flex-col items-center justify-center bg-slate-50'>
+		<main className='flex min-h-screen flex-col items-center justify-center'>
 			<div
 				className={clsx(
 					'bg-white flex flex-col gap-8 items-center rounded-lg w-[380px] ease-in-out duration-300 shadow-lg p-8 transition-all',
