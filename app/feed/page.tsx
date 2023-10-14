@@ -3,7 +3,10 @@ import Sidebar from './components/Sidebar';
 
 export default function Feed() {
 	return (
-		<div className='flex gap-10 h-[calc(100vh-64px)] overflow-auto'>
+		<div
+			className='flex gap-10 h-[calc(100vh-64px)] overflow-auto animate-page-transition
+		[animation-delay:150ms]'
+		>
 			<Sidebar />
 			<MainSection />
 			<div className='right-section w-64 flex flex-col gap-6'>

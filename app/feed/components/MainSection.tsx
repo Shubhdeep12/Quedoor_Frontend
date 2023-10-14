@@ -7,7 +7,6 @@ import Text from '@/components/Text';
 
 // async function getPokemons({ pageParam = 0 }) {
 // 	const res = await api.get(`https://pokeapi.co/api/v2/ability?limit=20&offset=${pageParam}`);
-// 	console.log({ res });
 // 	if (!res.ok) {
 // 		// This will activate the closest `error.js` Error Boundary
 // 		throw new Error('Failed to fetch data');

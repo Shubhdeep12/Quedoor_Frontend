@@ -19,11 +19,10 @@ import clsx from 'clsx';
 import { login, register } from '@/queries/login';
 import useAuth from '@/hooks/useAuth';
 import { setItem } from '@/utils/misc';
-import { useRouter } from 'next/navigation';
-import PageLoader from '@/components/PageLoader';
+import { redirect, useRouter } from 'next/navigation';
 
 export default function Login() {
-	const { user, updateUser, loading } = useAuth();
+	const { user, updateUser } = useAuth();
 	const router = useRouter();
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
@@ -112,16 +111,8 @@ export default function Login() {
 		resetFields();
 	};
 
-	if (loading) {
-		return (
-			<div className='h-screen w-screen'>
-				<PageLoader />
-			</div>
-		);
-	}
-	console.log({ user });
 	if (user && user.id) {
-		router.push('/feed');
+		redirect('/feed');
 	}
 
 	return (

@@ -1,13 +1,13 @@
 'use client';
 
 import useAuth from '@/hooks/useAuth';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-	const router = useRouter();
 	const { user } = useAuth();
 	if (user && user.id) {
-		router.push('/feed');
+		redirect('/feed');
+	} else {
+		redirect('/login');
 	}
-	router.push('/login');
 }

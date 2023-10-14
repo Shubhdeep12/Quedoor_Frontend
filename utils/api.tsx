@@ -9,7 +9,6 @@ import { getItem } from './misc';
 class Api {
 	instance: AxiosInstance;
 	constructor() {
-		console.log({ url: process.env.NEXT_PUBLIC_BACKEND_BASE_URL });
 		this.instance = axios.create({
 			baseURL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
 			withCredentials: true,

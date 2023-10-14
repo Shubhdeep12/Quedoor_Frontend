@@ -68,11 +68,11 @@ export default function Navbar() {
 					<Popover>
 						<PopoverTrigger>
 							<button className='flex items-center gap-1 cursor-pointer'>
-								<Avatar bg='red.500' size='sm' name={user?.name} src={user?.profileImg} />
+								<Avatar size='sm' name={user?.name} src={user?.profileImg} />
 								<GoChevronDown size={16} />
 							</button>
 						</PopoverTrigger>
-						<PopoverContent className='w-[250px] overflow-hidden'>
+						<PopoverContent className='w-[250px] overflow-hidden m-2'>
 							<PopoverArrow />
 							<PopoverBody className='p-0 flex flex-col items-center w-[250px]'>
 								<div className='flex flex-col items-center border-b w-full pb-5'>

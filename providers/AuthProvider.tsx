@@ -3,10 +3,10 @@
 
 import { ReactNode, createContext, useState, useEffect, FC } from 'react';
 
-import { getItem } from '@/utils/misc';
+import { getCookie, getItem } from '@/utils/misc';
 // import { useRouter } from 'next/navigation';
 import PageLoader from '@/components/PageLoader';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 type AuthContextProps = {
 	children: ReactNode;
@@ -36,7 +36,6 @@ export const AuthContext = createContext<AuthContext>({
 });
 
 const AuthProvider: FC<AuthContextProps> = ({ children }) => {
-	const router = useRouter();
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState<IUser | null>(null);
 
@@ -48,16 +47,17 @@ const AuthProvider: FC<AuthContextProps> = ({ children }) => {
 
 	const setupSession = () => {
 		const localToken = getItem('quedoor-token');
-		const userData = getItem('quedoor-user');
-		if (localToken && userData) {
-			setUser(JSON.parse(userData));
-		} else router.push('/login');
-		// setUser({
-		// 	name: 'Shubhdeep Chhabra',
-		// 	email: 'chhabrashubhdeep@gmail.com',
-		// 	id: '11',
-		// 	profileImg: 'https://media.sproutsocial.com/uploads/2022/06/profile-picture.jpeg',
-		// });
+		const localUserData = getItem('quedoor-user');
+		const cookieToken = getCookie('quedoor-token');
+		const cookieUserData = getCookie('quedoor-user');
+		if (localToken && localUserData) {
+			setUser(JSON.parse(localUserData));
+		} else if (cookieToken && cookieUserData) {
+			setUser(JSON.parse(cookieUserData));
+		} else {
+			setLoading(false);
+			redirect('/login');
+		}
 	};
 
 	useEffect(() => {
