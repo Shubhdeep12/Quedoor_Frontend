@@ -16,7 +16,7 @@ class Api {
 
 		this.instance.interceptors.request.use((config: any) => {
 			let headers = {};
-			const token = getItem('user-token');
+			const token = getItem('quedoor-token');
 			if (token) {
 				headers = {
 					...headers,

@@ -42,7 +42,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang='en'>
-			<body className={`${manrope.variable} font-sans min-h-screen`}>
+			<body className={`${manrope.variable} font-sans min-h-screen`} suppressHydrationWarning={true}>
 				<Providers>
 					<MainContent>{children}</MainContent>
 				</Providers>

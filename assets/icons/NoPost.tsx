@@ -15,7 +15,7 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 				<path
 					d='M132.607 238.675C193.694 238.675 243.214 229.122 243.214 217.338C243.214 205.554 193.694 196 132.607 196C71.5204 196 22 205.554 22 217.338C22 229.122 71.5204 238.675 132.607 238.675Z'
 					fill='#1F88F8'
-					fill-opacity='0.35'
+					fillOpacity='0.35'
 				/>
 			</g>
 			<path
@@ -38,14 +38,14 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 			<path d='M225.433 60.3657H212.994V132.262H225.433V60.3657Z' fill='url(#paint8_linear_36_7775)' />
 			<path d='M111.382 131.891H99.0415V225.867H111.382V131.891Z' fill='url(#paint9_linear_36_7775)' />
 			<path
-				fill-rule='evenodd'
-				clip-rule='evenodd'
+				fillRule='evenodd'
+				clipRule='evenodd'
 				d='M37.34 131.891H45.4628V225.867H37.34C34.7187 225.867 32.5938 223.742 32.5938 221.121V136.637C32.5938 134.016 34.7187 131.891 37.34 131.891ZM171.185 144.231V131.891H45.4628L45.4631 144.231H171.185ZM171.185 225.867V213.527H45.4631L45.4628 225.867H171.185Z'
 				fill='url(#paint10_linear_36_7775)'
 			/>
 			<path
-				fill-rule='evenodd'
-				clip-rule='evenodd'
+				fillRule='evenodd'
+				clipRule='evenodd'
 				d='M177.829 131.891H170.236C167.614 131.891 165.489 134.016 165.489 136.637V225.867H177.829H212.952H220.546C223.167 225.867 225.292 223.742 225.292 221.121V131.891H212.952H177.829ZM212.952 144.231H177.83V213.527H212.952V144.231Z'
 				fill='url(#paint11_linear_36_7775)'
 			/>
@@ -114,7 +114,7 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 				<path
 					d='M61.5786 97.5148C81.7804 97.5148 98.1572 92.2508 98.1572 85.7574C98.1572 79.264 81.7804 74 61.5786 74C41.3768 74 25 79.264 25 85.7574C25 92.2508 41.3768 97.5148 61.5786 97.5148Z'
 					fill='#FF4C77'
-					fill-opacity='0.3'
+					fillOpacity='0.3'
 				/>
 			</g>
 			<path
@@ -128,12 +128,12 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 			<path
 				d='M214.886 46.0964C214.886 48.7419 212.742 50.8865 210.096 50.8865C207.451 50.8865 205.306 48.7419 205.306 46.0964C205.306 43.451 207.451 41.3064 210.096 41.3064C212.742 41.3064 214.886 43.451 214.886 46.0964Z'
 				stroke='url(#paint26_linear_36_7775)'
-				stroke-width='2.61276'
+				strokeWidth='2.61276'
 			/>
 			<path
 				d='M182.096 241.886C184.741 241.886 186.886 239.741 186.886 237.096C186.886 234.45 184.741 232.306 182.096 232.306C179.45 232.306 177.306 234.45 177.306 237.096C177.306 239.741 179.45 241.886 182.096 241.886Z'
 				stroke='url(#paint27_linear_36_7775)'
-				stroke-width='2.61276'
+				strokeWidth='2.61276'
 			/>
 			<path
 				d='M21.0311 175.236C22.3551 175.024 23.4121 176.325 22.9337 177.577L19.7047 186.033C19.2263 187.285 17.5713 187.55 16.7257 186.51L11.0177 179.486C10.1721 178.445 10.7701 176.879 12.0941 176.667L21.0311 175.236Z'
@@ -159,9 +159,9 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					width='264.76'
 					height='86.2211'
 					filterUnits='userSpaceOnUse'
-					color-interpolation-filters='sRGB'
+					colorInterpolationFilters='sRGB'
 				>
-					<feFlood flood-opacity='0' result='BackgroundImageFix' />
+					<feFlood floodOpacity='0' result='BackgroundImageFix' />
 					<feBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape' />
 					<feGaussianBlur stdDeviation='10.8865' result='effect1_foregroundBlur_36_7775' />
 				</filter>
@@ -172,9 +172,9 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					width='68.5914'
 					height='76.5435'
 					filterUnits='userSpaceOnUse'
-					color-interpolation-filters='sRGB'
+					colorInterpolationFilters='sRGB'
 				>
-					<feFlood flood-opacity='0' result='BackgroundImageFix' />
+					<feFlood floodOpacity='0' result='BackgroundImageFix' />
 					<feColorMatrix
 						in='SourceAlpha'
 						type='matrix'
@@ -195,9 +195,9 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					width='68.5917'
 					height='76.5435'
 					filterUnits='userSpaceOnUse'
-					color-interpolation-filters='sRGB'
+					colorInterpolationFilters='sRGB'
 				>
-					<feFlood flood-opacity='0' result='BackgroundImageFix' />
+					<feFlood floodOpacity='0' result='BackgroundImageFix' />
 					<feColorMatrix
 						in='SourceAlpha'
 						type='matrix'
@@ -218,9 +218,9 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					width='116.703'
 					height='67.0609'
 					filterUnits='userSpaceOnUse'
-					color-interpolation-filters='sRGB'
+					colorInterpolationFilters='sRGB'
 				>
-					<feFlood flood-opacity='0' result='BackgroundImageFix' />
+					<feFlood floodOpacity='0' result='BackgroundImageFix' />
 					<feBlend mode='normal' in='SourceGraphic' in2='BackgroundImageFix' result='shape' />
 					<feGaussianBlur stdDeviation='10.8865' result='effect1_foregroundBlur_36_7775' />
 				</filter>
@@ -232,8 +232,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='379.463'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#CAE0FF' stop-opacity='0' />
-					<stop offset='1' stop-color='#BCD8FF' />
+					<stop stopColor='#CAE0FF' stopOpacity='0' />
+					<stop offset='1' stopColor='#BCD8FF' />
 				</linearGradient>
 				<linearGradient
 					id='paint1_linear_36_7775'
@@ -243,8 +243,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='132.262'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#ABCCFF' />
-					<stop offset='1' stop-color='#70A8FF' />
+					<stop stopColor='#ABCCFF' />
+					<stop offset='1' stopColor='#70A8FF' />
 				</linearGradient>
 				<linearGradient
 					id='paint2_linear_36_7775'
@@ -254,8 +254,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='132.254'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#70A8FF' />
-					<stop offset='1' stop-color='#5597FD' />
+					<stop stopColor='#70A8FF' />
+					<stop offset='1' stopColor='#5597FD' />
 				</linearGradient>
 				<linearGradient
 					id='paint3_linear_36_7775'
@@ -265,8 +265,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='80.6313'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#EDF4FF' />
-					<stop offset='1' stop-color='#ABCCFF' />
+					<stop stopColor='#EDF4FF' />
+					<stop offset='1' stopColor='#ABCCFF' />
 				</linearGradient>
 				<linearGradient
 					id='paint4_linear_36_7775'
@@ -276,8 +276,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='132.262'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#2A64BE' />
-					<stop offset='1' stop-color='#6095E7' />
+					<stop stopColor='#2A64BE' />
+					<stop offset='1' stopColor='#6095E7' />
 				</linearGradient>
 				<linearGradient
 					id='paint5_linear_36_7775'
@@ -287,8 +287,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='176.506'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#EDF4FF' />
-					<stop offset='1' stop-color='#ABCCFF' />
+					<stop stopColor='#EDF4FF' />
+					<stop offset='1' stopColor='#ABCCFF' />
 				</linearGradient>
 				<linearGradient
 					id='paint6_linear_36_7775'
@@ -298,8 +298,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='192.168'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#EDF4FF' />
-					<stop offset='1' stop-color='#ABCCFF' />
+					<stop stopColor='#EDF4FF' />
+					<stop offset='1' stopColor='#ABCCFF' />
 				</linearGradient>
 				<linearGradient
 					id='paint7_linear_36_7775'
@@ -309,8 +309,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='162.742'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#EDF4FF' />
-					<stop offset='1' stop-color='#ABCCFF' />
+					<stop stopColor='#EDF4FF' />
+					<stop offset='1' stopColor='#ABCCFF' />
 				</linearGradient>
 				<linearGradient
 					id='paint8_linear_36_7775'
@@ -320,8 +320,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='132.262'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#ABCCFF' />
-					<stop offset='1' stop-color='#70A8FF' />
+					<stop stopColor='#ABCCFF' />
+					<stop offset='1' stopColor='#70A8FF' />
 				</linearGradient>
 				<linearGradient
 					id='paint9_linear_36_7775'
@@ -331,8 +331,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='243.903'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#ABCCFF' />
-					<stop offset='1' stop-color='#70A8FF' />
+					<stop stopColor='#ABCCFF' />
+					<stop offset='1' stopColor='#70A8FF' />
 				</linearGradient>
 				<linearGradient
 					id='paint10_linear_36_7775'
@@ -342,8 +342,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='211.154'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#ABCCFF' />
-					<stop offset='1' stop-color='#70A8FF' />
+					<stop stopColor='#ABCCFF' />
+					<stop offset='1' stopColor='#70A8FF' />
 				</linearGradient>
 				<linearGradient
 					id='paint11_linear_36_7775'
@@ -353,8 +353,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='193.118'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#70A8FF' />
-					<stop offset='1' stop-color='#5597FD' />
+					<stop stopColor='#70A8FF' />
+					<stop offset='1' stopColor='#5597FD' />
 				</linearGradient>
 				<linearGradient
 					id='paint12_linear_36_7775'
@@ -364,8 +364,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='167.978'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#70A8FF' />
-					<stop offset='1' stop-color='#5597FD' />
+					<stop stopColor='#70A8FF' />
+					<stop offset='1' stopColor='#5597FD' />
 				</linearGradient>
 				<linearGradient
 					id='paint13_linear_36_7775'
@@ -375,8 +375,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='167.978'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#ABCCFF' />
-					<stop offset='1' stop-color='#70A8FF' />
+					<stop stopColor='#ABCCFF' />
+					<stop offset='1' stopColor='#70A8FF' />
 				</linearGradient>
 				<linearGradient
 					id='paint14_linear_36_7775'
@@ -386,8 +386,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='164.286'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#70A8FF' />
-					<stop offset='1' stop-color='#5597FD' />
+					<stop stopColor='#70A8FF' />
+					<stop offset='1' stopColor='#5597FD' />
 				</linearGradient>
 				<linearGradient
 					id='paint15_linear_36_7775'
@@ -397,8 +397,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='108.186'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#C6DDFF' />
-					<stop offset='1' stop-color='white' />
+					<stop stopColor='#C6DDFF' />
+					<stop offset='1' stopColor='white' />
 				</linearGradient>
 				<linearGradient
 					id='paint16_linear_36_7775'
@@ -408,8 +408,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='89.2006'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#C6DDFF' />
-					<stop offset='1' stop-color='white' />
+					<stop stopColor='#C6DDFF' />
+					<stop offset='1' stopColor='white' />
 				</linearGradient>
 				<linearGradient
 					id='paint17_linear_36_7775'
@@ -419,8 +419,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='108.347'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#EDF4FF' />
-					<stop offset='1' stop-color='#ABCCFF' />
+					<stop stopColor='#EDF4FF' />
+					<stop offset='1' stopColor='#ABCCFF' />
 				</linearGradient>
 				<linearGradient
 					id='paint18_linear_36_7775'
@@ -430,8 +430,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='89.3621'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#EDF4FF' />
-					<stop offset='1' stop-color='#ABCCFF' />
+					<stop stopColor='#EDF4FF' />
+					<stop offset='1' stopColor='#ABCCFF' />
 				</linearGradient>
 				<linearGradient
 					id='paint19_linear_36_7775'
@@ -441,8 +441,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='155.147'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#2A64BE' />
-					<stop offset='1' stop-color='#4B80D1' />
+					<stop stopColor='#2A64BE' />
+					<stop offset='1' stopColor='#4B80D1' />
 				</linearGradient>
 				<linearGradient
 					id='paint20_linear_36_7775'
@@ -452,8 +452,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='132.025'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#EDF4FF' />
-					<stop offset='1' stop-color='#ABCCFF' />
+					<stop stopColor='#EDF4FF' />
+					<stop offset='1' stopColor='#ABCCFF' />
 				</linearGradient>
 				<linearGradient
 					id='paint21_linear_36_7775'
@@ -463,8 +463,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='50.7299'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#EDF4FF' />
-					<stop offset='1' stop-color='#ABCCFF' />
+					<stop stopColor='#EDF4FF' />
+					<stop offset='1' stopColor='#ABCCFF' />
 				</linearGradient>
 				<linearGradient
 					id='paint22_linear_36_7775'
@@ -474,8 +474,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='200.11'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop offset='0.09375' stop-color='#2A64BE' />
-					<stop offset='1' stop-color='#2A64BE' stop-opacity='0' />
+					<stop offset='0.09375' stopColor='#2A64BE' />
+					<stop offset='1' stopColor='#2A64BE' stopOpacity='0' />
 				</linearGradient>
 				<linearGradient
 					id='paint23_linear_36_7775'
@@ -485,8 +485,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='199.336'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop offset='0.09375' stop-color='#2A64BE' />
-					<stop offset='1' stop-color='#2A64BE' stop-opacity='0' />
+					<stop offset='0.09375' stopColor='#2A64BE' />
+					<stop offset='1' stopColor='#2A64BE' stopOpacity='0' />
 				</linearGradient>
 				<linearGradient
 					id='paint24_linear_36_7775'
@@ -496,8 +496,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='216.666'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop offset='0.09375' stop-color='#265FB8' />
-					<stop offset='1' stop-color='#84B4FF' />
+					<stop offset='0.09375' stopColor='#265FB8' />
+					<stop offset='1' stopColor='#84B4FF' />
 				</linearGradient>
 				<linearGradient
 					id='paint25_linear_36_7775'
@@ -507,8 +507,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='96.6361'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#FF698D' />
-					<stop offset='1' stop-color='#FF3868' />
+					<stop stopColor='#FF698D' />
+					<stop offset='1' stopColor='#FF3868' />
 				</linearGradient>
 				<linearGradient
 					id='paint26_linear_36_7775'
@@ -518,8 +518,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='58.7974'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#94BFFF' />
-					<stop offset='1' stop-color='#4C94FE' />
+					<stop stopColor='#94BFFF' />
+					<stop offset='1' stopColor='#4C94FE' />
 				</linearGradient>
 				<linearGradient
 					id='paint27_linear_36_7775'
@@ -529,8 +529,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='249.797'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#94BFFF' />
-					<stop offset='1' stop-color='#4C94FE' />
+					<stop stopColor='#94BFFF' />
+					<stop offset='1' stopColor='#4C94FE' />
 				</linearGradient>
 				<linearGradient
 					id='paint28_linear_36_7775'
@@ -540,8 +540,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='185.744'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#70A8FF' />
-					<stop offset='1' stop-color='#5597FD' />
+					<stop stopColor='#70A8FF' />
+					<stop offset='1' stopColor='#5597FD' />
 				</linearGradient>
 				<linearGradient
 					id='paint29_linear_36_7775'
@@ -551,8 +551,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='177.548'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#70A8FF' />
-					<stop offset='1' stop-color='#5597FD' />
+					<stop stopColor='#70A8FF' />
+					<stop offset='1' stopColor='#5597FD' />
 				</linearGradient>
 				<linearGradient
 					id='paint30_linear_36_7775'
@@ -562,8 +562,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='41.8041'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#70A8FF' />
-					<stop offset='1' stop-color='#5597FD' />
+					<stop stopColor='#70A8FF' />
+					<stop offset='1' stopColor='#5597FD' />
 				</linearGradient>
 				<linearGradient
 					id='paint31_linear_36_7775'
@@ -573,8 +573,8 @@ const NoPost: FC<IconProps> = ({ height = 264, width = 276, size = null, ...prop
 					y2='263.804'
 					gradientUnits='userSpaceOnUse'
 				>
-					<stop stop-color='#70A8FF' />
-					<stop offset='1' stop-color='#5597FD' />
+					<stop stopColor='#70A8FF' />
+					<stop offset='1' stopColor='#5597FD' />
 				</linearGradient>
 			</defs>
 		</svg>

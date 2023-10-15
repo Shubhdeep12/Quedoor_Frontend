@@ -1,8 +1,5 @@
 'use client';
 
-// import FeedFilled from '@/assets/icons/FeedFilled';
-// import FeedOutlined from '@/assets/icons/FeedOutlined';
-// import QuedoorLogoIcon from '@/assets/icons/QuedoorLogoIcon';
 import { usePathname, useRouter } from 'next/navigation';
 import { LuSearch } from 'react-icons/lu';
 import Text from './Text';
@@ -17,16 +14,28 @@ import {
 	Switch,
 } from '@chakra-ui/react';
 import { GoChevronDown } from 'react-icons/go';
-// import AvatarFilled from '@/assets/icons/AvatarFilled';
-// import AvatarOutlined from '@/assets/icons/AvatarOutlined';
 import useAuth from '@/hooks/useAuth';
 import { RiLogoutCircleRLine } from 'react-icons/ri';
 import Image from 'next/image';
+import { MouseEvent } from 'react';
+import { logout } from '@/queries/auth';
+import { clearItem, removeCookie } from '@/utils/misc';
 
 export default function Navbar() {
 	const pathname = usePathname();
 	const { user } = useAuth();
 	const router = useRouter();
+	const handleLogout = async (e: MouseEvent) => {
+		e.preventDefault();
+		const res = await logout();
+		if (res.status < 300) {
+			clearItem('quedoor-token');
+			removeCookie('quedoor-token');
+			// not working
+			router.refresh();
+		}
+	};
+
 	if (pathname.startsWith('/login')) {
 		return null;
 	}
@@ -39,25 +48,8 @@ export default function Navbar() {
 					objectFit='contain'
 					layout='fill'
 					className='cursor-pointer !w-60 !h-50 !relative'
-					onClick={() => router.push('/feed')}
+					onClick={() => router.push('/')}
 				/>
-
-				{/* <div className='flex gap-8 items-center'>
-					<button
-						className='flex flex-col p-2 gap-0.5 items-center cursor-pointer'
-						onClick={() => router.push('/feed')}
-					>
-						{pathname.startsWith('/feed') ? <FeedFilled className='fill-primary-light' /> : <FeedOutlined />}
-						<Text className='text-sm text-neutral-500'>Feed</Text>
-					</button>
-					<button
-						className='flex flex-col p-2 gap-0.5 items-center cursor-pointer'
-						onClick={() => router.push('/profile')}
-					>
-						{pathname.startsWith('/profile') ? <AvatarFilled className='fill-primary-light' /> : <AvatarOutlined />}
-						<Text className='text-sm text-neutral-500'>Profile</Text>
-					</button>
-				</div> */}
 
 				<div className='flex items-center gap-8 flex-1 justify-end'>
 					<button className='flex flex-1 max-w-md justify-between items-center hover:bg-neutral-100 cursor-pointer transition-all border border-neutral-200 rounded-lg py-3 px-5'>
@@ -90,7 +82,10 @@ export default function Navbar() {
 								<button className='px-4 py-3 border-b w-full justify-center flex gap-2 items-center cursor-pointer'>
 									<Text>Switch Theme</Text> <Switch colorScheme='red' />
 								</button>
-								<button className='px-4 py-3 flex w-full justify-center  gap-1 items-center cursor-pointer'>
+								<button
+									className='px-4 py-3 flex w-full justify-center  gap-1 items-center cursor-pointer'
+									onClick={handleLogout}
+								>
 									<RiLogoutCircleRLine /> <Text>Sign out</Text>
 								</button>
 							</PopoverBody>

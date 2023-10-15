@@ -8,9 +8,9 @@ import ReactQueryProvider from './ReactQueryProvider';
 const Providers = (props: PropsWithChildren) => {
 	return (
 		<AuthProvider>
-			<ReactQueryProvider>
-				<ChakraUIProvider>{props.children}</ChakraUIProvider>
-			</ReactQueryProvider>
+			<ChakraUIProvider>
+				<ReactQueryProvider>{props.children}</ReactQueryProvider>
+			</ChakraUIProvider>
 		</AuthProvider>
 	);
 };

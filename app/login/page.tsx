@@ -16,10 +16,15 @@ import {
 import { ChangeEvent, FormEvent, FormEventHandler, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import clsx from 'clsx';
-import { login, register } from '@/queries/login';
+import { login, register } from '@/queries/auth';
 import useAuth from '@/hooks/useAuth';
-import { setItem } from '@/utils/misc';
-import { redirect, useRouter } from 'next/navigation';
+import {
+	setCookie,
+	// setCookie,
+	setItem,
+} from '@/utils/misc';
+import { useRouter } from 'next/navigation';
+import validator from 'validator';
 
 export default function Login() {
 	const { user, updateUser } = useAuth();
@@ -32,18 +37,42 @@ export default function Login() {
 
 	const toast = useToast();
 
+	const [error, setError] = useState({
+		name: false,
+		email: false,
+		password: false,
+	});
+
 	const handleChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
 		switch (type) {
-			case 'email':
-				setEmail(e.target.value);
+			case 'email': {
+				const _email = (e.target.value || '').trim();
+				setError((prev) => ({ ...prev, email: !validator.isEmail(_email) }));
+				setEmail(_email);
 				break;
+			}
+			case 'password': {
+				const _pass = (e.target.value || '').trim();
+				setError((prev) => ({
+					...prev,
+					password: !validator.isStrongPassword(_pass, {
+						minLength: 8,
+						minLowercase: 1,
+						minUppercase: 1,
+						minNumbers: 1,
+						minSymbols: 0,
+					}),
+				}));
+				setPassword(_pass);
+				break;
+			}
+			case 'name': {
+				const _name = (e.target.value || '').trim();
+				setError((prev) => ({ ...prev, name: _name === '' }));
 
-			case 'password':
-				setPassword(e.target.value);
+				setUsername(_name);
 				break;
-			case 'name':
-				setUsername(e.target.value);
-				break;
+			}
 			default:
 				break;
 		}
@@ -74,22 +103,22 @@ export default function Login() {
 			const res = await login({ email, password, name: username });
 			if (res.status > 300) {
 				toast({
-					title: 'Failed to register! Please try again.',
+					title: 'Failed to login! Please try again.',
 					status: 'error',
 					isClosable: true,
 					position: 'top-right',
 				});
 			} else {
 				toast({
-					title: 'User created successfully.',
+					title: 'User logged in successfully.',
 					status: 'success',
 					isClosable: true,
 					position: 'top-right',
 				});
 				updateUser(res.data);
-				setItem('quedoor-user', JSON.stringify(res.data));
 				setItem('quedoor-token', res.data.access_token);
-				router.push('/feed');
+				setCookie('quedoor-token', res.data.access_token);
+				router.push('/');
 			}
 		}
 
@@ -104,6 +133,11 @@ export default function Login() {
 		setUsername('');
 		setEmail('');
 		setPassword('');
+		setError({
+			name: false,
+			email: false,
+			password: false,
+		});
 	};
 
 	const handleChangeView = () => {
@@ -112,7 +146,8 @@ export default function Login() {
 	};
 
 	if (user && user.id) {
-		redirect('/feed');
+		router.push('/');
+		return true;
 	}
 
 	return (
@@ -135,6 +170,9 @@ export default function Login() {
 					{!isLoginView && (
 						<Input
 							value={username}
+							isInvalid={error.name}
+							errorBorderColor='red.500'
+							focusBorderColor={error.name ? 'red.400' : 'gray.500'}
 							onChange={(e) => handleChange(e, 'name')}
 							type='name'
 							placeholder='Full Name'
@@ -142,15 +180,22 @@ export default function Login() {
 						/>
 					)}
 					<Input
+						type='email'
+						isInvalid={error.email}
+						errorBorderColor='red.500'
+						focusBorderColor={error.email ? 'red.500' : 'gray.500'}
 						value={email}
 						onChange={(e) => handleChange(e, 'email')}
-						type='email'
 						placeholder='Enter Email'
 						required
 					/>
+
 					<InputGroup size='md'>
 						<Input
 							pr='2rem'
+							isInvalid={error.password}
+							errorBorderColor='red.500'
+							focusBorderColor={error.password ? 'red.400' : 'gray.500'}
 							value={password}
 							onChange={(e) => handleChange(e, 'password')}
 							required
@@ -177,7 +222,14 @@ export default function Login() {
 					<Button
 						type='submit'
 						variant='solid'
-						isDisabled={!email.trim() || !password.trim() || (!isLoginView && !username.trim())}
+						isDisabled={
+							!email ||
+							!password ||
+							(!isLoginView && !username) ||
+							error.email ||
+							error.password ||
+							(!isLoginView && error.name)
+						}
 						className='w-full bg-slate-100'
 					>
 						Submit
