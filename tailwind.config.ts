@@ -10,7 +10,13 @@ const config: Config = {
     extend: {
       colors: {
         primary: {
-          light: '#942381',
+          light: {
+            50: "#FFF",
+            100: "#F4EEFF",
+            200: "#DCD6F7",
+            300: "#A6B1E1",
+            400: "#424874"
+          },
         }
       },
       fontFamily: {
@@ -35,6 +41,6 @@ const config: Config = {
 			},
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 }
 export default config

@@ -30,7 +30,7 @@ const Home = () => {
 		<>
 			<Navbar />
 
-			<div className='flex gap-10 h-[calc(100vh-64px)]'>
+			<div className='flex gap-10 h-[calc(100vh-65px)]'>
 				<Sidebar onCreate={onOpen} />
 				<MainSection />
 				<div className='right-section w-64 flex flex-col gap-6'>

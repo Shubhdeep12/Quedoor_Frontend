@@ -2,7 +2,7 @@ import api from '@/utils/api';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 const _getPosts = async (params = {}, setFeed: any) => {
-	const res = await api.get(`/posts/`, params);
+	const res = await api.get('/posts/', params);
 	if (res.data) {
 		setFeed((prev: any) => [...prev, res.data]);
 	}
@@ -26,4 +26,9 @@ export const useInfiniteFeed = (feed: any, setFeed: any) => {
 		}),
 		feed,
 	};
+};
+
+export const createPost = async (body = {}) => {
+	const res = await api.post('/posts/', body);
+	return res;
 };
