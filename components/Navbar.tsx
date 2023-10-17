@@ -39,7 +39,7 @@ export default function Navbar() {
 		return null;
 	}
 	return (
-		<div className='flex px-8 py-4 gap-8 items-center justify-between relative w-full shadow-sm bg-primary-light-50 border-b border-b-slate-300'>
+		<header className='sticky top-0 z-50 flex px-8 py-4 gap-8 items-center justify-between w-full shadow-sm bg-primary-light-50 border-b border-b-slate-300'>
 			<Image
 				src='/quedoor-navbar.png'
 				alt='quedoor-logo'
@@ -86,6 +86,6 @@ export default function Navbar() {
 					</PopoverContent>
 				</Popover>
 			</div>
-		</div>
+		</header>
 	);
 }

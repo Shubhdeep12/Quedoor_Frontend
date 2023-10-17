@@ -46,7 +46,7 @@ const Sidebar: FC<SidebarProps> = ({ onCreate }) => {
 
 			<div className='flex flex-col items-start gap-4'>
 				<div
-					className='w-full flex items-center justify-between cursor-pointer transition-all p-2 rounded-md hover:bg-primary-light-300 hover:bg-opacity-5'
+					className='w-full flex items-center justify-between cursor-pointer transition-all p-2 rounded-md hover:bg-primary-light-100'
 					onClick={() => setRecentActivityCollapsed((prev) => !prev)}
 				>
 					<Text className='text-sm font-bold'>Recent Activity</Text>
@@ -99,7 +99,7 @@ const Sidebar: FC<SidebarProps> = ({ onCreate }) => {
 
 			<div className='flex flex-col items-start gap-4'>
 				<div
-					className='w-full flex items-center justify-between cursor-pointer transition-all p-2 rounded-md hover:bg-primary-light-300 hover:bg-opacity-5'
+					className='w-full flex items-center justify-between cursor-pointer transition-all p-2 rounded-md hover:bg-primary-light-100'
 					onClick={() => setRecentFollowersCollapsed((prev) => !prev)}
 				>
 					<Text className='text-sm font-bold'>Recent Followers</Text>

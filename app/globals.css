@@ -36,6 +36,7 @@ body {
 
 /* Basic editor styles */
 .ProseMirror > *  {
+  margin: 0 !important;
   color: black;
   font-size: 18px;
 }
@@ -45,15 +46,15 @@ body {
 }
 
 .ProseMirror p {
-  margin: 0;
+  font-size: 16px;
 }
 
 .ProseMirror h1 {
-  font-size: 2em;
+  font-size: 24px;
 }
 
 .ProseMirror h2 {
-  font-size: 1.5em;
+  font-size: 20px;
 }
 
 .ProseMirror h1,
@@ -67,24 +68,11 @@ body {
   color: #616161;
 }
 
-/* .ProseMirror pre {
-  background: #0D0D0D;
-  color: #FFF;
-  font-family: 'JetBrainsMono', monospace;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
-} */
-
 .ProseMirror pre code {
   color: inherit;
   padding: 0;
   background: none;
-  font-size: 0.8rem;
-}
-
-.ProseMirror img {
-  max-width: 100%;
-  height: auto;
+  font-size: 16px;
 }
 
 .ProseMirror hr {
@@ -93,16 +81,11 @@ body {
   margin: 2rem 0;
 }
 
-.resize-cursor {
-  cursor: ew-resize;
-  cursor: col-resize;
-}
-
 .ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   float: left;
   color: #adb5bd;
-  font-size: 18px;
+  font-size: 16px;
   pointer-events: none;
   height: 0;
 }

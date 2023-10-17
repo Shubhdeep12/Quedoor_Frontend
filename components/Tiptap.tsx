@@ -12,6 +12,8 @@ import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import CharacterCount from '@tiptap/extension-character-count';
 import Image from '@tiptap/extension-image';
+import { Button } from '@chakra-ui/react';
+import { IoSend } from 'react-icons/io5';
 
 const MenuItem = ({ Icon, title, action, isActive = null }: any) => (
 	<button
@@ -22,7 +24,7 @@ const MenuItem = ({ Icon, title, action, isActive = null }: any) => (
 		onClick={action}
 		title={title}
 	>
-		<Icon size='22' color='black' />
+		<Icon size='22' color='white' />
 	</button>
 );
 
@@ -94,12 +96,29 @@ const MenuBar = ({ editor }: any) => {
 	];
 
 	return (
-		<div className='flex gap-2 items-center flex-wrap px-2  border-t py-4 relative'>
-			{items.map((item, index) => (
-				<Fragment key={index}>
-					{item.type === 'divider' ? <div className='divider bg-black h-7 mx-3 w-[1px]' /> : <MenuItem {...item} />}
-				</Fragment>
-			))}
+		<div className='flex gap-2 items-center justify-between flex-wrap bg-primary-light-500 px-2 py-2 relative'>
+			<div className='flex gap-2 items-center '>
+				{items.map((item, index) => (
+					<Fragment key={index}>
+						{item.type === 'divider' ? (
+							<div className='divider bg-primary-light-50 h-6 mx-3 w-[1px]' />
+						) : (
+							<MenuItem {...item} />
+						)}
+					</Fragment>
+				))}
+			</div>
+
+			<Button
+				className='bg-primary-light-50 transition hover:bg-opacity-90 flex items-center'
+				colorScheme='bg-primary-light-50'
+				variant='solid'
+				size='sm'
+				// isLoading={isLoading}
+				// onClick={handlePrimaryCTA}
+			>
+				<IoSend size={20} color='black' />
+			</Button>
 		</div>
 	);
 };

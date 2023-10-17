@@ -1,5 +1,6 @@
 'use client';
 import MobileComingSoon from './MobileComingSoon';
+import Navbar from './Navbar';
 
 type MainProps = {
 	children?: React.ReactNode;
@@ -14,6 +15,7 @@ export default function MainContent({ children }: MainProps) {
 			h-screen
 			'
 		>
+			<Navbar />
 			<div className='hidden laptop:block'>{children}</div>
 			<MobileComingSoon />
 		</main>
