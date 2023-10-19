@@ -18,8 +18,8 @@ import { IoSend } from 'react-icons/io5';
 const MenuItem = ({ Icon, title, action, isActive = null }: any) => (
 	<button
 		className={clsx({
-			'rounded-lg p-1 transition hover:bg-gray-300 hover:bg-opacity-50': true,
-			'bg-gray-300 bg-opacity-50': isActive(),
+			'rounded-lg p-1 transition hover:bg-gray-400 hover:bg-opacity-50': true,
+			'bg-gray-400 bg-opacity-50': isActive(),
 		})}
 		onClick={action}
 		title={title}
@@ -28,7 +28,7 @@ const MenuItem = ({ Icon, title, action, isActive = null }: any) => (
 	</button>
 );
 
-const MenuBar = ({ editor }: any) => {
+const MenuBar = ({ editor, isLoading, handlePrimaryCTA }: any) => {
 	const items = [
 		{
 			Icon: AiOutlineBold,
@@ -110,14 +110,15 @@ const MenuBar = ({ editor }: any) => {
 			</div>
 
 			<Button
-				className='bg-primary-light-50 transition hover:bg-opacity-90 flex items-center'
-				colorScheme='bg-primary-light-50'
+				className='bg-primary-light-400 transition  hover:bg-opacity-90 flex items-center'
+				colorScheme='bg-primary-light-400'
 				variant='solid'
+				rounded='base'
 				size='sm'
-				// isLoading={isLoading}
-				// onClick={handlePrimaryCTA}
+				isLoading={isLoading}
+				onClick={handlePrimaryCTA}
 			>
-				<IoSend size={20} color='black' />
+				<IoSend size={20} color='white' />
 			</Button>
 		</div>
 	);
@@ -132,61 +133,65 @@ const file2Base64 = (file: File): Promise<string> => {
 	});
 };
 
-const Tiptap = forwardRef(({ isReadonly = false, content = null, onChange }: any, ref: any) => {
-	const imageRef = useRef<any>();
-	const editor = useEditor({
-		extensions: [
-			StarterKit,
-			Highlight,
-			Placeholder.configure({
-				placeholder: 'Write something …',
-			}),
-			Image.configure({
-				allowBase64: true,
-			}),
-			CharacterCount.configure({
-				limit: 1000,
-			}),
-		],
-		autofocus: 'end',
-		content,
-		editable: !isReadonly,
-		editorProps: {
-			attributes: {
-				class:
-					'prose dark:prose-invert prose-sm sm:prose-base lg:prose-lg xl:prose-2xl h-80 mx-1 px-2 focus:outline-none overflow-auto',
+const Tiptap = forwardRef(
+	({ isReadonly = false, content = null, onChange, isLoading, handlePrimaryCTA }: any, ref: any) => {
+		const imageRef = useRef<any>();
+		const editor = useEditor({
+			extensions: [
+				StarterKit,
+				Highlight,
+				Placeholder.configure({
+					placeholder: 'Write something …',
+				}),
+				Image.configure({
+					allowBase64: true,
+				}),
+				CharacterCount.configure({
+					limit: 1000,
+				}),
+			],
+			autofocus: 'end',
+			content: content,
+			editable: !isReadonly,
+			editorProps: {
+				attributes: {
+					class: clsx(
+						'prose dark:prose-invert prose-sm transition sm:prose-base h-80 overflow-auto lg:prose-lg xl:prose-2xl mx-1 px-2 focus:outline-none'
+					),
+				},
 			},
-		},
-		onUpdate({ editor }) {
-			onChange(editor.getJSON());
-		},
-	});
+			onUpdate({ editor }) {
+				onChange(editor.getJSON());
+			},
+		});
 
-	ref.current = editor;
+		ref.current = editor;
+		return (
+			<div className='editor-container h-auto overflow-hidden flex flex-col justify-between '>
+				<EditorContent editor={editor} />
+				{editor && !isReadonly && (
+					<input
+						style={{ display: 'none' }}
+						type='file'
+						id='tiptap-image'
+						ref={imageRef}
+						onChange={async (event: any) => {
+							const file = event.target.files[0];
 
-	return (
-		<div className='editor-container h-96 overflow-hidden flex flex-col justify-between '>
-			<EditorContent editor={editor} />
-			<input
-				style={{ display: 'none' }}
-				type='file'
-				id='tiptap-image'
-				ref={imageRef}
-				onChange={async (event: any) => {
-					const file = event.target.files[0];
-
-					editor
-						?.chain()
-						.focus()
-						.setImage({ src: await file2Base64(file) })
-						.run();
-				}}
-			/>
-			{editor && <MenuBar editor={editor} imageRef={imageRef} />}
-
-			{/* <Button onClick={() => console.log({ val: editor?.getJSON(), text: editor?.getText() })}>click</Button> */}
-		</div>
-	);
-});
+							editor
+								?.chain()
+								.focus()
+								.setImage({ src: await file2Base64(file) })
+								.run();
+						}}
+					/>
+				)}
+				{editor && !isReadonly && (
+					<MenuBar editor={editor} imageRef={imageRef} isLoading={isLoading} handlePrimaryCTA={handlePrimaryCTA} />
+				)}
+			</div>
+		);
+	}
+);
 
 export default Tiptap;

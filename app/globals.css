@@ -89,3 +89,8 @@ body {
   pointer-events: none;
   height: 0;
 }
+
+
+.infinite-scroll-component__outerdiv{
+  width: 100% !important
+}

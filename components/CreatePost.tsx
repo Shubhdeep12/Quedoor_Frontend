@@ -25,9 +25,9 @@ const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, cont
 	const editorRef = useRef<any>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const handlePrimaryCTA = async () => {
-		// setIsLoading(true);
-		console.log(editorRef.current && editorRef.current.getJSON());
-		console.log(editorRef.current && editorRef.current.getText());
+		setIsLoading(true);
+		// console.log(editorRef.current && editorRef.current.getJSON());
+		// console.log(editorRef.current && editorRef.current.getText());
 
 		if (!isEdit) {
 			const payload = {
@@ -37,8 +37,8 @@ const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, cont
 				image_text: '',
 			};
 
-			const res = await createPost(payload);
-			console.log({ res });
+			await createPost(payload);
+			// console.log({ res });
 		}
 		setIsLoading(false);
 		onClose();
@@ -46,13 +46,21 @@ const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, cont
 	return (
 		<Modal onClose={onClose} isOpen={isOpen} isCentered size='2xl'>
 			<ModalOverlay />
-			<ModalContent className='border-4 border-black'>
+			<ModalContent className='border-4 border-black rounded-xl overflow-hidden'>
 				{/* <ModalHeader className='border-b text-base font-bold py-3 px-4'>
 					{isEdit ? 'Edit Post' : 'Create Post'}
 				</ModalHeader> */}
 				<ModalCloseButton />
 				<ModalBody className='px-0 mt-8 py-0'>
-					<Tiptap ref={editorRef} content={content} onChange={(val: any) => console.log({ val })} />
+					<Tiptap
+						ref={editorRef}
+						content={content}
+						onChange={(val: any) => {
+							val;
+						}}
+						isLoading={isLoading}
+						handlePrimaryCTA={handlePrimaryCTA}
+					/>
 				</ModalBody>
 				{/* <ModalFooter className='border-t'>
 					<Button

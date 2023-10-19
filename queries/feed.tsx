@@ -7,7 +7,7 @@ const fetchPosts = async ({ pageParam = 1 }) => {
 		page: pageParam,
 	};
 
-	console.log({ pageParam });
+	// console.log({ pageParam });
 
 	const res = await api.get('/posts/', params);
 
@@ -21,7 +21,7 @@ export const useInfiniteFeed = () => {
 	return {
 		...useInfiniteQuery(['posts'], fetchPosts, {
 			getNextPageParam: (lastPage) => {
-				console.log({ lastPage });
+				// console.log({ lastPage });
 				const nextPage = lastPage.data.page + 1;
 				return lastPage.data.data.length < 10 ? undefined : nextPage;
 			},
