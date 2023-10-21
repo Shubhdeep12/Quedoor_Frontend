@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ReactNode, useEffect, FC } from 'react';
 import { getCookie, getItem } from '@/utils/misc';
-import PageLoader from '@/components/PageLoader';
+import PageLoader from '@/ui/PageLoader';
 import { useRouter } from 'next/navigation';
 import { getMe } from '@/queries/auth';
 import { useAuthStore } from '@/store/zustand';
@@ -20,7 +20,9 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 				useAuthStore.setState({ loading: true });
 
 				const res = await getMe(localToken || cookieToken);
-				updateUser(res.data.data);
+				console.log({ user: res });
+
+				updateUser(res.data.result);
 			} else {
 				reset();
 				router.push('/login');

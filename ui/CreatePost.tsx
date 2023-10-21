@@ -1,33 +1,22 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-	Button,
-	Modal,
-	ModalBody,
-	ModalCloseButton,
-	ModalContent,
-	ModalFooter,
-	ModalHeader,
-	ModalOverlay,
-} from '@chakra-ui/react';
+import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay } from '@chakra-ui/react';
 import React, { FC, useRef, useState } from 'react';
 import Tiptap from './Tiptap';
-import { createPost } from '@/queries/feed';
-// import Tiptap from './Tiptap';
+import { useCreatePost, useUpdatePost } from '@/queries/feed';
 
 type CreatePostProps = {
 	isOpen: boolean;
 	onClose: () => void;
-	content?: string;
+	post?: object;
 	isEdit?: boolean;
 };
 
-const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, content = null }) => {
+const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, post }) => {
 	const editorRef = useRef<any>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const createMutation = useCreatePost();
+	const updateMutation = useUpdatePost();
 	const handlePrimaryCTA = async () => {
 		setIsLoading(true);
-		// console.log(editorRef.current && editorRef.current.getJSON());
-		// console.log(editorRef.current && editorRef.current.getText());
 
 		if (!isEdit) {
 			const payload = {
@@ -37,8 +26,26 @@ const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, cont
 				image_text: '',
 			};
 
-			await createPost(payload);
-			// console.log({ res });
+			try {
+				createMutation.mutate(payload);
+				// Handle successful creation, e.g., clear the form
+			} catch (error) {
+				// Handle error, e.g., show an error message
+			}
+		} else {
+			const payload = {
+				image_url: post?.image_url || '',
+				description: editorRef.current && editorRef.current.getText(),
+				rich_description: JSON.stringify((editorRef.current && editorRef.current.getJSON()) || {}),
+				image_text: '',
+			};
+
+			try {
+				updateMutation.mutate({ id: post?._id, body: payload });
+				// Handle successful creation, e.g., clear the form
+			} catch (error) {
+				// Handle error, e.g., show an error message
+			}
 		}
 		setIsLoading(false);
 		onClose();
@@ -47,14 +54,11 @@ const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, cont
 		<Modal onClose={onClose} isOpen={isOpen} isCentered size='2xl'>
 			<ModalOverlay />
 			<ModalContent className='border-4 border-black rounded-xl overflow-hidden'>
-				{/* <ModalHeader className='border-b text-base font-bold py-3 px-4'>
-					{isEdit ? 'Edit Post' : 'Create Post'}
-				</ModalHeader> */}
 				<ModalCloseButton />
 				<ModalBody className='px-0 mt-8 py-0'>
 					<Tiptap
 						ref={editorRef}
-						content={content}
+						content={JSON.parse(post?.rich_description || '{}')}
 						onChange={(val: any) => {
 							val;
 						}}
@@ -62,17 +66,6 @@ const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, cont
 						handlePrimaryCTA={handlePrimaryCTA}
 					/>
 				</ModalBody>
-				{/* <ModalFooter className='border-t'>
-					<Button
-						className='bg-primary-light-400 transition hover:bg-opacity-75 flex items-center'
-						colorScheme='bg-primary-light-400'
-						variant='solid'
-						isLoading={isLoading}
-						onClick={handlePrimaryCTA}
-					>
-						{isEdit ? 'Update Post' : 'Publish Post'}
-					</Button>
-				</ModalFooter> */}
 			</ModalContent>
 		</Modal>
 	);

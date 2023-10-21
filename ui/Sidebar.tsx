@@ -1,6 +1,6 @@
 'use client';
 
-import Text from '@/components/Text';
+import Text from '@/ui/Text';
 import useAuth from '@/hooks/useAuth';
 import { Avatar, Button } from '@chakra-ui/react';
 import clsx from 'clsx';

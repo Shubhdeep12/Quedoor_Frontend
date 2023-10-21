@@ -1,6 +1,6 @@
 'use client';
 import QuedoorLogoIcon from '@/assets/icons/QuedoorLogoIcon';
-import Text from '@/components/Text';
+import Text from '@/ui/Text';
 import {
 	Button,
 	Icon,
@@ -115,9 +115,9 @@ export default function Login() {
 					isClosable: true,
 					position: 'top-right',
 				});
-				updateUser(res.data);
-				setItem('quedoor-token', res.data.access_token);
-				setCookie('quedoor-token', res.data.access_token);
+				updateUser(res.result);
+				setItem('quedoor-token', res.result.access_token);
+				setCookie('quedoor-token', res.result.access_token);
 				router.push('/');
 			}
 		}

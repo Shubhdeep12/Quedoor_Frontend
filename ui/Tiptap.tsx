@@ -1,34 +1,34 @@
-/* eslint-disable react/display-name */
 'use client';
 
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
-import { Fragment, forwardRef, useRef } from 'react';
+import { Fragment, forwardRef, useRef, useState } from 'react';
 import { AiOutlineBold, AiOutlineItalic } from 'react-icons/ai';
 import { LuHeading1, LuHeading2 } from 'react-icons/lu';
 import { RiCodeView, RiImage2Fill, RiListOrdered2, RiListUnordered, RiSeparator } from 'react-icons/ri';
 import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import CharacterCount from '@tiptap/extension-character-count';
-import Image from '@tiptap/extension-image';
 import { Button } from '@chakra-ui/react';
-import { IoSend } from 'react-icons/io5';
+import { IoCloseCircleSharp, IoSend } from 'react-icons/io5';
+import Image from 'next/image';
 
-const MenuItem = ({ Icon, title, action, isActive = null }: any) => (
+const MenuItem = ({ Icon, title, action, isActive = null, disabled = false }: any) => (
 	<button
 		className={clsx({
 			'rounded-lg p-1 transition hover:bg-gray-400 hover:bg-opacity-50': true,
 			'bg-gray-400 bg-opacity-50': isActive(),
+			'cursor-default': disabled,
 		})}
-		onClick={action}
+		onClick={() => !disabled && action()}
 		title={title}
 	>
 		<Icon size='22' color='white' />
 	</button>
 );
 
-const MenuBar = ({ editor, isLoading, handlePrimaryCTA }: any) => {
+const MenuBar = ({ editor, isLoading, handlePrimaryCTA, imageUrl }: any) => {
 	const items = [
 		{
 			Icon: AiOutlineBold,
@@ -91,7 +91,8 @@ const MenuBar = ({ editor, isLoading, handlePrimaryCTA }: any) => {
 			Icon: RiImage2Fill,
 			title: 'Upload Image',
 			action: () => document.getElementById('tiptap-image')?.click(),
-			isActive: () => false,
+			isActive: () => imageUrl && imageUrl.length > 0,
+			disabled: imageUrl && imageUrl.length > 0,
 		},
 	];
 
@@ -133,9 +134,11 @@ const file2Base64 = (file: File): Promise<string> => {
 	});
 };
 
+// eslint-disable-next-line react/display-name
 const Tiptap = forwardRef(
 	({ isReadonly = false, content = null, onChange, isLoading, handlePrimaryCTA }: any, ref: any) => {
 		const imageRef = useRef<any>();
+		const [image, setImage] = useState<{ imageUrl: string; file?: Blob }>({ imageUrl: '' });
 		const editor = useEditor({
 			extensions: [
 				StarterKit,
@@ -143,20 +146,17 @@ const Tiptap = forwardRef(
 				Placeholder.configure({
 					placeholder: 'Write something …',
 				}),
-				Image.configure({
-					allowBase64: true,
-				}),
 				CharacterCount.configure({
 					limit: 1000,
 				}),
 			],
-			autofocus: 'end',
+			...(isReadonly ? {} : { autofocus: 'end' }),
 			content: content,
 			editable: !isReadonly,
 			editorProps: {
 				attributes: {
 					class: clsx(
-						'prose dark:prose-invert prose-sm transition sm:prose-base h-80 overflow-auto lg:prose-lg xl:prose-2xl mx-1 px-2 focus:outline-none'
+						'prose dark:prose-invert prose-sm transition sm:prose-base h-96 overflow-auto lg:prose-lg xl:prose-2xl mx-1 px-2 focus:outline-none'
 					),
 				},
 			},
@@ -177,17 +177,41 @@ const Tiptap = forwardRef(
 						ref={imageRef}
 						onChange={async (event: any) => {
 							const file = event.target.files[0];
-
-							editor
-								?.chain()
-								.focus()
-								.setImage({ src: await file2Base64(file) })
-								.run();
+							const imageUrl = await file2Base64(file);
+							setImage({
+								imageUrl,
+								file,
+							});
 						}}
 					/>
 				)}
+
+				{image.imageUrl && (
+					<div className='flex justify-center border-2 relative border-black m-4 rounded-lg'>
+						<Image
+							objectFit='contain'
+							layout='fill'
+							className='!w-full !h-[250px] !relative'
+							alt='img'
+							src={image.imageUrl}
+						/>
+						{!isReadonly && (
+							<div
+								className='absolute cursor-pointer top-2 right-2 rounded-full bg-white'
+								onClick={() => setImage({ imageUrl: '' })}
+							>
+								<IoCloseCircleSharp size={20} />
+							</div>
+						)}
+					</div>
+				)}
 				{editor && !isReadonly && (
-					<MenuBar editor={editor} imageRef={imageRef} isLoading={isLoading} handlePrimaryCTA={handlePrimaryCTA} />
+					<MenuBar
+						editor={editor}
+						imageUrl={image.imageUrl}
+						isLoading={isLoading}
+						handlePrimaryCTA={handlePrimaryCTA}
+					/>
 				)}
 			</div>
 		);
