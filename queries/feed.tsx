@@ -1,4 +1,5 @@
 import api from '@/utils/api';
+import { PostProps } from '@/utils/constants';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const fetchPosts = async ({ pageParam = 1 }) => {
@@ -29,17 +30,17 @@ export const useInfiniteFeed = () => {
 	};
 };
 
-export const createPost = async (body = {}) => {
+export const createPost = async (body: object) => {
 	const res = await api.post('/posts/', body);
 	return res;
 };
 
-export const updatePost = async ({ id, body }: any) => {
+export const updatePost = async ({ id, body }: { id: string; body: object }) => {
 	const res = await api.put(`/posts/${id}`, body);
 	return res;
 };
 
-export const deletePost = async (id: number) => {
+export const deletePost = async (id: string) => {
 	const res = await api.delete(`/posts/${id}`);
 	return res;
 };
@@ -47,7 +48,7 @@ export const deletePost = async (id: number) => {
 export const useUpdatePost = () => {
 	const queryClient = useQueryClient();
 	return useMutation(updatePost, {
-		onSuccess: async (updatedPost: any) => {
+		onSuccess: async (updatedPost: { result: PostProps }) => {
 			const queryKey = ['posts'];
 			const prevData: any = queryClient.getQueryData(queryKey);
 
@@ -76,7 +77,7 @@ export const useUpdatePost = () => {
 export const useCreatePost = () => {
 	const queryClient = useQueryClient();
 	return useMutation(createPost, {
-		onSuccess: async (newPost: any) => {
+		onSuccess: async (newPost: { result: PostProps }) => {
 			const queryKey = ['posts'];
 			const prevData: any = queryClient.getQueryData(queryKey);
 
@@ -98,7 +99,7 @@ export const useCreatePost = () => {
 export const useDeletePost = () => {
 	const queryClient = useQueryClient();
 	return useMutation(deletePost, {
-		onSuccess: async (deletedPost: any, id: string) => {
+		onSuccess: async (_, id: string) => {
 			const queryKey = ['posts'];
 			const prevData: any = queryClient.getQueryData(queryKey);
 

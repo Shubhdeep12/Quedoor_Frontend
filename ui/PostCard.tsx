@@ -20,7 +20,7 @@ type PostCardProps = {
 
 const PostCard = ({ post }: PostCardProps) => {
 	const editorRef = useRef<any>();
-	const deletePost = useDeletePost();
+	const deletePostMutation = useDeletePost();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const postOptions = [
@@ -32,7 +32,7 @@ const PostCard = ({ post }: PostCardProps) => {
 		{
 			key: 'delete',
 			action: () => {
-				deletePost.mutate(post._id);
+				deletePostMutation.mutate(post._id);
 			},
 			value: 'Delete Post',
 		},
@@ -40,7 +40,7 @@ const PostCard = ({ post }: PostCardProps) => {
 	return (
 		<div className='flex flex-col gap-4 p-6 rounded-md border w-full max-w-[650px]'>
 			<div className='post-header flex items-center gap-4'>
-				<Avatar size='sm' name={post.creator?.name} src={post.creator?.profileImg} />
+				<Avatar size='sm' name={post.creator?.name} src={post.creator?.profile_img} />
 				<div className='flex flex-col gap-1 flex-1'>
 					<Text className='font-bold text-sm'>{post?.creator?.name}</Text>
 					<Text className='text-neutral-500 text-xs'>2 mins ago</Text>
@@ -63,8 +63,13 @@ const PostCard = ({ post }: PostCardProps) => {
 					</PopoverContent>
 				</Popover>
 			</div>
-			<Tiptap isReadonly ref={editorRef} content={JSON.parse(post.rich_description)} />
-			<CreatePost isOpen={isOpen} onClose={onClose} isEdit post={post} />
+			<Tiptap
+				isReadonly
+				ref={editorRef}
+				content={JSON.parse(post.rich_description)}
+				defaultImage={{ image_url: post?.image_url || '', image_text: post?.image_text || '' }}
+			/>
+			{isOpen && <CreatePost isOpen={isOpen} onClose={onClose} isEdit post={post} />}
 		</div>
 	);
 };

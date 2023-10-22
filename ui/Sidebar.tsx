@@ -30,7 +30,7 @@ const Sidebar: FC<SidebarProps> = ({ onCreate }) => {
 				flex flex-col gap-10'
 		>
 			<div className='flex items-center gap-2'>
-				<Avatar size='sm' name={user?.name} src={user?.profileImg} />
+				<Avatar size='sm' name={user?.name} src={user?.profile_img} />
 				<Text className='text-sm font-bold'>Shubhdeep Chhabra</Text>
 			</div>
 
@@ -120,35 +120,35 @@ const Sidebar: FC<SidebarProps> = ({ onCreate }) => {
 					})}
 				>
 					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profileImg} />
+						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
 						<Text className='text-sm'>Shubhdeep Chhabra</Text>
 					</div>
 					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profileImg} />
+						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
 						<Text className='text-sm'>Shubhdeep Chhabra</Text>
 					</div>
 					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profileImg} />
+						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
 						<Text className='text-sm'>Shubhdeep Chhabra</Text>
 					</div>
 					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profileImg} />
+						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
 						<Text className='text-sm'>Shubhdeep Chhabra</Text>
 					</div>
 					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profileImg} />
+						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
 						<Text className='text-sm'>Shubhdeep Chhabra</Text>
 					</div>
 					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profileImg} />
+						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
 						<Text className='text-sm'>Shubhdeep Chhabra</Text>
 					</div>
 					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profileImg} />
+						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
 						<Text className='text-sm'>Shubhdeep Chhabra</Text>
 					</div>
 					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profileImg} />
+						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
 						<Text className='text-sm'>Shubhdeep Chhabra</Text>
 					</div>
 					<Text className='text-sm text-gray-500 font-semibold hover:underline underline-offset-2 cursor-pointer transition'>

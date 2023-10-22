@@ -1,19 +1,11 @@
+import { UserProps } from "@/utils/constants";
 import { create } from "zustand";
 
-export type IUser = {
-  id: string;
-  name: string;
-  email: string;
-  profileImg?: string;
-  city?: string;
-  website?: string;
-};
-
 export type AuthState = {
-  user: IUser | null;
+  user: UserProps | null;
   loading: boolean;
   reset: () => void;
-  updateUser: (user: IUser) => void;
+  updateUser: (user: UserProps) => void;
 };
 
 export const useAuthStore = create<AuthState>((set) => ({

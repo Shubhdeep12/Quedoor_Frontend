@@ -28,7 +28,7 @@ const MenuItem = ({ Icon, title, action, isActive = null, disabled = false }: an
 	</button>
 );
 
-const MenuBar = ({ editor, isLoading, handlePrimaryCTA, imageUrl }: any) => {
+const MenuBar = ({ editor, isLoading, handlePrimaryCTA, image_url }: any) => {
 	const items = [
 		{
 			Icon: AiOutlineBold,
@@ -91,8 +91,8 @@ const MenuBar = ({ editor, isLoading, handlePrimaryCTA, imageUrl }: any) => {
 			Icon: RiImage2Fill,
 			title: 'Upload Image',
 			action: () => document.getElementById('tiptap-image')?.click(),
-			isActive: () => imageUrl && imageUrl.length > 0,
-			disabled: imageUrl && imageUrl.length > 0,
+			isActive: () => image_url && image_url.length > 0,
+			disabled: image_url && image_url.length > 0,
 		},
 	];
 
@@ -136,9 +136,13 @@ const file2Base64 = (file: File): Promise<string> => {
 
 // eslint-disable-next-line react/display-name
 const Tiptap = forwardRef(
-	({ isReadonly = false, content = null, onChange, isLoading, handlePrimaryCTA }: any, ref: any) => {
+	({ isReadonly = false, content = null, defaultImage = {}, onChange, isLoading, handlePrimaryCTA }: any, ref: any) => {
 		const imageRef = useRef<any>();
-		const [image, setImage] = useState<{ imageUrl: string; file?: Blob }>({ imageUrl: '' });
+		const [image, setImage] = useState<{ image_url: string; file?: Blob; image_text: string }>({
+			image_url: defaultImage.image_url,
+			image_text: defaultImage.image_text,
+		});
+		console.log({ defaultImage, image });
 		const editor = useEditor({
 			extensions: [
 				StarterKit,
@@ -156,7 +160,8 @@ const Tiptap = forwardRef(
 			editorProps: {
 				attributes: {
 					class: clsx(
-						'prose dark:prose-invert prose-sm transition sm:prose-base h-96 overflow-auto lg:prose-lg xl:prose-2xl mx-1 px-2 focus:outline-none'
+						'prose dark:prose-invert prose-sm transition sm:prose-base overflow-auto lg:prose-lg xl:prose-2xl mx-1 px-2 focus:outline-none',
+						!isReadonly && 'h-96'
 					),
 				},
 			},
@@ -177,28 +182,29 @@ const Tiptap = forwardRef(
 						ref={imageRef}
 						onChange={async (event: any) => {
 							const file = event.target.files[0];
-							const imageUrl = await file2Base64(file);
+							const image_url = await file2Base64(file);
 							setImage({
-								imageUrl,
+								image_url,
+								image_text: '',
 								file,
 							});
 						}}
 					/>
 				)}
 
-				{image.imageUrl && (
+				{image.image_url && (
 					<div className='flex justify-center border-2 relative border-black m-4 rounded-lg'>
 						<Image
 							objectFit='contain'
 							layout='fill'
 							className='!w-full !h-[250px] !relative'
 							alt='img'
-							src={image.imageUrl}
+							src={image.image_url}
 						/>
 						{!isReadonly && (
 							<div
 								className='absolute cursor-pointer top-2 right-2 rounded-full bg-white'
-								onClick={() => setImage({ imageUrl: '' })}
+								onClick={() => setImage({ image_url: '', image_text: '' })}
 							>
 								<IoCloseCircleSharp size={20} />
 							</div>
@@ -208,9 +214,9 @@ const Tiptap = forwardRef(
 				{editor && !isReadonly && (
 					<MenuBar
 						editor={editor}
-						imageUrl={image.imageUrl}
+						image_url={image.image_url}
 						isLoading={isLoading}
-						handlePrimaryCTA={handlePrimaryCTA}
+						handlePrimaryCTA={() => handlePrimaryCTA(image)}
 					/>
 				)}
 			</div>

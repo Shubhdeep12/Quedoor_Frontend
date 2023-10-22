@@ -58,7 +58,7 @@ export default function Navbar() {
 				<Popover>
 					<PopoverTrigger>
 						<Button colorScheme='transparent' className='bg-transparent flex items-center gap-1 cursor-pointer'>
-							<Avatar size='sm' name={user?.name} src={user?.profileImg} />
+							<Avatar size='sm' name={user?.name} src={user?.profile_img} />
 							<GoChevronDown color='gray' size={16} />
 						</Button>
 					</PopoverTrigger>
@@ -66,7 +66,7 @@ export default function Navbar() {
 						<PopoverArrow />
 						<PopoverBody className='p-0 flex flex-col items-center w-[250px]'>
 							<div className='flex flex-col gap-1 items-center px-4 py-5 border-b'>
-								<Avatar size='xl' name={user?.name} src={user?.profileImg} />
+								<Avatar size='xl' name={user?.name} src={user?.profile_img} />
 								<div className='flex flex-col gap-0.5 items-center'>
 									<Text className='font-bold text-sm'>{user?.name}</Text>
 									<Text className='text-xs'>{user?.email}</Text>
