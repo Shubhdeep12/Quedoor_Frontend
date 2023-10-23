@@ -142,7 +142,6 @@ const Tiptap = forwardRef(
 			image_url: defaultImage.image_url,
 			image_text: defaultImage.image_text,
 		});
-		console.log({ defaultImage, image });
 		const editor = useEditor({
 			extensions: [
 				StarterKit,
@@ -160,7 +159,7 @@ const Tiptap = forwardRef(
 			editorProps: {
 				attributes: {
 					class: clsx(
-						'prose dark:prose-invert prose-sm transition sm:prose-base overflow-auto lg:prose-lg xl:prose-2xl mx-1 px-2 focus:outline-none',
+						'prose dark:prose-invert prose-sm transition sm:prose-base overflow-hidden lg:prose-lg xl:prose-2xl mx-1 px-2 focus:outline-none',
 						!isReadonly && 'h-96'
 					),
 				},

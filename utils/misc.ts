@@ -1,3 +1,5 @@
+import { formatDistanceToNow } from 'date-fns'
+
 export const setItem = (key :string, data: string) => localStorage.setItem(key, data);
 
 export const getItem = (key='') => localStorage.getItem(key);
@@ -41,3 +43,10 @@ export const removeCookie = (key: string) => {
   const expires = '; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   document.cookie = `${key}=''${expires}; path=/; domain=${DOMAIN}; ${isProdEnv() && 'SameSite=None; Secure'}`;
 };
+
+
+export const getRelativeTime = (timestamp: string) => {
+  const formattedTime = formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  
+  return formattedTime
+}

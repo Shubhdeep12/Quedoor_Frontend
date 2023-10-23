@@ -7,15 +7,10 @@ const fetchPosts = async ({ pageParam = 1 }) => {
 		limit: 10,
 		page: pageParam,
 	};
-
-	// console.log({ pageParam });
-
 	const res = await api.get('/posts/', params);
-
 	if (res) {
 		return res.data.result;
 	}
-
 	return null;
 };
 export const useInfiniteFeed = () => {
@@ -106,7 +101,6 @@ export const useDeletePost = () => {
 			if (prevData && prevData.pages && prevData.pages[0]) {
 				// Append the new post to the existing data
 				let updatedData = { ...prevData };
-				console.log({ updatedData });
 				updatedData = {
 					...updatedData,
 					pages: updatedData.pages.map((page: any) => ({
@@ -120,7 +114,6 @@ export const useDeletePost = () => {
 					})),
 				};
 
-				console.log({ updatedData });
 				queryClient.setQueryData(queryKey, updatedData);
 			}
 		},

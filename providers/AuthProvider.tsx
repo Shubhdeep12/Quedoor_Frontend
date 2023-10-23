@@ -18,10 +18,7 @@ const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
 			if (cookieToken) {
 				// Start loading
 				useAuthStore.setState({ loading: true });
-
 				const res = await getMe(localToken || cookieToken);
-				console.log({ user: res });
-
 				updateUser(res.data.result);
 			} else {
 				reset();

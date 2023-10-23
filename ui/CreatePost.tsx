@@ -33,7 +33,6 @@ const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, post
 					data.append('with_image_text', 'true');
 					data.append('image', currImage.file);
 					const res = await uploadAttachment(data);
-					console.log({ image: res });
 					if (res.status < 300) {
 						image_text = res.result.image_text;
 						image_url = res.result.image_url;

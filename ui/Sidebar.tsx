@@ -9,25 +9,25 @@ import { BiSolidCommentDetail } from 'react-icons/bi';
 import { BsFilePost } from 'react-icons/bs';
 import { IoCreate } from 'react-icons/io5';
 import { FaCircleChevronUp } from 'react-icons/fa6';
+import { CgPushChevronLeftO, CgPushChevronRightO } from 'react-icons/cg';
 
 type SidebarProps = {
 	onCreate: () => void;
 };
 const Sidebar: FC<SidebarProps> = ({ onCreate }) => {
 	const { user } = useAuth();
-	const [recentActivityCollapsed, setRecentActivityCollapsed] = useState<boolean>(false);
-	const [recentFollowersCollapsed, setRecentFollowersCollapsed] = useState<boolean>(false);
+	const [recentActivityCollapsed, setRecentActivityCollapsed] = useState<boolean>(true);
+	const [recentFollowersCollapsed, setRecentFollowersCollapsed] = useState<boolean>(true);
+	const [sidebarOpen, setSidebarOpen] = useState(true);
 
 	return (
 		<div
-			className='left-section
-				p-6
-				border-r border-r-slate-300
-				w-1/5 min-w-max  h-[calc(100vh-65px)]
-				fixed
-				bg-primary-light-50 
-				backdrop-blur-[10px] backdrop-saturate-200
-				flex flex-col gap-10'
+			className={clsx(
+				'left-section p-6 border-r border-r-slate-300 w-96 min-w-max h-[calc(100vh-65px)] sticky bg-primary-light-50',
+				'backdrop-blur-[10px] backdrop-saturate-200	flex flex-col gap-10',
+				'transform transition',
+				sidebarOpen ? 'translate-x-0' : '-translate-x-96'
+			)}
 		>
 			<div className='flex items-center gap-2'>
 				<Avatar size='sm' name={user?.name} src={user?.profile_img} />
@@ -119,42 +119,28 @@ const Sidebar: FC<SidebarProps> = ({ onCreate }) => {
 						'h-0': recentFollowersCollapsed,
 					})}
 				>
-					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
-						<Text className='text-sm'>Shubhdeep Chhabra</Text>
-					</div>
-					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
-						<Text className='text-sm'>Shubhdeep Chhabra</Text>
-					</div>
-					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
-						<Text className='text-sm'>Shubhdeep Chhabra</Text>
-					</div>
-					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
-						<Text className='text-sm'>Shubhdeep Chhabra</Text>
-					</div>
-					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
-						<Text className='text-sm'>Shubhdeep Chhabra</Text>
-					</div>
-					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
-						<Text className='text-sm'>Shubhdeep Chhabra</Text>
-					</div>
-					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
-						<Text className='text-sm'>Shubhdeep Chhabra</Text>
-					</div>
-					<div className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<Avatar size='xs' name={user?.name} src={user?.profile_img} />
-						<Text className='text-sm'>Shubhdeep Chhabra</Text>
-					</div>
+					{Array(7)
+						.fill(1)
+						.map((id) => (
+							<div
+								key={id}
+								className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'
+							>
+								<Avatar size='xs' name={user?.name} src={user?.profile_img} />
+								<Text className='text-sm'>Shubhdeep Chhabra</Text>
+							</div>
+						))}
 					<Text className='text-sm text-gray-500 font-semibold hover:underline underline-offset-2 cursor-pointer transition'>
 						Show All
 					</Text>
 				</div>
+			</div>
+
+			<div
+				className='absolute top-4 -right-4 hover:scale-105 transition bg-white rounded-full'
+				onClick={() => setSidebarOpen((prev) => !prev)}
+			>
+				{sidebarOpen ? <CgPushChevronLeftO size={24} /> : <CgPushChevronRightO size={24} />}
 			</div>
 		</div>
 	);

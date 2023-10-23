@@ -17,10 +17,14 @@ const EmptyContainer = () => (
 
 const Feed = () => {
 	const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteFeed();
-	console.log({ data });
 
 	return (
-		<div id='feedscrollable' className='main-section flex-1 ml-[calc(20%+80px)] flex w-full gap-10 overflow-scroll'>
+		<div
+			id='feedscrollable'
+			className='main-section flex-1 
+		//ml-[calc(20%+80px)]
+		flex w-full gap-10 overflow-scroll'
+		>
 			<InfiniteScroll
 				next={fetchNextPage}
 				hasMore={hasNextPage || false}
