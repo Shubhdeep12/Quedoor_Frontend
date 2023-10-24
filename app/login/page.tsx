@@ -1,41 +1,30 @@
 'use client';
 import QuedoorLogoIcon from '@/assets/icons/QuedoorLogoIcon';
 import Text from '@/ui/Text';
-import {
-	Button,
-	Icon,
-	IconButton,
-	Input,
-	InputGroup,
-	InputRightElement,
-	ListItem,
-	Tooltip,
-	UnorderedList,
-	useToast,
-} from '@chakra-ui/react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/ui/tooltip';
 import { ChangeEvent, FormEvent, FormEventHandler, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import clsx from 'clsx';
 import { login, register } from '@/queries/auth';
 import useAuth from '@/hooks/useAuth';
-import {
-	setCookie,
-	// setCookie,
-	setItem,
-} from '@/utils/misc';
+
 import { useRouter } from 'next/navigation';
 import validator from 'validator';
+import { Input } from '@/ui/input';
+import { setCookie, setItem } from '@/lib/misc';
+import { Button } from '@/ui/button';
+import { cn } from '@/lib/utils';
+import { useToast } from '@/ui/use-toast';
 
 export default function Login() {
 	const { user, updateUser } = useAuth();
 	const router = useRouter();
+	const { toast } = useToast();
 	const [email, setEmail] = useState<string>('');
 	const [password, setPassword] = useState<string>('');
 	const [username, setUsername] = useState<string>('');
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [isLoginView, setIsLoginView] = useState<boolean>(true);
-
-	const toast = useToast();
 
 	const [error, setError] = useState({
 		name: false,
@@ -85,16 +74,11 @@ export default function Login() {
 			if (!res.success) {
 				toast({
 					title: 'Failed to register! Please try again.',
-					status: 'error',
-					isClosable: true,
-					position: 'top-right',
+					variant: 'destructive',
 				});
 			} else {
 				toast({
 					title: 'User created successfully.',
-					status: 'success',
-					isClosable: true,
-					position: 'top-right',
 				});
 
 				setIsLoginView(true);
@@ -104,16 +88,11 @@ export default function Login() {
 			if (res.status > 300) {
 				toast({
 					title: 'Failed to login! Please try again.',
-					status: 'error',
-					isClosable: true,
-					position: 'top-right',
+					variant: 'destructive',
 				});
 			} else {
 				toast({
 					title: 'User logged in successfully.',
-					status: 'success',
-					isClosable: true,
-					position: 'top-right',
 				});
 				updateUser(res.result);
 				setItem('quedoor-token', res.result.access_token);
@@ -170,9 +149,7 @@ export default function Login() {
 					{!isLoginView && (
 						<Input
 							value={username}
-							isInvalid={error.name}
-							errorBorderColor='red.500'
-							focusBorderColor={error.name ? 'red.400' : 'gray.500'}
+							className={cn('pr-8', error.name ? 'border-destructive border-2 focus-visible:outline-destructive' : '')}
 							onChange={(e) => handleChange(e, 'name')}
 							type='name'
 							placeholder='Full Name'
@@ -181,48 +158,42 @@ export default function Login() {
 					)}
 					<Input
 						type='email'
-						isInvalid={error.email}
-						errorBorderColor='red.500'
-						focusBorderColor={error.email ? 'red.500' : 'gray.500'}
+						className={cn('pr-8', error.email ? 'border-destructive border-2 focus-visible:outline-destructive' : '')}
 						value={email}
 						onChange={(e) => handleChange(e, 'email')}
 						placeholder='Enter Email'
 						required
 					/>
 
-					<InputGroup size='md'>
+					<div className='relative w-full'>
 						<Input
-							pr='2rem'
-							isInvalid={error.password}
-							errorBorderColor='red.500'
-							focusBorderColor={error.password ? 'red.400' : 'gray.500'}
+							className={cn(
+								'pr-8',
+								error.password ? 'border-destructive border-2 focus-visible:outline-destructive' : ''
+							)}
 							value={password}
 							onChange={(e) => handleChange(e, 'password')}
 							required
 							type={showPassword ? 'text' : 'password'}
 							placeholder='Enter password'
 						/>
-						<InputRightElement width='2rem' className='cursor-pointer'>
-							<IconButton
-								h='1.75rem'
-								size='sm'
-								onClick={handleTogglePassword}
-								aria-label={showPassword ? 'Hide password' : 'Show password'}
-								icon={<Icon as={showPassword ? FaEye : FaEyeSlash} />}
-							/>
-						</InputRightElement>
-					</InputGroup>
+						{showPassword ? (
+							<FaEyeSlash onClick={handleTogglePassword} className='absolute right-3 top-3' />
+						) : (
+							<FaEye onClick={handleTogglePassword} className='absolute right-3 top-3' />
+						)}
+					</div>
 					{!isLoginView && (
-						<UnorderedList className='self-start'>
-							<ListItem className='text-sm font-medium'>Mix of uppercase and lowercase</ListItem>
-							<ListItem className='text-sm font-medium'>Minimum 8 characters long</ListItem>
-							<ListItem className='text-sm font-medium'>Contain at least 1 number</ListItem>
-						</UnorderedList>
+						<ul className='self-start list-disc relative ml-5 text-secondary'>
+							<li className='text-sm font-medium'>Mix of uppercase and lowercase</li>
+							<li className='text-sm font-medium'>Minimum 8 characters long</li>
+							<li className='text-sm font-medium'>Contain at least 1 number</li>
+						</ul>
 					)}
 					<Button
 						type='submit'
-						variant='solid'
-						isDisabled={
+						variant='default'
+						disabled={
 							!email ||
 							!password ||
 							(!isLoginView && !username) ||
@@ -230,25 +201,47 @@ export default function Login() {
 							error.password ||
 							(!isLoginView && error.name)
 						}
-						className='w-full bg-slate-100'
+						className='w-full'
 					>
 						Submit
 					</Button>
-					<Tooltip label='Coming Soon!' placement='top' p='2' borderRadius={'md'}>
-						<Button variant='solid' isDisabled className='w-full bg-slate-100'>
-							Continue with Github
-						</Button>
-					</Tooltip>
-					<Tooltip label='Coming Soon!' placement='top' p='2' borderRadius={'md'}>
-						<Button variant='solid' isDisabled className='w-full bg-slate-100'>
-							Continue with Google
-						</Button>
-					</Tooltip>
+
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger className='w-full' disabled>
+								<Button disabled className='w-full'>
+									Continue with Github
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>Coming Soon!</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
+
+					<TooltipProvider>
+						<Tooltip>
+							<TooltipTrigger className='w-full' disabled>
+								<Button disabled className='w-full'>
+									Continue with Google
+								</Button>
+							</TooltipTrigger>
+							<TooltipContent>
+								<p>Coming Soon!</p>
+							</TooltipContent>
+						</Tooltip>
+					</TooltipProvider>
 				</form>
 
 				<footer className='flex flex-col gap-1 items-center'>
-					<Text className='text-sm font-light'>{isLoginView ? 'New to Quedoor?' : 'Have an account?'}</Text>
-					<Text className='underline text-xs font-semibold cursor-pointer' as='div' onClick={handleChangeView}>
+					<Text className='text-sm font-light text-secondary'>
+						{isLoginView ? 'New to Quedoor?' : 'Have an account?'}
+					</Text>
+					<Text
+						className='underline text-xs font-semibold cursor-pointer text-secondary'
+						as='div'
+						onClick={handleChangeView}
+					>
 						{isLoginView ? 'Create an account' : 'Log in'}
 					</Text>
 				</footer>

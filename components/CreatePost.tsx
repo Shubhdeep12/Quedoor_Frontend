@@ -1,18 +1,18 @@
-import { Modal, ModalBody, ModalCloseButton, ModalContent, ModalOverlay } from '@chakra-ui/react';
 import React, { FC, useRef, useState } from 'react';
-import Tiptap from './Tiptap';
+
 import { useCreatePost, useUpdatePost } from '@/queries/feed';
 import { deleteAttachment, uploadAttachment } from '@/queries/misc';
-import { PostProps } from '@/utils/constants';
+import { PostProps } from '@/lib/constants';
+import Tiptap from './Tiptap';
+import { DialogContent } from '@/ui/dialog';
 
 type CreatePostProps = {
-	isOpen: boolean;
 	onClose: () => void;
 	post?: PostProps;
 	isEdit?: boolean;
 };
 
-const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, post }) => {
+const CreatePost: FC<CreatePostProps> = ({ onClose, isEdit = false, post }) => {
 	const editorRef = useRef<any>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const createMutation = useCreatePost();
@@ -77,24 +77,18 @@ const CreatePost: FC<CreatePostProps> = ({ isOpen, onClose, isEdit = false, post
 		}
 	};
 	return (
-		<Modal onClose={onClose} isOpen={isOpen} isCentered size='2xl'>
-			<ModalOverlay />
-			<ModalContent className='border-4 border-black rounded-xl overflow-hidden'>
-				<ModalCloseButton />
-				<ModalBody className='px-0 mt-8 py-0'>
-					<Tiptap
-						ref={editorRef}
-						content={JSON.parse(post?.rich_description || '{}')}
-						onChange={(val: any) => {
-							val;
-						}}
-						isLoading={isLoading}
-						handlePrimaryCTA={handlePrimaryCTA}
-						defaultImage={{ image_url: post?.image_url || '', image_text: post?.image_text || '' }}
-					/>
-				</ModalBody>
-			</ModalContent>
-		</Modal>
+		<DialogContent className='laptop:max-w-[650px] border-4 border-black rounded-xl overflow-hidden p-0 w-40 '>
+			<Tiptap
+				ref={editorRef}
+				content={JSON.parse(post?.rich_description || '{}')}
+				onChange={(val: any) => {
+					val;
+				}}
+				isLoading={isLoading}
+				handlePrimaryCTA={handlePrimaryCTA}
+				defaultImage={{ image_url: post?.image_url || '', image_text: post?.image_text || '' }}
+			/>
+		</DialogContent>
 	);
 };
 

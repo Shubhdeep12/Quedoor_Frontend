@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ReactNode, useEffect, FC } from 'react';
-import { getCookie, getItem } from '@/utils/misc';
-import PageLoader from '@/ui/PageLoader';
+import { getCookie, getItem } from '@/lib/misc';
+import PageLoader from '@/components/PageLoader';
 import { useRouter } from 'next/navigation';
 import { getMe } from '@/queries/auth';
 import { useAuthStore } from '@/store/zustand';

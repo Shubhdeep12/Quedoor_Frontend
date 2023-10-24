@@ -1,5 +1,5 @@
-import api from '@/utils/api';
-import { PostProps } from '@/utils/constants';
+import api from '@/lib/api';
+import { PostProps } from '@/lib/constants';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const fetchPosts = async ({ pageParam = 1 }) => {
@@ -119,4 +119,9 @@ export const useDeletePost = () => {
 		},
 		onError: () => {},
 	});
+};
+
+export const likePost = async (postId: string, body: object) => {
+	const res = await api.post(`/posts/${postId}/like`, body);
+	return res;
 };

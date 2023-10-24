@@ -10,9 +10,11 @@ import { RiCodeView, RiImage2Fill, RiListOrdered2, RiListUnordered, RiSeparator 
 import Highlight from '@tiptap/extension-highlight';
 import Placeholder from '@tiptap/extension-placeholder';
 import CharacterCount from '@tiptap/extension-character-count';
-import { Button } from '@chakra-ui/react';
 import { IoCloseCircleSharp, IoSend } from 'react-icons/io5';
 import Image from 'next/image';
+import { Button } from '@/ui/button';
+import { BiLoaderAlt } from 'react-icons/bi';
+import { Dialog, DialogContent, DialogTrigger } from '@/ui/dialog';
 
 const MenuItem = ({ Icon, title, action, isActive = null, disabled = false }: any) => (
 	<button
@@ -97,29 +99,26 @@ const MenuBar = ({ editor, isLoading, handlePrimaryCTA, image_url }: any) => {
 	];
 
 	return (
-		<div className='flex gap-2 items-center justify-between flex-wrap bg-primary-light-500 px-2 py-2 relative'>
+		<div className='flex gap-2 items-center justify-between flex-wrap bg-primary px-2 py-2 relative'>
 			<div className='flex gap-2 items-center '>
 				{items.map((item, index) => (
 					<Fragment key={index}>
-						{item.type === 'divider' ? (
-							<div className='divider bg-primary-light-50 h-6 mx-3 w-[1px]' />
-						) : (
-							<MenuItem {...item} />
-						)}
+						{item.type === 'divider' ? <div className='divider border-r h-6 mx-3 w-[1px]' /> : <MenuItem {...item} />}
 					</Fragment>
 				))}
 			</div>
 
 			<Button
-				className='bg-primary-light-400 transition  hover:bg-opacity-90 flex items-center'
-				colorScheme='bg-primary-light-400'
-				variant='solid'
-				rounded='base'
-				size='sm'
-				isLoading={isLoading}
+				variant='secondary'
+				className='transition flex items-center'
+				disabled={isLoading}
 				onClick={handlePrimaryCTA}
 			>
-				<IoSend size={20} color='white' />
+				{isLoading ? (
+					<BiLoaderAlt className='mr-2 h-4 w-4 animate-spin' />
+				) : (
+					<IoSend size={20} className='fill-primary' />
+				)}
 			</Button>
 		</div>
 	);
@@ -142,6 +141,7 @@ const Tiptap = forwardRef(
 			image_url: defaultImage.image_url,
 			image_text: defaultImage.image_text,
 		});
+		// const [isBtnDisabled, setIsBtnDisabled] = useState(true);
 		const editor = useEditor({
 			extensions: [
 				StarterKit,
@@ -169,9 +169,15 @@ const Tiptap = forwardRef(
 			},
 		});
 
+		// useEffect(() => {
+		// 	if ((editor?.getText() && editor?.getText().length > 0) || image.image_url !== defaultImage?.image_url) {
+		// 		setIsBtnDisabled(true);
+		// 	}
+		// }, [editor?.getText(), image.image_url]);
+
 		ref.current = editor;
 		return (
-			<div className='editor-container h-auto overflow-hidden flex flex-col justify-between '>
+			<div className='editor-container h-auto overflow-hidden flex flex-col justify-between mt-6'>
 				<EditorContent editor={editor} />
 				{editor && !isReadonly && (
 					<input
@@ -192,23 +198,37 @@ const Tiptap = forwardRef(
 				)}
 
 				{image.image_url && (
-					<div className='flex justify-center border-2 relative border-black m-4 rounded-lg'>
-						<Image
-							objectFit='contain'
-							layout='fill'
-							className='!w-full !h-[250px] !relative'
-							alt='img'
-							src={image.image_url}
-						/>
-						{!isReadonly && (
-							<div
-								className='absolute cursor-pointer top-2 right-2 rounded-full bg-white'
-								onClick={() => setImage({ image_url: '', image_text: '' })}
-							>
-								<IoCloseCircleSharp size={20} />
+					<Dialog>
+						<DialogTrigger asChild>
+							<div className='flex justify-center border-2 relative border-black m-4 rounded-lg'>
+								<Image
+									objectFit='contain'
+									layout='fill'
+									className='!w-full !h-[250px] !relative'
+									alt='img'
+									src={image.image_url}
+								/>
+								{!isReadonly && (
+									<div
+										className='absolute cursor-pointer top-2 right-2 rounded-full bg-white'
+										onClick={() => setImage({ image_url: '', image_text: '' })}
+									>
+										<IoCloseCircleSharp size={20} />
+									</div>
+								)}
 							</div>
-						)}
-					</div>
+						</DialogTrigger>
+
+						<DialogContent className='laptop:max-w-[800px]'>
+							<Image
+								objectFit='contain'
+								layout='fill'
+								className='!w-full !h-full !relative mt-2'
+								alt='img'
+								src={image.image_url}
+							/>
+						</DialogContent>
+					</Dialog>
 				)}
 				{editor && !isReadonly && (
 					<MenuBar

@@ -2,15 +2,15 @@
 
 import { type PropsWithChildren } from 'react';
 import AuthProvider from './AuthProvider';
-import ChakraUIProvider from './ChakraUIProvider';
 import ReactQueryProvider from './ReactQueryProvider';
+import { ThemeProvider } from './ThemeProvider';
 
 const Providers = (props: PropsWithChildren) => {
 	return (
 		<AuthProvider>
-			<ChakraUIProvider>
+			<ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
 				<ReactQueryProvider>{props.children}</ReactQueryProvider>
-			</ChakraUIProvider>
+			</ThemeProvider>
 		</AuthProvider>
 	);
 };

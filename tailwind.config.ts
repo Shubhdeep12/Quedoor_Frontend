@@ -5,20 +5,71 @@ const config: Config = {
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './ui/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './hooks/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx,mdx}',
+
   ],
   theme: {
     extend: {
       colors: {
+        border: "var(--border)",
+        input: "var(--input)",
+        ring: "var(--ring)",
+        background: "var(--background)",
+        foreground: "var(--foreground)",
         primary: {
-          light: {
-            50: "#fff",
-            100: "#238BFB30",
-            200: "#238BFB60",
-            300: "#238BFB90",
-            400: "#238BFB",
-            500: "#000"
-          },
-        }
+          DEFAULT: "var(--primary)",
+          foreground: "var(--primary-foreground)",
+        },
+        secondary: {
+          DEFAULT: "var(--secondary)",
+          foreground: "var(--secondary-foreground)",
+        },
+        destructive: {
+          DEFAULT: "var(--destructive)",
+          foreground: "var(--destructive-foreground)",
+        },
+        muted: {
+          DEFAULT: "var(--muted)",
+          foreground: "var(--muted-foreground)",
+        },
+        accent: {
+          DEFAULT: "var(--accent)",
+          foreground: "var(--accent-foreground)",
+        },
+        popover: {
+          DEFAULT: "var(--popover)",
+          foreground: "var(--popover-foreground)",
+        },
+        card: {
+          DEFAULT: "var(--card)",
+          foreground: "var(--card-foreground)",
+        },
+      },
+      borderRadius: {
+        lg: "var(--radius)",
+        md: "calc(var(--radius) - 2px)",
+        sm: "calc(var(--radius) - 4px)",
+      },
+      keyframes: {
+        'page-transition': {
+					'0%': { transform: 'scale(0.975)', opacity: '0' },
+					'100%': { transform: 'scale(1)', opacity: '1' },
+				},
+        "accordion-down": {
+          from: { height: '0px' },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: '0px' },
+        },
+      },
+      animation: {
+        'page-transition': 'page-transition 300ms ease-in-out backwards',
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
 				sans: ['var(--font-manrope)'],
@@ -29,19 +80,8 @@ const config: Config = {
 			maxWidth: {
 				laptop: '1440px',
       },
-      keyframes: {
-        'page-transition': {
-					'0%': { transform: 'scale(0.975)', opacity: '0' },
-					'100%': { transform: 'scale(1)', opacity: '1' },
-				},
-      },
-      animation: {
-				'page-transition': 'page-transition 300ms ease-in-out backwards',
-				// scroll: 'scroll 15s linear infinite',
-				// wave: 'wave 2.5s infinite',
-			},
     },
   },
-  plugins: [require("@tailwindcss/typography")],
+  plugins: [require("@tailwindcss/typography"), require("tailwindcss-animate")],
 }
 export default config

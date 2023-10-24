@@ -1,4 +1,4 @@
-import api from '@/utils/api';
+import api from '@/lib/api';
 
 export const uploadAttachment = async (body: any) => {
 	const res = await api.post('/attachment/', body);

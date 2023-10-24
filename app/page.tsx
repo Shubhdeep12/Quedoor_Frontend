@@ -1,19 +1,15 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import Feed from '../ui/Feed';
-import Sidebar from '../ui/Sidebar';
 import useAuth from '@/hooks/useAuth';
 import { useEffect } from 'react';
-import PageLoader from '@/ui/PageLoader';
-import { useDisclosure } from '@chakra-ui/react';
-import CreatePost from '@/ui/CreatePost';
+import PageLoader from '@/components/PageLoader';
+import Sidebar from '@/components/Sidebar';
+import Feed from '@/components/Feed';
 
 const Home = () => {
 	const router = useRouter();
 	const { user } = useAuth();
-
-	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	useEffect(() => {
 		if (!(user && user.id)) {
@@ -28,11 +24,9 @@ const Home = () => {
 	return (
 		<>
 			<div className='flex gap-10 h-[calc(100vh-65px)]'>
-				<Sidebar onCreate={onOpen} />
+				<Sidebar />
 				<Feed />
 			</div>
-
-			<CreatePost isOpen={isOpen} onClose={onClose} />
 		</>
 	);
 };
