@@ -125,3 +125,30 @@ export const likePost = async (postId: string, body: object) => {
 	const res = await api.post(`/posts/${postId}/like`, body);
 	return res;
 };
+
+export const fetchComments = async ({ postId, limit = 3, page = 1 }: any) => {
+	const params = {
+		limit,
+		page,
+	};
+	const res = await api.get(`/posts/${postId}/comments/`, params);
+	if (res) {
+		return res.data.result;
+	}
+	return null;
+};
+
+export const createComment = async (postId: string, body: object) => {
+	const res = await api.post(`/posts/${postId}/comment/`, body);
+	return res;
+};
+
+export const updateComment = async ({ id, body }: { id: string; body: object }) => {
+	const res = await api.put(`/comments/${id}`, body);
+	return res;
+};
+
+export const deleteComment = async (id: string) => {
+	const res = await api.delete(`/comments/${id}`);
+	return res;
+};

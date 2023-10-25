@@ -1,11 +1,13 @@
 'use client';
 
-// import { Spinner } from '@chakra-ui/react';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 const PageLoader = () => {
 	return (
 		<div className='h-screen w-screen'>
-			<div className='flex items-center justify-center h-full'>{/* <Spinner size='lg' className='w-10 h-10' /> */}</div>
+			<div className='flex items-center justify-center h-full'>
+				<BiLoaderAlt className='h-10 w-10 animate-spin' />
+			</div>
 		</div>
 	);
 };

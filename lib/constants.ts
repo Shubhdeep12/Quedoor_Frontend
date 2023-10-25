@@ -16,3 +16,14 @@ export type PostProps = {
   creator: UserProps,
   userId: string
 }
+
+export type CommentProps = {
+  _id: string,
+  postId: string,
+  description?: string,
+  rich_description?: string,
+  image_url?: string,
+  image_text?: string,
+  creator: UserProps,
+  userId: string
+}

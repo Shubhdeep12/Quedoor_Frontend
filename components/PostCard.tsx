@@ -25,6 +25,7 @@ import {
 	AlertDialogTitle,
 } from '@/ui/alert-dialog';
 import useAuth from '@/hooks/useAuth';
+import Comments from './Comments';
 
 type PostCardProps = {
 	post: any;
@@ -90,8 +91,9 @@ const PostCard = ({ post }: PostCardProps) => {
 			value: 'Delete Post',
 		},
 	];
+
 	return (
-		<div className='flex flex-col gap-4 px-6 py-4 rounded-lg border w-full max-w-[650px] shadow-md'>
+		<div className='flex flex-col gap-4 p-6 rounded-lg border w-full max-w-[650px] shadow-md'>
 			<div className='post-header flex items-center gap-4'>
 				<Avatar className='w-8 h-8'>
 					<AvatarImage src={post?.creator?.profile_img} />
@@ -177,7 +179,7 @@ const PostCard = ({ post }: PostCardProps) => {
 				</div>
 			</div>
 
-			<div className={clsx(isCommentsOpen ? 'h-40' : 'h-0', 'w-full transition-height duration-200 ease-in-out')} />
+			<Comments isCommentsOpen={isCommentsOpen} post={post} />
 
 			<Dialog open={isOpen} onOpenChange={setIsOpen}>
 				<CreatePost isEdit post={post} onClose={() => setIsOpen(false)} />
