@@ -141,7 +141,7 @@ const Tiptap = forwardRef(
 			image_url: defaultImage.image_url,
 			image_text: defaultImage.image_text,
 		});
-		// const [isBtnDisabled, setIsBtnDisabled] = useState(true);
+
 		const editor = useEditor({
 			extensions: [
 				StarterKit,
@@ -168,12 +168,6 @@ const Tiptap = forwardRef(
 				onChange(editor.getJSON());
 			},
 		});
-
-		// useEffect(() => {
-		// 	if ((editor?.getText() && editor?.getText().length > 0) || image.image_url !== defaultImage?.image_url) {
-		// 		setIsBtnDisabled(true);
-		// 	}
-		// }, [editor?.getText(), image.image_url]);
 
 		ref.current = editor;
 		return (

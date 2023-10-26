@@ -20,7 +20,7 @@ export const useInfiniteFeed = () => {
 				const nextPage = lastPage.page + 1;
 				return lastPage.data.length < 10 ? undefined : nextPage;
 			},
-			staleTime: 5,
+			staleTime: 5000,
 		}),
 	};
 };
