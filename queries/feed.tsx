@@ -2,7 +2,7 @@ import api from '@/lib/api';
 import { PostProps } from '@/lib/constants';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-const fetchPosts = async ({ pageParam = 1 }) => {
+const fetchPosts = async (pageParam = 1) => {
 	const params = {
 		limit: 10,
 		page: pageParam,
@@ -15,13 +15,16 @@ const fetchPosts = async ({ pageParam = 1 }) => {
 };
 export const useInfiniteFeed = () => {
 	return {
-		...useInfiniteQuery(['posts'], fetchPosts, {
+		...useInfiniteQuery({
+			queryKey: ['posts'],
+			queryFn: ({ pageParam }) => fetchPosts(pageParam),
+			initialPageParam: 1,
 			getNextPageParam: (lastPage) => {
 				const nextPage = lastPage.page + 1;
 				return lastPage.data.length < 10 ? undefined : nextPage;
 			},
-			staleTime: 5000,
-		}),
+			staleTime: 5000
+			})
 	};
 };
 
@@ -42,7 +45,8 @@ export const deletePost = async (id: string) => {
 
 export const useUpdatePost = () => {
 	const queryClient = useQueryClient();
-	return useMutation(updatePost, {
+	return useMutation({
+		mutationFn: updatePost,
 		onSuccess: async (updatedPost: { result: PostProps }) => {
 			const queryKey = ['posts'];
 			const prevData: any = queryClient.getQueryData(queryKey);
@@ -71,7 +75,8 @@ export const useUpdatePost = () => {
 
 export const useCreatePost = () => {
 	const queryClient = useQueryClient();
-	return useMutation(createPost, {
+	return useMutation({
+		mutationFn: createPost,
 		onSuccess: async (newPost: { result: PostProps }) => {
 			const queryKey = ['posts'];
 			const prevData: any = queryClient.getQueryData(queryKey);
@@ -93,7 +98,8 @@ export const useCreatePost = () => {
 
 export const useDeletePost = () => {
 	const queryClient = useQueryClient();
-	return useMutation(deletePost, {
+	return useMutation({
+		mutationFn: deletePost,
 		onSuccess: async (_, id: string) => {
 			const queryKey = ['posts'];
 			const prevData: any = queryClient.getQueryData(queryKey);

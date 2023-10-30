@@ -55,8 +55,8 @@ const PostCard = ({ post }: PostCardProps) => {
 		});
 	};
 
-	const sendLikeRequest = (val: boolean) => {
-		likePost(post._id, {
+	const sendLikeRequest = async (val: boolean) => {
+		await likePost(post._id, {
 			like: val,
 			dislike: !val,
 		});
