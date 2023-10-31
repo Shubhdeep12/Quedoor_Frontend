@@ -127,10 +127,51 @@ export const useDeletePost = () => {
 	});
 };
 
-export const likePost = async (postId: string, body: object) => {
+export const likePost = async ({postId, body, userId}: {postId: string, body: any, userId: string}) => {
 	const res = await api.post(`/posts/${postId}/like`, body);
-	return res;
+	return {...res, postId, liked: body.like, userId};
 };
+
+export const useLikePost = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: likePost,
+		onSuccess: async (result: { status: number, postId: string, liked: boolean, userId: string }) => {
+			const queryKey = ['posts'];
+			const prevData: any = queryClient.getQueryData(queryKey);
+
+			if (prevData && prevData.pages && prevData.pages[0]) {
+				// Append the new post to the existing data
+				let updatedData = { ...prevData };
+				updatedData = {
+					...updatedData,
+					pages: updatedData.pages.map((page: any) => ({
+						...page,
+						data: page.data.map((post: any) => {
+							if (post._id === result.postId) {
+								const _prevPost = { ...post };
+								_prevPost.isLiked = result.status < 300 && result.liked;
+								if (_prevPost.isLiked) {
+									const reactions = new Set(_prevPost.reactions);
+									reactions.add(result.userId);
+									_prevPost.reactions = [...reactions]
+								} else {
+									const reactions = _prevPost.reactions.filter((_id: string) => _id !== result.userId);
+									_prevPost.reactions = reactions;
+								}
+								console.log({ _prevPost, result })
+								return _prevPost
+							}
+							return post;
+						}),
+					})),
+				};
+				queryClient.setQueryData(queryKey, updatedData);
+			}
+		},
+		onError: () => {},
+	});
+}
 
 export const fetchComments = async ({ postId, limit = 3, page = 1 }: any) => {
 	const params = {

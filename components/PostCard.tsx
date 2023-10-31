@@ -4,7 +4,7 @@ import { IoEllipsisHorizontalSharp } from 'react-icons/io5';
 import Text from '../ui/Text';
 import { useRef, useState } from 'react';
 import CreatePost from './CreatePost';
-import { likePost, useDeletePost } from '@/queries/feed';
+import { useDeletePost, useLikePost } from '@/queries/feed';
 import { getRelativeTime } from '@/lib/misc';
 import LikeIcon from '@/assets/icons/LikeIcon';
 import clsx from 'clsx';
@@ -34,6 +34,7 @@ type PostCardProps = {
 const PostCard = ({ post }: PostCardProps) => {
 	const editorRef = useRef<any>();
 	const deletePostMutation = useDeletePost();
+	const likePostMutation = useLikePost();
 	const { user } = useAuth();
 	const [isLiked, setIsLiked] = useState<boolean>((post?.reactions || []).includes(post?.userId));
 	const [isCommentsOpen, setIsCommentsOpen] = useState(false);
@@ -56,10 +57,7 @@ const PostCard = ({ post }: PostCardProps) => {
 	};
 
 	const sendLikeRequest = async (val: boolean) => {
-		await likePost(post._id, {
-			like: val,
-			dislike: !val,
-		});
+		likePostMutation.mutate({postId: post._id, body: {like: val, dislike: !val}, userId: String(user.id)})
 	};
 
 	const debouncedSendLike = useDebounce(sendLikeRequest, 500);
