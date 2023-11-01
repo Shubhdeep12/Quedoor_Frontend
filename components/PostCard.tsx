@@ -145,7 +145,7 @@ const PostCard = ({ post }: PostCardProps) => {
 					<LikeIcon
 						filled={isLiked}
 						className={clsx('group-hover:scale-125 transition')}
-						color={isLiked ? 'blue' : undefined}
+						color={isLiked ? 'red' : undefined}
 						size={20}
 					/>
 					<Text className='font-normal text-xs'>{(post.reactions || []).length}</Text>

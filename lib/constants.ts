@@ -14,7 +14,8 @@ export type PostProps = {
   image_url?: string,
   image_text?: string,
   creator: UserProps,
-  userId: string
+  userId: string,
+  updated_at: string
 }
 
 export type CommentProps = {
@@ -25,5 +26,6 @@ export type CommentProps = {
   image_url?: string,
   image_text?: string,
   creator: UserProps,
-  userId: string
+  userId: string,
+  updated_at: string
 }

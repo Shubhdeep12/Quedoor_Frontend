@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { Button } from '@/ui/button';
 import { BiLoaderAlt } from 'react-icons/bi';
 import { Dialog, DialogContent, DialogTrigger } from '@/ui/dialog';
+import { file2Base64 } from '@/lib/misc';
 
 const MenuItem = ({ Icon, title, action, isActive = null, disabled = false }: any) => (
 	<button
@@ -124,15 +125,6 @@ const MenuBar = ({ editor, isLoading, handlePrimaryCTA, image_url }: any) => {
 	);
 };
 
-const file2Base64 = (file: File): Promise<string> => {
-	return new Promise<string>((resolve, reject) => {
-		const reader = new FileReader();
-		reader.readAsDataURL(file);
-		reader.onload = () => resolve(reader.result?.toString() || '');
-		reader.onerror = (error) => reject(error);
-	});
-};
-
 // eslint-disable-next-line react/display-name
 const Tiptap = forwardRef(
 	({ isReadonly = false, content = null, defaultImage = {}, onChange, isLoading, handlePrimaryCTA }: any, ref: any) => {
@@ -140,6 +132,7 @@ const Tiptap = forwardRef(
 		const [image, setImage] = useState<{ image_url: string; file?: Blob; image_text: string }>({
 			image_url: defaultImage.image_url,
 			image_text: defaultImage.image_text,
+			file: undefined,
 		});
 
 		const editor = useEditor({
