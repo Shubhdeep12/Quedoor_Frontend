@@ -3,18 +3,17 @@ import React, { FC, useRef, useState } from 'react';
 import { createComment, updateComment } from '@/queries/feed';
 import { deleteAttachment, uploadAttachment } from '@/queries/misc';
 import { CommentProps, PostProps } from '@/lib/constants';
-import Tiptap from './Tiptap';
-import { DialogContent } from '@/ui/dialog';
+import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar';
+import { Textarea } from '@/ui/textarea';
 
 type CreateCommentProps = {
-	onClose: () => void;
 	post: PostProps;
 	isEdit?: boolean;
 	comment?: CommentProps;
 	setComments: any;
 };
 
-const CreateComment: FC<CreateCommentProps> = ({ onClose, isEdit = false, post, comment, setComments }) => {
+const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, setComments }) => {
 	const editorRef = useRef<any>();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -82,12 +81,10 @@ const CreateComment: FC<CreateCommentProps> = ({ onClose, isEdit = false, post, 
 			/* empty */
 		} finally {
 			setIsLoading(false);
-			onClose();
 		}
 	};
 	return (
-		<DialogContent className='laptop:max-w-[650px] border-4 border-black rounded-xl overflow-hidden p-0 w-40 '>
-			<Tiptap
+		/* <Tiptap
 				ref={editorRef}
 				content={JSON.parse(comment?.rich_description || '{}')}
 				onChange={(val: any) => {
@@ -96,8 +93,11 @@ const CreateComment: FC<CreateCommentProps> = ({ onClose, isEdit = false, post, 
 				isLoading={isLoading}
 				handlePrimaryCTA={handlePrimaryCTA}
 				defaultImage={{ image_url: comment?.image_url || '', image_text: comment?.image_text || '' }}
-			/>
-		</DialogContent>
+			/> */
+
+		<div className='flex gap-2 items-center'>
+			<Textarea rows={4} className='min-h-[50px] max-h-[100px]' placeholder='Type your message here.' />
+		</div>
 	);
 };
 

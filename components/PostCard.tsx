@@ -2,13 +2,12 @@
 
 import { IoEllipsisHorizontalSharp } from 'react-icons/io5';
 import Text from '../ui/Text';
-import { useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import CreatePost from './CreatePost';
 import { useDeletePost, useLikePost } from '@/queries/feed';
 import { getRelativeTime } from '@/lib/misc';
 import LikeIcon from '@/assets/icons/LikeIcon';
 import clsx from 'clsx';
-import { FaRegCommentDots } from 'react-icons/fa';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/ui/dropdown-menu';
 import { Dialog } from '@/ui/dialog';
@@ -26,6 +25,7 @@ import {
 } from '@/ui/alert-dialog';
 import useAuth from '@/hooks/useAuth';
 import Comments from './Comments';
+import CommentIcon from '@/assets/icons/CommentIcon';
 
 type PostCardProps = {
 	post: any;
@@ -57,7 +57,7 @@ const PostCard = ({ post }: PostCardProps) => {
 	};
 
 	const sendLikeRequest = async (val: boolean) => {
-		likePostMutation.mutate({postId: post._id, body: {like: val, dislike: !val}, userId: String(user.id)})
+		likePostMutation.mutate({ postId: post._id, body: { like: val, dislike: !val }, userId: String(user.id) });
 	};
 
 	const debouncedSendLike = useDebounce(sendLikeRequest, 500);
@@ -91,7 +91,7 @@ const PostCard = ({ post }: PostCardProps) => {
 	];
 
 	return (
-		<div className='flex flex-col gap-4 p-6 rounded-lg border w-full max-w-[650px] shadow-md'>
+		<div className='flex flex-col gap-4 p-4 rounded-lg border w-full max-w-[650px] shadow-md'>
 			<div className='post-header flex items-center gap-4'>
 				<Avatar className='w-8 h-8'>
 					<AvatarImage src={post?.creator?.profile_img} />
@@ -130,6 +130,7 @@ const PostCard = ({ post }: PostCardProps) => {
 					</DropdownMenu>
 				)}
 			</div>
+
 			<div className='rounded-lg bg-neutral-50 p-2'>
 				<Tiptap
 					isReadonly
@@ -139,45 +140,26 @@ const PostCard = ({ post }: PostCardProps) => {
 				/>
 			</div>
 
-			{((post?.comments || []).length > 0 || (post?.reactions || []).length > 0) && (
-				<>
-					<div className='w-full h-[1px] border-t' />
-					<div className='flex gap-6 items-center justify-between w-full'>
-						{(post?.reactions || []).length > 0 && (
-							<div className='select-none' onClick={handleLikeClick}>
-								<Text className='font-normal text-xs text-neutral-500'>{post?.reactions.length} Likes</Text>
-							</div>
-						)}
-						{(post?.comments || []).length > 0 && (
-							<div className='cursor-pointer select-none' onClick={() => setIsCommentsOpen((prev) => !prev)}>
-								<Text className='font-normal text-xs text-neutral-500 underline'>{post?.comments.length} Comments</Text>
-							</div>
-						)}
-					</div>
-				</>
-			)}
-
-			<div className='w-full h-[1px] border-t' />
-			<div className='flex gap-6 items-center  w-full'>
-				<div className='flex gap-1 items-center group cursor-pointer select-none' onClick={handleLikeClick}>
+			<div className='flex gap-6 items-center mt-2'>
+				<div className='flex gap-2 items-center group cursor-pointer select-none' onClick={handleLikeClick}>
 					<LikeIcon
 						filled={isLiked}
 						className={clsx('group-hover:scale-125 transition')}
 						color={isLiked ? 'blue' : undefined}
-						size={16}
+						size={20}
 					/>
-					<Text className='font-normal text-xs text-neutral-500'>Like</Text>
+					<Text className='font-normal text-xs'>{(post.reactions || []).length}</Text>
 				</div>
 				<div
-					className='flex gap-1 items-center group cursor-pointer select-none'
+					className='flex gap-2 items-center group cursor-pointer select-none'
 					onClick={() => setIsCommentsOpen((prev) => !prev)}
 				>
-					<FaRegCommentDots size={16} className='fill-neutral-500 stroke-1' />
-					<Text className='font-normal text-xs text-neutral-500'>Comment</Text>
+					<CommentIcon size={20} />
+					<Text className='font-normal text-xs'>{(post.comments || []).length}</Text>
 				</div>
 			</div>
 
-			<Comments isCommentsOpen={isCommentsOpen} post={post} />
+			{isCommentsOpen && <Comments isCommentsOpen={isCommentsOpen} post={post} />}
 
 			<Dialog open={isOpen} onOpenChange={setIsOpen}>
 				<CreatePost isEdit post={post} onClose={() => setIsOpen(false)} />
@@ -199,4 +181,4 @@ const PostCard = ({ post }: PostCardProps) => {
 	);
 };
 
-export default PostCard;
+export default memo(PostCard);
