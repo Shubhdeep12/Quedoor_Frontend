@@ -81,9 +81,6 @@ const CreatePost: FC<CreatePostProps> = ({ onClose, isEdit = false, post }) => {
 			<Tiptap
 				ref={editorRef}
 				content={JSON.parse(post?.rich_description || '{}')}
-				onChange={(val: any) => {
-					val;
-				}}
 				isLoading={isLoading}
 				handlePrimaryCTA={handlePrimaryCTA}
 				defaultImage={{ image_url: post?.image_url || '', image_text: post?.image_text || '' }}

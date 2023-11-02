@@ -127,7 +127,7 @@ const MenuBar = ({ editor, isLoading, handlePrimaryCTA, image_url }: any) => {
 
 // eslint-disable-next-line react/display-name
 const Tiptap = forwardRef(
-	({ isReadonly = false, content = null, defaultImage = {}, onChange, isLoading, handlePrimaryCTA }: any, ref: any) => {
+	({ isReadonly = false, content = null, defaultImage = {}, isLoading, handlePrimaryCTA }: any, ref: any) => {
 		const imageRef = useRef<any>();
 		const [image, setImage] = useState<{ image_url: string; file?: Blob; image_text: string }>({
 			image_url: defaultImage.image_url,
@@ -157,9 +157,6 @@ const Tiptap = forwardRef(
 					),
 				},
 			},
-			onUpdate({ editor }) {
-				onChange(editor.getJSON());
-			},
 		});
 
 		ref.current = editor;
@@ -170,7 +167,7 @@ const Tiptap = forwardRef(
 					<input
 						style={{ display: 'none' }}
 						type='file'
-						accept=".jpg, .jpeg, .png, .gif, .bmp"
+						accept='.jpg, .jpeg, .png, .gif, .bmp'
 						id='tiptap-image'
 						ref={imageRef}
 						onChange={async (event: any) => {

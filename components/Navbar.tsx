@@ -37,6 +37,8 @@ import {
 	AlertDialogTitle,
 } from '@/ui/alert-dialog';
 import { useToast } from '@/ui/use-toast';
+import { Dialog, DialogTrigger } from '@/ui/dialog';
+import Filter from './Filter';
 
 export default function Navbar() {
 	const { setTheme } = useTheme();
@@ -45,6 +47,7 @@ export default function Navbar() {
 	const router = useRouter();
 	const { toast } = useToast();
 
+	const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 	const [alert, setAlert] = useState({
 		isOpen: false,
 		header: '',
@@ -92,13 +95,19 @@ export default function Navbar() {
 			/>
 
 			<div className='flex items-center gap-4 flex-1 h-8 justify-end'>
-				<Button
-					variant='outline'
-					className='flex flex-1 max-w-md justify-between items-center h-8 hover:bg-neutral-100 dark:hover:bg-neutral-50 cursor-pointer transition-all border-none outline outline-1 outline-slate-300 rounded-md py-2 px-5'
-				>
-					<Text className='text-xs font-semibold text-neutral-500'>Search post using image, text, etc.</Text>
-					<LuSearch size={16} />
-				</Button>
+				<Dialog open={isFilterModalOpen} onOpenChange={setIsFilterModalOpen}>
+					<DialogTrigger asChild onClick={() => setIsFilterModalOpen(true)}>
+						<Button
+							variant='outline'
+							className='flex flex-1 max-w-md justify-between items-center h-8 hover:bg-neutral-100 dark:hover:bg-neutral-50 cursor-pointer transition-all border-none outline outline-1 outline-slate-300 rounded-md py-2 px-5'
+						>
+							<Text className='text-xs font-semibold text-neutral-500'>Search post using image, text, etc.</Text>
+							<LuSearch size={16} />
+						</Button>
+					</DialogTrigger>
+
+					<Filter onClose={() => setIsFilterModalOpen(false)} />
+				</Dialog>
 
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
