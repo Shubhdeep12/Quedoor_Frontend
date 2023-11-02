@@ -7,7 +7,7 @@ import Text from '../ui/Text';
 import { GoChevronDown } from 'react-icons/go';
 import useAuth from '@/hooks/useAuth';
 import Image from 'next/image';
-import { MouseEvent } from 'react';
+import { MouseEvent, useState } from 'react';
 import { logout } from '@/queries/auth';
 import { clearItem, removeCookie } from '@/lib/misc';
 import { PiSignOutBold } from 'react-icons/pi';
@@ -26,20 +26,55 @@ import {
 	DropdownMenuTrigger,
 } from '@/ui/dropdown-menu';
 import { BiUser } from 'react-icons/bi';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from '@/ui/alert-dialog';
+import { useToast } from '@/ui/use-toast';
 
 export default function Navbar() {
 	const { setTheme } = useTheme();
 	const pathname = usePathname();
 	const { user } = useAuth();
 	const router = useRouter();
+	const { toast } = useToast();
+
+	const [alert, setAlert] = useState({
+		isOpen: false,
+		header: '',
+		description: '',
+		action: () => {},
+	});
+
+	const handleAlertReset = () => {
+		setAlert({
+			isOpen: false,
+			header: '',
+			description: '',
+			action: () => {},
+		});
+	};
 	const handleLogout = async (e: MouseEvent) => {
 		e.preventDefault();
 		const res = await logout();
 		if (res.status < 300) {
+			toast({
+				title: 'Logged out successfully.',
+			});
 			clearItem('quedoor-token');
 			removeCookie('quedoor-token');
 			window.location.pathname = '/login';
 		}
+		toast({
+			title: 'Failed to logout! Please try again.',
+			variant: 'destructive',
+		});
 	};
 
 	if (pathname.startsWith('/login')) {
@@ -96,11 +131,35 @@ export default function Navbar() {
 							</DropdownMenuItem>
 						</DropdownMenuGroup>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem onClick={handleLogout}>
+						<DropdownMenuItem
+							onClick={(e) =>
+								setAlert({
+									isOpen: true,
+									header: 'Are you absolutely sure?',
+									description: 'This action cannot be undone. This will log out you from Quedoor.',
+									action: () => {
+										handleLogout(e);
+									},
+								})
+							}
+						>
 							<PiSignOutBold className='mr-2 h-4 w-4' /> <Text>Log out</Text>
 						</DropdownMenuItem>
 					</DropdownMenuContent>
 				</DropdownMenu>
+
+				<AlertDialog open={alert.isOpen} onOpenChange={handleAlertReset}>
+					<AlertDialogContent>
+						<AlertDialogHeader>
+							<AlertDialogTitle>{alert.header}</AlertDialogTitle>
+							<AlertDialogDescription>{alert.description}</AlertDialogDescription>
+						</AlertDialogHeader>
+						<AlertDialogFooter>
+							<AlertDialogCancel>Cancel</AlertDialogCancel>
+							<AlertDialogAction onClick={alert.action}>Continue</AlertDialogAction>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+				</AlertDialog>
 			</div>
 		</header>
 	);

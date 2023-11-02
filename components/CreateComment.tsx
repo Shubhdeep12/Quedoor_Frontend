@@ -21,14 +21,14 @@ type CreateCommentProps = {
 
 const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, onClose }) => {
 	const imageRef = useRef<any>();
-	const updateCommentMutation = useUpdateComment();
-	const createCommentMutation = useCreateComment();
+	const updateCommentMutation = useUpdateComment(post._id);
+	const createCommentMutation = useCreateComment(post._id);
 	const [imagePreview, setImagePreview] = useState(false);
-	const [commentValue, setCommentValue] = useState<string>('');
+	const [commentValue, setCommentValue] = useState<string | undefined>(comment?.description);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [image, setImage] = useState<{ image_url: string; file?: Blob; image_text: string }>({
-		image_url: post.image_url || '',
-		image_text: post.image_text || '',
+		image_url: comment?.image_url || '',
+		image_text: comment?.image_text || '',
 		file: undefined,
 	});
 
@@ -105,7 +105,7 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 	};
 
 	return (
-		<div className='flex gap-2 items-start flex-col'>
+		<div className='flex gap-2 items-start flex-col p-2'>
 			<Textarea
 				value={commentValue}
 				onChange={handleCommentValue}
@@ -121,7 +121,7 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 						e.preventDefault();
 						if (image.image_url || image.file) {
 							setImagePreview(true);
-						} else document.getElementById('tiptap-comment-image')?.click();
+						} else document.getElementById(isEdit ? 'tiptap-edit-comment-image' : 'tiptap-comment-image')?.click();
 					}}
 				>
 					{!(image.image_url || image.file) ? (
@@ -160,6 +160,12 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 						'Add Comment'
 					)}
 				</Button>
+
+				{isEdit && (
+					<Button className='p-2' onClick={onClose}>
+						<IoCloseCircleSharp size={24} />
+					</Button>
+				)}
 			</div>
 
 			<Dialog open={imagePreview} onOpenChange={() => setImagePreview(false)}>
@@ -177,11 +183,11 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 			<input
 				style={{ display: 'none' }}
 				type='file'
-				id='tiptap-comment-image'
+				accept='.jpg, .jpeg, .png, .gif, .bmp'
+				id={isEdit ? 'tiptap-edit-comment-image' : 'tiptap-comment-image'}
 				ref={imageRef}
 				onChange={async (event: any) => {
 					const file = event.target.files[0];
-					console.log({ file });
 					const image_url = await file2Base64(file);
 					setImage({
 						image_url,

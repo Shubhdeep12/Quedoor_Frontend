@@ -9,50 +9,78 @@ import Image from 'next/image';
 import React, { memo, useState } from 'react';
 import { IoEllipsisHorizontalSharp } from 'react-icons/io5';
 import CreateComment from './CreateComment';
+import { useDeleteComment } from '@/queries/feed';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+} from '@/ui/alert-dialog';
 
 type CommentCardProps = {
 	comment: CommentProps;
 	post: PostProps;
+	isEditMode?: boolean;
+	setEditMode?: any;
 };
 
-const CommentCard = ({ comment, post }: CommentCardProps) => {
+const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProps) => {
 	const { user } = useAuth();
-	const [isEditMode, setIsEditMode] = useState(false);
+	const deleteCommentMutation = useDeleteComment(post._id);
+	const [alert, setAlert] = useState({
+		isOpen: false,
+		header: '',
+		description: '',
+		action: () => {},
+	});
+
+	const handleAlertReset = () => {
+		setAlert({
+			isOpen: false,
+			header: '',
+			description: '',
+			action: () => {},
+		});
+	};
 
 	const commentOptions = [
 		{
 			key: 'update',
-			action: () => setIsEditMode(true),
+			action: () => setEditMode(comment._id),
 			value: 'Update Comment',
 		},
 		{
 			key: 'delete',
 			action: () => {
-				// setAlert({
-				// 	isOpen: true,
-				// 	header: 'Are you absolutely sure?',
-				// 	description:
-				// 		'This action cannot be undone. This will permanently delete your account and remove your data from our servers.',
-				// 	action: () => {
-				// 		deletePostMutation.mutate(post._id);
-				// 	},
-				// });
+				setAlert({
+					isOpen: true,
+					header: 'Are you absolutely sure?',
+					description: 'This action cannot be undone. This will permanently delete the comment.',
+					action: () => {
+						deleteCommentMutation.mutate(comment._id);
+					},
+				});
 			},
 			value: 'Delete Comment',
 		},
 	];
+
 	return !isEditMode ? (
 		<div key={comment?._id} className='w-full border p-4 rounded-md flex flex-col gap-4'>
 			<div className='comment-header flex items-center gap-4'>
 				<Avatar className='w-6 h-6'>
 					<AvatarImage src={comment?.creator?.profile_img} />
 					<AvatarFallback className='text-xs'>
-						{comment.creator.name
-							.match(/(\b\S)?/g)
-							.join('')
-							.match(/(^\S|\S$)?/g)
-							.join('')
-							.toUpperCase()}
+						{comment?.creator?.name
+							?.match(/(\b\S)?/g)
+							?.join('')
+							?.match(/(^\S|\S$)?/g)
+							?.join('')
+							?.toUpperCase()}
 					</AvatarFallback>
 				</Avatar>
 				<div className='flex flex-col gap-1 flex-1'>
@@ -112,9 +140,22 @@ const CommentCard = ({ comment, post }: CommentCardProps) => {
 					</DialogContent>
 				</Dialog>
 			)}
+
+			<AlertDialog open={alert.isOpen} onOpenChange={handleAlertReset}>
+				<AlertDialogContent>
+					<AlertDialogHeader>
+						<AlertDialogTitle>{alert.header}</AlertDialogTitle>
+						<AlertDialogDescription>{alert.description}</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogAction onClick={alert.action}>Continue</AlertDialogAction>
+					</AlertDialogFooter>
+				</AlertDialogContent>
+			</AlertDialog>
 		</div>
 	) : (
-		<CreateComment post={post} comment={comment} onClose={() => setIsEditMode(false)} isEdit />
+		<CreateComment post={post} comment={comment} onClose={() => setEditMode(null)} isEdit />
 	);
 };
 

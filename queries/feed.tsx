@@ -1,5 +1,6 @@
 import api from '@/lib/api';
 import { CommentProps, PostProps } from '@/lib/constants';
+import { toast } from '@/ui/use-toast';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const fetchPosts = async (pageParam = 1) => {
@@ -67,9 +68,17 @@ export const useUpdatePost = () => {
 					})),
 				};
 				queryClient.setQueryData(queryKey, updatedData);
+				toast({
+					title: 'Post updated successfully.',
+				});
 			}
 		},
-		onError: () => {},
+		onError: () => {
+			toast({
+				title: 'Failed to updated post! Please try again.',
+				variant: 'destructive',
+			});
+		},
 	});
 };
 
@@ -89,9 +98,16 @@ export const useCreatePost = () => {
 			} else {
 				queryClient.setQueryData(queryKey, { pages: [{ data: [newPost.result] }] });
 			}
+			toast({
+				title: 'Post created successfully.',
+			});
 		},
 		onError: () => {
 			// Revert the optimistic update if there's an error
+			toast({
+				title: 'Failed to create post! Please try again.',
+				variant: 'destructive',
+			});
 		},
 	});
 };
@@ -121,9 +137,17 @@ export const useDeletePost = () => {
 				};
 
 				queryClient.setQueryData(queryKey, updatedData);
+				toast({
+					title: 'Post deleted successfully',
+				});
 			}
 		},
-		onError: () => {},
+		onError: () => {
+			toast({
+				title: 'Failed to delete post! Please try again.',
+				variant: 'destructive',
+			});
+		},
 	});
 };
 
@@ -159,7 +183,6 @@ export const useLikePost = () => {
 									const reactions = _prevPost.reactions.filter((_id: string) => _id !== result.userId);
 									_prevPost.reactions = reactions;
 								}
-								console.log({ _prevPost, result });
 								return _prevPost;
 							}
 							return post;
@@ -173,7 +196,7 @@ export const useLikePost = () => {
 	});
 };
 
-export const fetchComments = async ({ postId, limit = 3, page = 1 }: any) => {
+export const fetchCommentsAPI = async ({ postId, limit = 3, page = 1 }: any) => {
 	const params = {
 		limit,
 		page,
@@ -185,12 +208,21 @@ export const fetchComments = async ({ postId, limit = 3, page = 1 }: any) => {
 	return null;
 };
 
-export const useFetchComments = ({ postId, payload }: any) => {
+export const useFetchComments = (postId: string) => {
+	const queryClient = useQueryClient();
+	const fetchCommentsQuery = useQuery({
+		queryKey: ['comment', postId],
+		queryFn: (payload: any) => fetchCommentsAPI({ postId, ...payload }),
+	});
+
+	const fetchComments = async (payload: any) => {
+		const updatedComments = await fetchCommentsAPI({ postId, ...payload });
+		queryClient.setQueryData(['comment', postId], updatedComments);
+		return updatedComments;
+	};
 	return {
-		...useQuery({
-			queryKey: ['commment', postId, payload],
-			queryFn: () => fetchComments({ postId, ...payload }),
-		}),
+		...fetchCommentsQuery,
+		fetchComments,
 	};
 };
 
@@ -206,89 +238,104 @@ export const updateComment = async ({ id, body }: { id: string; body: object }) 
 
 export const deleteComment = async (id: string) => {
 	const res = await api.delete(`/comments/${id}`);
-	return res;
+	return res.status < 300 ? true : false;
 };
 
-export const useUpdateComment = () => {
+export const useUpdateComment = (postId: string) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: updateComment,
 		onSuccess: async (updatedComment: { result: CommentProps }) => {
-			const queryKey = ['comment'];
+			const queryKey = ['comment', postId];
 			const prevData: any = queryClient.getQueryData(queryKey);
 
-			if (prevData && prevData.pages && prevData.pages[0]) {
+			if (prevData && prevData.data && prevData.data.length > 0) {
 				// Append the new comment to the existing data
 				let updatedData = { ...prevData };
 				updatedData = {
 					...updatedData,
-					pages: updatedData.pages.map((page: any) => ({
-						...page,
-						data: page.data.map((comment: any) => {
-							if (comment._id === updatedComment.result._id) {
-								return updatedComment.result;
-							}
-							return comment;
-						}),
-					})),
+					data: updatedData.data.map((comment: any) => {
+						if (comment._id === updatedComment.result._id) {
+							return updatedComment.result;
+						}
+						return comment;
+					}),
 				};
 				queryClient.setQueryData(queryKey, updatedData);
+				toast({
+					title: 'Comment updated successfully.',
+				});
 			}
 		},
-		onError: () => {},
+		onError: () => {
+			toast({
+				title: 'Failed to update comment! Please try again.',
+				variant: 'destructive',
+			});
+		},
 	});
 };
 
-export const useCreateComment = () => {
+export const useCreateComment = (postId: string) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: createComment,
 		onSuccess: async (newComment: { result: CommentProps }) => {
-			const queryKey = ['comment'];
+			const queryKey = ['comment', postId];
 			const prevData: any = queryClient.getQueryData(queryKey);
 
-			if (prevData && prevData.pages && prevData.pages[0]) {
+			if (prevData && prevData.data && prevData.data.length > 0) {
 				// Append the new comment to the existing data
 				const updatedData = { ...prevData };
-				updatedData.pages[0].data = [newComment.result, ...updatedData.pages[0].data];
+				updatedData.data = [newComment.result, ...updatedData.data];
 				queryClient.setQueryData(queryKey, updatedData);
 			} else {
-				queryClient.setQueryData(queryKey, { pages: [{ data: [newComment.result] }] });
+				queryClient.setQueryData(queryKey, { data: [newComment.result] });
 			}
+			toast({
+				title: 'Comment created successully.',
+			});
 		},
 		onError: () => {
-			// Revert the optimistic update if there's an error
+			toast({
+				title: 'Failed to create comment! Please try again.',
+				variant: 'destructive',
+			});
 		},
 	});
 };
 
-export const useDeleteComment = () => {
+export const useDeleteComment = (postId: string) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: deleteComment,
 		onSuccess: async (_, id: string) => {
-			const queryKey = ['comment'];
+			const queryKey = ['comment', postId];
 			const prevData: any = queryClient.getQueryData(queryKey);
 
-			if (prevData && prevData.pages && prevData.pages[0]) {
+			if (prevData && prevData.data && prevData.data.length > 0) {
 				// Append the new comment to the existing data
 				let updatedData = { ...prevData };
 				updatedData = {
 					...updatedData,
-					pages: updatedData.pages.map((page: any) => ({
-						...page,
-						data: page.data.filter((comment: any) => {
-							if (comment._id === id) {
-								return false;
-							}
-							return true;
-						}),
-					})),
+					data: updatedData.data.filter((comment: any) => {
+						if (comment._id === id) {
+							return false;
+						}
+						return true;
+					}),
 				};
-
 				queryClient.setQueryData(queryKey, updatedData);
 			}
+			toast({
+				title: 'Comment deleted successfully.',
+			});
 		},
-		onError: () => {},
+		onError: () => {
+			toast({
+				title: 'Failed to delete comment! Please try again.',
+				variant: 'destructive',
+			});
+		},
 	});
 };

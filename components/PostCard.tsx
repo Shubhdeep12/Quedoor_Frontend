@@ -79,8 +79,7 @@ const PostCard = ({ post }: PostCardProps) => {
 				setAlert({
 					isOpen: true,
 					header: 'Are you absolutely sure?',
-					description:
-						'This action cannot be undone. This will permanently delete your account and remove your data from our servers.',
+					description: 'This action cannot be undone. This will permanently delete your post and comments.',
 					action: () => {
 						deletePostMutation.mutate(post._id);
 					},
@@ -140,7 +139,7 @@ const PostCard = ({ post }: PostCardProps) => {
 				/>
 			</div>
 
-			<div className='flex gap-6 items-center mt-2'>
+			<div className='flex gap-6 items-end mt-2'>
 				<div className='flex gap-2 items-center group cursor-pointer select-none' onClick={handleLikeClick}>
 					<LikeIcon
 						filled={isLiked}
@@ -150,13 +149,12 @@ const PostCard = ({ post }: PostCardProps) => {
 					/>
 					<Text className='font-normal text-xs'>{(post.reactions || []).length}</Text>
 				</div>
-				<div
-					className='flex gap-2 items-center group cursor-pointer select-none'
+
+				<CommentIcon
+					size={21}
+					className='cursor-pointer select-none'
 					onClick={() => setIsCommentsOpen((prev) => !prev)}
-				>
-					<CommentIcon size={20} />
-					<Text className='font-normal text-xs'>{(post.comments || []).length}</Text>
-				</div>
+				/>
 			</div>
 
 			{isCommentsOpen && <Comments isCommentsOpen={isCommentsOpen} post={post} />}

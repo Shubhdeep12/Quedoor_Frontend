@@ -170,6 +170,7 @@ const Tiptap = forwardRef(
 					<input
 						style={{ display: 'none' }}
 						type='file'
+						accept=".jpg, .jpeg, .png, .gif, .bmp"
 						id='tiptap-image'
 						ref={imageRef}
 						onChange={async (event: any) => {
