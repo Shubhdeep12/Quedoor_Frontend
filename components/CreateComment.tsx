@@ -1,6 +1,6 @@
 import React, { FC, memo, useRef, useState } from 'react';
 
-import { createComment, updateComment } from '@/queries/feed';
+import { useCreateComment, useUpdateComment } from '@/queries/feed';
 import { deleteAttachment, uploadAttachment } from '@/queries/misc';
 import { CommentProps, PostProps } from '@/lib/constants';
 import { Textarea } from '@/ui/textarea';
@@ -16,11 +16,13 @@ type CreateCommentProps = {
 	post: PostProps;
 	isEdit?: boolean;
 	comment?: CommentProps;
-	setComments: any;
+	onClose?: () => void;
 };
 
-const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, setComments }) => {
+const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, onClose }) => {
 	const imageRef = useRef<any>();
+	const updateCommentMutation = useUpdateComment();
+	const createCommentMutation = useCreateComment();
 	const [imagePreview, setImagePreview] = useState(false);
 	const [commentValue, setCommentValue] = useState<string>('');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -72,8 +74,7 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 				};
 
 				try {
-					const res: { data: CommentProps } = await createComment(post?._id, payload);
-					setComments((prev: CommentProps[]) => [res.data, ...prev]);
+					createCommentMutation.mutate({ postId: post?._id, body: payload });
 				} catch (error) {
 					// Handle error
 				}
@@ -87,15 +88,7 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 
 				try {
 					if (comment?._id) {
-						const res = await updateComment({ id: comment._id, body: payload });
-						setComments((prev: CommentProps[]) =>
-							prev.map((_comment: CommentProps) => {
-								if (_comment._id === res.data._id) {
-									return res.data;
-								}
-								return _comment;
-							})
-						);
+						updateCommentMutation.mutate({ id: comment._id, body: payload });
 					}
 				} catch (error) {
 					// Handle error
@@ -107,6 +100,7 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 			/* empty */
 		} finally {
 			setIsLoading(false);
+			if (typeof onClose === 'function') onClose();
 		}
 	};
 
@@ -158,7 +152,13 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 					)}
 				</Button>
 				<Button className='flex-1' disabled={isLoading || checkAddCommentDisabled()} onClick={handlePrimaryCTA}>
-					{isLoading ? <BiLoaderAlt className='mr-2 h-4 w-4 animate-spin' /> : 'Add Comment'}
+					{isLoading ? (
+						<BiLoaderAlt className='mr-2 h-4 w-4 animate-spin' />
+					) : isEdit ? (
+						'Update Comment'
+					) : (
+						'Add Comment'
+					)}
 				</Button>
 			</div>
 
