@@ -37,16 +37,16 @@ export default function Login() {
 	const handleChange = (e: ChangeEvent<HTMLInputElement>, type: string) => {
 		switch (type) {
 			case 'email': {
-				const _email = (e.target.value || '').trim();
-				setError((prev) => ({ ...prev, email: !validator.isEmail(_email) }));
+				const _email = e.target.value || '';
+				setError((prev) => ({ ...prev, email: !validator.isEmail(_email.trim()) }));
 				setEmail(_email);
 				break;
 			}
 			case 'password': {
-				const _pass = (e.target.value || '').trim();
+				const _pass = e.target.value || '';
 				setError((prev) => ({
 					...prev,
-					password: !validator.isStrongPassword(_pass, {
+					password: !validator.isStrongPassword(_pass.trim(), {
 						minLength: 8,
 						minLowercase: 1,
 						minUppercase: 1,
@@ -58,8 +58,8 @@ export default function Login() {
 				break;
 			}
 			case 'name': {
-				const _name = (e.target.value || '').trim();
-				setError((prev) => ({ ...prev, name: _name === '' }));
+				const _name = e.target.value || '';
+				setError((prev) => ({ ...prev, name: _name.trim() === '' }));
 
 				setUsername(_name);
 				break;
@@ -73,34 +73,57 @@ export default function Login() {
 		e.preventDefault();
 		setIsSubmitting(true);
 		if (!isLoginView) {
-			const res = await register({ email, password, name: username });
-			if (!res.success) {
+			const payload = {
+				email: email.trim(),
+				password: password,
+				name: username.trim(),
+			};
+			try {
+				const res = await register(payload);
+				if (!res.success) {
+					toast({
+						title: 'Failed to register! Please try again.',
+						variant: 'destructive',
+					});
+				} else {
+					toast({
+						title: 'User created successfully.',
+					});
+
+					setIsLoginView(true);
+				}
+			} catch (error) {
 				toast({
 					title: 'Failed to register! Please try again.',
 					variant: 'destructive',
 				});
-			} else {
-				toast({
-					title: 'User created successfully.',
-				});
-
-				setIsLoginView(true);
 			}
 		} else {
-			const res = await login({ email, password, name: username });
-			if (res.status > 300) {
+			const payload = {
+				email: email.trim(),
+				password: password,
+			};
+			try {
+				const res = await login(payload);
+				if (res.status > 300 || !res) {
+					toast({
+						title: 'Failed to login! Please try again.',
+						variant: 'destructive',
+					});
+				} else {
+					toast({
+						title: 'User logged in successfully.',
+					});
+					updateUser(res.result);
+					setItem('quedoor-token', res.result.access_token);
+					setCookie('quedoor-token', res.result.access_token);
+					router.push('/');
+				}
+			} catch (error) {
 				toast({
 					title: 'Failed to login! Please try again.',
 					variant: 'destructive',
 				});
-			} else {
-				toast({
-					title: 'User logged in successfully.',
-				});
-				updateUser(res.result);
-				setItem('quedoor-token', res.result.access_token);
-				setCookie('quedoor-token', res.result.access_token);
-				router.push('/');
 			}
 		}
 
