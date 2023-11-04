@@ -2,10 +2,10 @@
 
 import { IoEllipsisHorizontalSharp } from 'react-icons/io5';
 import Text from '../ui/Text';
-import { memo, useRef, useState } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import CreatePost from './CreatePost';
 import { useDeletePost, useLikePost } from '@/queries/feed';
-import { getRelativeTime } from '@/lib/misc';
+import { getRandomBGColor, getRelativeTime } from '@/lib/misc';
 import LikeIcon from '@/assets/icons/LikeIcon';
 import clsx from 'clsx';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar';
@@ -26,6 +26,7 @@ import {
 import useAuth from '@/hooks/useAuth';
 import Comments from './Comments';
 import CommentIcon from '@/assets/icons/CommentIcon';
+import { useToast } from '@/ui/use-toast';
 
 type PostCardProps = {
 	post: any;
@@ -33,12 +34,14 @@ type PostCardProps = {
 
 const PostCard = ({ post }: PostCardProps) => {
 	const editorRef = useRef<any>();
+	const { toast } = useToast();
 	const deletePostMutation = useDeletePost();
 	const likePostMutation = useLikePost();
 	const { user } = useAuth();
 	const [isLiked, setIsLiked] = useState<boolean>((post?.reactions || []).includes(post?.userId));
 	const [isCommentsOpen, setIsCommentsOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
+	const [bgColor, setBgColor] = useState(() => getRandomBGColor());
 
 	const [alert, setAlert] = useState({
 		isOpen: false,
@@ -46,6 +49,10 @@ const PostCard = ({ post }: PostCardProps) => {
 		description: '',
 		action: () => {},
 	});
+
+	useEffect(() => {
+		setBgColor(getRandomBGColor());
+	}, []);
 
 	const handleAlertReset = () => {
 		setAlert({
@@ -81,7 +88,17 @@ const PostCard = ({ post }: PostCardProps) => {
 					header: 'Are you absolutely sure?',
 					description: 'This action cannot be undone. This will permanently delete your post and comments.',
 					action: () => {
-						deletePostMutation.mutate(post._id);
+						try {
+							deletePostMutation.mutate(post._id);
+							toast({
+								title: 'Post deleted successfully',
+							});
+						} catch (error) {
+							toast({
+								title: 'Failed to delete post! Please try again.',
+								variant: 'destructive',
+							});
+						}
 					},
 				});
 			},
@@ -90,11 +107,11 @@ const PostCard = ({ post }: PostCardProps) => {
 	];
 
 	return (
-		<div className='flex flex-col gap-4 p-4 rounded-lg border w-full max-w-[650px] shadow-md'>
+		<div className={clsx(bgColor, 'transition flex flex-col gap-4 p-8 rounded-3xl w-full max-w-[700px]')}>
 			<div className='post-header flex items-center gap-4'>
-				<Avatar className='w-8 h-8'>
+				<Avatar className='w-10 h-10'>
 					<AvatarImage src={post?.creator?.profile_img} />
-					<AvatarFallback className='text-sm'>
+					<AvatarFallback className='text-base font-semibold'>
 						{post?.creator.name
 							.match(/(\b\S)?/g)
 							.join('')
@@ -105,7 +122,7 @@ const PostCard = ({ post }: PostCardProps) => {
 				</Avatar>
 				<div className='flex flex-col gap-1 flex-1'>
 					<Text className='font-bold text-sm'>{post?.creator?.name}</Text>
-					<Text className='text-neutral-500 text-xs'>{getRelativeTime(post?.updated_at)}</Text>
+					<Text className='text-gray-500 text-xs'>{getRelativeTime(post?.updated_at)}</Text>
 				</div>
 
 				{user.id == post?.userId && (
@@ -130,7 +147,7 @@ const PostCard = ({ post }: PostCardProps) => {
 				)}
 			</div>
 
-			<div className='rounded-lg bg-neutral-50 p-2'>
+			<div className='bg-transparent'>
 				<Tiptap
 					isReadonly
 					ref={editorRef}
@@ -142,19 +159,24 @@ const PostCard = ({ post }: PostCardProps) => {
 			<div className='flex gap-6 items-end mt-2'>
 				<div className='flex gap-2 items-center group cursor-pointer select-none' onClick={handleLikeClick}>
 					<LikeIcon
-						filled={isLiked}
-						className={clsx('group-hover:scale-125 transition')}
-						color={isLiked ? 'red' : undefined}
-						size={20}
+						className={clsx(
+							isLiked ? '!fill-red-400 !stroke-red-400' : '!fill-gray-400 !stroke-gray-400',
+							'group-hover:scale-125 transition'
+						)}
+						size={18}
 					/>
-					<Text className='font-normal text-xs'>{(post.reactions || []).length}</Text>
+					<Text className={clsx(isLiked ? 'text-red-400' : 'text-gray-400', 'transition font-semibold text-sm')}>
+						Like
+					</Text>
 				</div>
 
-				<CommentIcon
-					size={21}
-					className='cursor-pointer select-none'
+				<div
+					className='flex gap-2 items-center group cursor-pointer select-none'
 					onClick={() => setIsCommentsOpen((prev) => !prev)}
-				/>
+				>
+					<CommentIcon size={18} className='cursor-pointer select-none !fill-gray-400 !stroke-gray-400' />
+					<Text className='text-gray-400 transition font-semibold text-sm'>{'Comment'}</Text>
+				</div>
 			</div>
 
 			{isCommentsOpen && <Comments isCommentsOpen={isCommentsOpen} post={post} />}

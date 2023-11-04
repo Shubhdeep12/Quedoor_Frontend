@@ -1,6 +1,5 @@
 import api from '@/lib/api';
 import { CommentProps, PostProps } from '@/lib/constants';
-import { toast } from '@/ui/use-toast';
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const fetchPosts = async (pageParam = 1) => {
@@ -53,7 +52,6 @@ export const useUpdatePost = () => {
 			const prevData: any = queryClient.getQueryData(queryKey);
 
 			if (prevData && prevData.pages && prevData.pages[0]) {
-				// Append the new post to the existing data
 				let updatedData = { ...prevData };
 				updatedData = {
 					...updatedData,
@@ -68,17 +66,9 @@ export const useUpdatePost = () => {
 					})),
 				};
 				queryClient.setQueryData(queryKey, updatedData);
-				toast({
-					title: 'Post updated successfully.',
-				});
 			}
 		},
-		onError: () => {
-			toast({
-				title: 'Failed to updated post! Please try again.',
-				variant: 'destructive',
-			});
-		},
+		onError: () => {},
 	});
 };
 
@@ -98,17 +88,8 @@ export const useCreatePost = () => {
 			} else {
 				queryClient.setQueryData(queryKey, { pages: [{ data: [newPost.result] }] });
 			}
-			toast({
-				title: 'Post created successfully.',
-			});
 		},
-		onError: () => {
-			// Revert the optimistic update if there's an error
-			toast({
-				title: 'Failed to create post! Please try again.',
-				variant: 'destructive',
-			});
-		},
+		onError: () => {},
 	});
 };
 
@@ -137,17 +118,9 @@ export const useDeletePost = () => {
 				};
 
 				queryClient.setQueryData(queryKey, updatedData);
-				toast({
-					title: 'Post deleted successfully',
-				});
 			}
 		},
-		onError: () => {
-			toast({
-				title: 'Failed to delete post! Please try again.',
-				variant: 'destructive',
-			});
-		},
+		onError: () => {},
 	});
 };
 
@@ -167,6 +140,7 @@ export const useLikePost = () => {
 			if (prevData && prevData.pages && prevData.pages[0]) {
 				// Append the new post to the existing data
 				let updatedData = { ...prevData };
+				// eslint-disable-next-line @typescript-eslint/no-unused-vars
 				updatedData = {
 					...updatedData,
 					pages: updatedData.pages.map((page: any) => ({
@@ -189,7 +163,9 @@ export const useLikePost = () => {
 						}),
 					})),
 				};
-				queryClient.setQueryData(queryKey, updatedData);
+
+				// FIXME: on setting this component re-renders and changes its color and have blinkering effect
+				// queryClient.setQueryData(queryKey, updatedData);
 			}
 		},
 		onError: () => {},
@@ -262,17 +238,9 @@ export const useUpdateComment = (postId: string) => {
 					}),
 				};
 				queryClient.setQueryData(queryKey, updatedData);
-				toast({
-					title: 'Comment updated successfully.',
-				});
 			}
 		},
-		onError: () => {
-			toast({
-				title: 'Failed to update comment! Please try again.',
-				variant: 'destructive',
-			});
-		},
+		onError: () => {},
 	});
 };
 
@@ -292,16 +260,8 @@ export const useCreateComment = (postId: string) => {
 			} else {
 				queryClient.setQueryData(queryKey, { data: [newComment.result] });
 			}
-			toast({
-				title: 'Comment created successully.',
-			});
 		},
-		onError: () => {
-			toast({
-				title: 'Failed to create comment! Please try again.',
-				variant: 'destructive',
-			});
-		},
+		onError: () => {},
 	});
 };
 
@@ -327,15 +287,7 @@ export const useDeleteComment = (postId: string) => {
 				};
 				queryClient.setQueryData(queryKey, updatedData);
 			}
-			toast({
-				title: 'Comment deleted successfully.',
-			});
 		},
-		onError: () => {
-			toast({
-				title: 'Failed to delete comment! Please try again.',
-				variant: 'destructive',
-			});
-		},
+		onError: () => {},
 	});
 };

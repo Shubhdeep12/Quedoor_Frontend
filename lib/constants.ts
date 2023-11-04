@@ -29,3 +29,16 @@ export type CommentProps = {
   userId: string,
   updated_at: string
 }
+
+export const bgColors = [
+  'bg-[#deebfe]',
+  'bg-[#fff6e0]',
+  'bg-[#ffede0]',
+  'bg-[#ffe0e0]',
+  'bg-[#eaffe0]',
+  'bg-[#e0fff7]',
+  'bg-[#ffe0e4]',
+  'bg-[#e0e1ff]',
+  'bg-[#f7ffe0]',
+
+]

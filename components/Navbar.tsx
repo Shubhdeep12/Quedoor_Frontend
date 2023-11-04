@@ -63,6 +63,7 @@ export default function Navbar() {
 			action: () => {},
 		});
 	};
+
 	const handleLogout = async (e: MouseEvent) => {
 		e.preventDefault();
 		const res = await logout();
@@ -78,6 +79,12 @@ export default function Navbar() {
 			title: 'Failed to logout! Please try again.',
 			variant: 'destructive',
 		});
+	};
+
+	const handleFilterClose = () => {
+		// if (data) {
+		// }
+		setIsFilterModalOpen(false);
 	};
 
 	if (pathname.startsWith('/login')) {
@@ -106,7 +113,7 @@ export default function Navbar() {
 						</Button>
 					</DialogTrigger>
 
-					<Filter onClose={() => setIsFilterModalOpen(false)} />
+					<Filter onClose={handleFilterClose} />
 				</Dialog>
 
 				<DropdownMenu>

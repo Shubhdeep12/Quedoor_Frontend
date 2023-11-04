@@ -3,6 +3,7 @@ import React, { FC, useRef, useState } from 'react';
 import { PostProps } from '@/lib/constants';
 import Tiptap from './Tiptap';
 import { DialogContent } from '@/ui/dialog';
+import api from '@/lib/api';
 
 type CreatePostProps = {
 	onClose: () => void;
@@ -21,19 +22,31 @@ const Filter: FC<CreatePostProps> = ({ onClose }) => {
 			const payload = {
 				image_url: currImage.image_url || '',
 				description: editorRef.current && editorRef.current.getText(),
-				rich_description: JSON.stringify((editorRef.current && editorRef.current.getJSON()) || {}),
-				image_text: currImage.image_text || '',
 			};
-		} catch (e: any) {
-			/* empty */
-		} finally {
+
+			let data;
+			if (currImage.image_url || payload.description) {
+				data = new FormData();
+				data.append('description', payload.description);
+				data.append('image', currImage.file);
+				await api.post('/filter/posts', data);
+			}
+
 			setIsLoading(false);
 			onClose();
+		} catch (e: any) {
+			/* empty */
+			setIsLoading(false);
 		}
 	};
 	return (
 		<DialogContent className='laptop:max-w-[650px] border-4 border-black rounded-xl overflow-hidden p-0 w-40 '>
-			<Tiptap ref={editorRef} isLoading={isLoading} handlePrimaryCTA={handlePrimaryCTA} />
+			<Tiptap
+				placeholder='Enter content to find similar posts'
+				ref={editorRef}
+				isLoading={isLoading}
+				handlePrimaryCTA={handlePrimaryCTA}
+			/>
 		</DialogContent>
 	);
 };

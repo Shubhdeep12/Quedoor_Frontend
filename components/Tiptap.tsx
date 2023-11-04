@@ -127,7 +127,10 @@ const MenuBar = ({ editor, isLoading, handlePrimaryCTA, image_url }: any) => {
 
 // eslint-disable-next-line react/display-name
 const Tiptap = forwardRef(
-	({ isReadonly = false, content = null, defaultImage = {}, isLoading, handlePrimaryCTA }: any, ref: any) => {
+	(
+		{ isReadonly = false, content = null, defaultImage = {}, isLoading, handlePrimaryCTA, placeholder = '' }: any,
+		ref: any
+	) => {
 		const imageRef = useRef<any>();
 		const [image, setImage] = useState<{ image_url: string; file?: Blob; image_text: string }>({
 			image_url: defaultImage.image_url,
@@ -140,7 +143,7 @@ const Tiptap = forwardRef(
 				StarterKit,
 				Highlight,
 				Placeholder.configure({
-					placeholder: 'Write something …',
+					placeholder: placeholder || 'Write something …',
 				}),
 				CharacterCount.configure({
 					limit: 1000,
@@ -153,7 +156,7 @@ const Tiptap = forwardRef(
 				attributes: {
 					class: clsx(
 						'prose dark:prose-invert prose-sm transition sm:prose-base overflow-hidden lg:prose-lg xl:prose-2xl mx-1 px-2 focus:outline-none',
-						!isReadonly && 'h-96'
+						!isReadonly && 'h-96 !px-0 !mx-0'
 					),
 				},
 			},
@@ -161,7 +164,12 @@ const Tiptap = forwardRef(
 
 		ref.current = editor;
 		return (
-			<div className='editor-container h-auto overflow-hidden flex flex-col justify-between mt-6'>
+			<div
+				className={clsx(
+					isReadonly ? '' : 'mt-6',
+					'editor-container h-auto overflow-hidden flex flex-col justify-between'
+				)}
+			>
 				<EditorContent editor={editor} />
 				{editor && !isReadonly && (
 					<input
@@ -185,11 +193,16 @@ const Tiptap = forwardRef(
 				{image.image_url && (
 					<Dialog>
 						<DialogTrigger asChild>
-							<div className='flex justify-center border-2 relative border-black m-4 rounded-lg'>
+							<div
+								className={clsx(
+									!isReadonly ? 'border-2 justify-center border-black m-4' : 'mt-4',
+									'flex relative rounded-xl'
+								)}
+							>
 								<Image
 									objectFit='contain'
 									layout='fill'
-									className='!w-full !h-[250px] !relative'
+									className={clsx(isReadonly ? '!rounded-xl' : '', '!w-[auto] !h-[250px] !relative')}
 									alt='img'
 									src={image.image_url}
 								/>

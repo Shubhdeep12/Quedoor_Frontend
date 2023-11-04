@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from 'date-fns'
+import { bgColors } from './constants';
 
 export const setItem = (key :string, data: string) => localStorage.setItem(key, data);
 
@@ -59,3 +60,7 @@ export const file2Base64 = (file: File): Promise<string> => {
 		reader.onerror = (error) => reject(error);
 	});
 };
+
+export const getRandomBGColor = () => {
+  return bgColors[Math.floor(Math.random()*bgColors.length)];
+}

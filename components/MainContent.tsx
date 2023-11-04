@@ -1,6 +1,5 @@
 'use client';
 import MobileComingSoon from './MobileComingSoon';
-import Navbar from './Navbar';
 import { Toaster } from '@/ui/toaster';
 
 type MainProps = {
@@ -17,7 +16,6 @@ export default function MainContent({ children }: MainProps) {
 			bg-background
 			'
 		>
-			<Navbar />
 			<div className='hidden laptop:block'>{children}</div>
 			<MobileComingSoon />
 			<Toaster />

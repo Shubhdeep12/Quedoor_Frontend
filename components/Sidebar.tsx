@@ -4,168 +4,154 @@ import Text from '@/ui/Text';
 import useAuth from '@/hooks/useAuth';
 import clsx from 'clsx';
 import { useState } from 'react';
-import { BiSolidCommentDetail } from 'react-icons/bi';
-import { BsFilePost } from 'react-icons/bs';
 import { IoCreate } from 'react-icons/io5';
-import { FaCircleChevronUp } from 'react-icons/fa6';
-import { CgPushChevronLeftO, CgPushChevronRightO } from 'react-icons/cg';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar';
 import { Button } from '@/ui/button';
 import { Dialog, DialogTrigger } from '@/ui/dialog';
 import CreatePost from './CreatePost';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { FaPager, FaUserFriends } from 'react-icons/fa';
+import Filter from './Filter';
+import { AiFillSetting } from 'react-icons/ai';
+import { BiSolidUserCircle } from 'react-icons/bi';
 
 const Sidebar = () => {
 	const { user } = useAuth();
-	const [recentActivityCollapsed, setRecentActivityCollapsed] = useState<boolean>(true);
-	const [recentFollowersCollapsed, setRecentFollowersCollapsed] = useState<boolean>(true);
-	const [sidebarOpen, setSidebarOpen] = useState(true);
-	const [isModalOpen, setIsModalOpen] = useState(false);
+	const router = useRouter();
+	const [postModal, setPostModal] = useState({
+		show: false,
+		action: '',
+	});
+	const [activeTab, setActiveTab] = useState('feed');
+
+	const handleModalReset = (val: any) => {
+		setPostModal({ show: val, action: '' });
+	};
+
+	const sidebarOptions = [
+		{
+			id: 'feed',
+			title: 'Feed',
+			icon: FaPager,
+			route: '/',
+		},
+		{
+			id: 'friends',
+			title: 'Friends',
+			icon: FaUserFriends,
+			route: '/',
+		},
+		{
+			id: 'profile',
+			title: 'Profile',
+			icon: BiSolidUserCircle,
+			route: '/',
+		},
+		{
+			id: 'settings',
+			title: 'Settings',
+			icon: AiFillSetting,
+			route: '/',
+		},
+	];
 
 	return (
-		<div
-			className={clsx(
-				'left-section p-6 border-r w-96 min-w-max h-[calc(100vh-65px)] sticky bg-primary-foreground',
-				'backdrop-blur-[10px] backdrop-saturate-200	flex flex-col gap-10',
-				'transform transition',
-				sidebarOpen ? 'translate-x-0' : '-translate-x-96'
-			)}
-		>
-			<div className='flex items-center gap-2'>
-				<Avatar className='w-8 h-8'>
-					<AvatarImage src={user?.profile_img} />
-					<AvatarFallback className='text-sm'>
-						{user?.name
-							.match(/(\b\S)?/g)
-							.join('')
-							.match(/(^\S|\S$)?/g)
-							.join('')
-							.toUpperCase()}
-					</AvatarFallback>
-				</Avatar>
-				<Text className='text-sm font-bold'>Shubhdeep Chhabra</Text>
-			</div>
-
-			<Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-				<DialogTrigger asChild onClick={() => setIsModalOpen(true)}>
-					<Button className='flex items-center gap-1'>
-						<IoCreate size={18} />
-						<Text className='font-medium text-base'>Create</Text>
-					</Button>
-				</DialogTrigger>
-
-				<CreatePost onClose={() => setIsModalOpen(false)} />
-			</Dialog>
-
-			<div className='flex flex-col items-start gap-4'>
-				<div
-					className='w-full flex items-center justify-between cursor-pointer transition-all p-2 rounded-md hover:bg-secondary'
-					onClick={() => setRecentActivityCollapsed((prev) => !prev)}
-				>
-					<Text className='text-sm font-bold'>Recent Activity</Text>
-					<FaCircleChevronUp
-						className={clsx({
-							'transition-all': true,
-							'rotate-180': recentActivityCollapsed,
-							'cursor-pointer': true,
-						})}
-						size={18}
-					/>
+		<div className={clsx('left-section w-2/4 h-screen sticky flex flex-col')}>
+			<div className='p-10 flex flex-col gap-10 items-center w-80 self-end'>
+				<div className='flex flex-col w-full gap-2 items-center'>
+					<Avatar className='w-24 h-24'>
+						<AvatarImage src={user?.profile_img} />
+						<AvatarFallback className='text-2xl font-bold'>
+							{user?.name
+								.match(/(\b\S)?/g)
+								.join('')
+								.match(/(^\S|\S$)?/g)
+								.join('')
+								.toUpperCase()}
+						</AvatarFallback>
+					</Avatar>
+					<Text className='font-semibold text-sm'>{user.name}</Text>
+					<Text className='font-semibold text-sm text-gray-500 -mt-1'>{user.email}</Text>
 				</div>
-				<div
-					className={clsx({
-						'w-full flex flex-col items-start gap-2 overflow-hidden transition-height duration-200 ease-in-out': true,
-						'h-52': !recentActivityCollapsed,
-						'h-0': recentActivityCollapsed,
-					})}
-				>
-					<Text className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<BsFilePost size={14} />
-						Title of post created by you...
-					</Text>
-					<Text className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<BsFilePost size={14} />
-						Title of post created by you...
-					</Text>
-					<Text className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<BiSolidCommentDetail size={14} />
-						Title of comment created by you...
-					</Text>
-					<Text className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<BsFilePost size={14} />
-						Title of post created by you...
-					</Text>
-					<Text className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<BiSolidCommentDetail size={14} />
-						Title of comment created by you...
-					</Text>
-					<Text className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<BsFilePost size={14} />
-						Title of post created by you...
-					</Text>
-					<Text className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'>
-						<BsFilePost size={14} />
-						Title of post created by you...
-					</Text>
-				</div>
-			</div>
 
-			<div className='flex flex-col items-start gap-4'>
-				<div
-					className='w-full flex items-center justify-between cursor-pointer transition-all p-2 rounded-md hover:bg-secondary'
-					onClick={() => setRecentFollowersCollapsed((prev) => !prev)}
-				>
-					<Text className='text-sm font-bold'>Recent Followers</Text>
-					<FaCircleChevronUp
-						className={clsx({
-							'transition-all': true,
-							'rotate-180': recentFollowersCollapsed,
-							'cursor-pointer': true,
-						})}
-						size={18}
-					/>
+				<div className='flex flex-col w-full items-center gap-4'>
+					{sidebarOptions.map(({ id, title, icon: Icon }) => (
+						<div
+							key={id}
+							onClick={() => setActiveTab(id)}
+							className={clsx(
+								activeTab === id ? 'bg-black' : 'bg-transparent hover:bg-gray-200',
+								'transition p-3 rounded-2xl w-full flex gap-3 cursor-pointer'
+							)}
+						>
+							<Icon size={24} className={clsx(activeTab === id ? '!fill-gray-100' : '!fill-black')} />
+							<Text className={clsx(activeTab === id ? 'text-gray-100' : 'text-black', 'text-base font-semibold ')}>
+								{title}
+							</Text>
+						</div>
+					))}
 				</div>
-				<div
-					className={clsx({
-						'w-full flex flex-col items-start gap-2 overflow-hidden transition-height duration-200 ease-in-out': true,
-						'h-60': !recentFollowersCollapsed,
-						'h-0': recentFollowersCollapsed,
-					})}
-				>
-					{Array(5)
-						.fill(1)
-						.map((id) => (
-							<div
-								key={id}
-								className='text-sm font-medium flex items-center gap-2 cursor-pointer hover:underline underline-offset-2'
+
+				<Dialog open={postModal.show} onOpenChange={handleModalReset}>
+					<DialogTrigger asChild>
+						<div className='w-full flex gap-4 items-center'>
+							<Button
+								className='flex h-fit py-3 px-4 rounded-full items-center gap-1 flex-1 bg-gradient-to-bl from-blue-400 to-red-400'
+								onClick={() =>
+									setPostModal({
+										show: true,
+										action: 'CREATE',
+									})
+								}
 							>
-								<Avatar className='w-8 h-8'>
-									<AvatarImage src={user?.profile_img} />
-									<AvatarFallback className='text-sm'>
-										{user?.name
-											.match(/(\b\S)?/g)
-											.join('')
-											.match(/(^\S|\S$)?/g)
-											.join('')
-											.toUpperCase()}
-									</AvatarFallback>
-								</Avatar>
-								<Text className='text-sm'>Shubhdeep Chhabra</Text>
-							</div>
-						))}
-					<Text className='text-sm font-semibold hover:underline underline-offset-2 cursor-pointer transition'>
-						Show All
-					</Text>
-				</div>
-			</div>
+								<IoCreate size={18} />
+								<Text className='font-bold text-xl'>Create</Text>
+							</Button>
 
-			<div
-				className={clsx(
-					'absolute top-4 hover:scale-105 transition shadow-lg rounded-full',
-					sidebarOpen ? '-right-3' : '-right-6'
-				)}
-				onClick={() => setSidebarOpen((prev) => !prev)}
-			>
-				{sidebarOpen ? <CgPushChevronLeftO size={24} /> : <CgPushChevronRightO size={24} />}
+							{/* <FaFilter
+							size={22}
+							onClick={() =>
+								setPostModal({
+									show: true,
+									action: 'FILTER',
+								})
+							}
+						/> */}
+						</div>
+					</DialogTrigger>
+					{postModal.show &&
+						(postModal.action === 'CREATE' ? (
+							<CreatePost
+								onClose={() =>
+									setPostModal({
+										show: false,
+										action: '',
+									})
+								}
+							/>
+						) : (
+							<Filter
+								onClose={() =>
+									setPostModal({
+										show: false,
+										action: '',
+									})
+								}
+							/>
+						))}
+				</Dialog>
+
+				<div className='absolute bottom-10'>
+					<Image
+						src='/quedoor-navbar.png'
+						alt='quedoor-logo'
+						objectFit='contain'
+						layout='fill'
+						className='cursor-pointer !w-auto !h-12 !relative'
+						onClick={() => router.push('/')}
+					/>
+				</div>
 			</div>
 		</div>
 	);

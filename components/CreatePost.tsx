@@ -5,6 +5,7 @@ import { deleteAttachment, uploadAttachment } from '@/queries/misc';
 import { PostProps } from '@/lib/constants';
 import Tiptap from './Tiptap';
 import { DialogContent } from '@/ui/dialog';
+import { useToast } from '@/ui/use-toast';
 
 type CreatePostProps = {
 	onClose: () => void;
@@ -14,6 +15,7 @@ type CreatePostProps = {
 
 const CreatePost: FC<CreatePostProps> = ({ onClose, isEdit = false, post }) => {
 	const editorRef = useRef<any>();
+	const { toast } = useToast();
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const createMutation = useCreatePost();
 	const updateMutation = useUpdatePost();
@@ -50,8 +52,15 @@ const CreatePost: FC<CreatePostProps> = ({ onClose, isEdit = false, post }) => {
 
 				try {
 					createMutation.mutate(payload);
+					toast({
+						title: 'Post created successfully.',
+					});
 				} catch (error) {
 					// Handle error
+					toast({
+						title: 'Failed to create post! Please try again.',
+						variant: 'destructive',
+					});
 				}
 			} else {
 				const payload = {
@@ -64,9 +73,16 @@ const CreatePost: FC<CreatePostProps> = ({ onClose, isEdit = false, post }) => {
 				try {
 					if (post?._id) {
 						updateMutation.mutate({ id: post?._id, body: payload });
+						toast({
+							title: 'Post updated successfully.',
+						});
 					}
 				} catch (error) {
 					// Handle error
+					toast({
+						title: 'Failed to updated post! Please try again.',
+						variant: 'destructive',
+					});
 				}
 			}
 		} catch (e: any) {

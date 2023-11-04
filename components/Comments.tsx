@@ -29,17 +29,16 @@ const Comments = ({ isCommentsOpen, post }: any) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [showAllComments]);
 
-	console.log({ isFetching, comments });
 	return (
 		<div
 			className={clsx(
 				isCommentsOpen ? `h-auto` : 'h-0 overflow-hidden',
-				' w-full transition-all duration-200 ease-in-out mt-2 flex flex-col gap-4 p-2'
+				' w-full transition-all duration-500 ease-in-out mt-2 flex flex-col gap-4 p-2'
 			)}
 		>
 			<CreateComment post={post} />
 
-			<div className='flex flex-col gap-2 overflow-auto'>
+			<div className='flex flex-col gap-4 overflow-auto'>
 				{isFetching
 					? [1, 2, 3].map((e) => (
 							<div key={e} className='flex flex-col gap-2 w-full rounded-md'>

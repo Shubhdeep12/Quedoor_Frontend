@@ -20,6 +20,7 @@ import {
 	AlertDialogHeader,
 	AlertDialogTitle,
 } from '@/ui/alert-dialog';
+import { useToast } from '@/ui/use-toast';
 
 type CommentCardProps = {
 	comment: CommentProps;
@@ -30,6 +31,7 @@ type CommentCardProps = {
 
 const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProps) => {
 	const { user } = useAuth();
+	const { toast } = useToast();
 	const deleteCommentMutation = useDeleteComment(post._id);
 	const [alert, setAlert] = useState({
 		isOpen: false,
@@ -61,7 +63,17 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 					header: 'Are you absolutely sure?',
 					description: 'This action cannot be undone. This will permanently delete the comment.',
 					action: () => {
-						deleteCommentMutation.mutate(comment._id);
+						try {
+							deleteCommentMutation.mutate(comment._id);
+							toast({
+								title: 'Comment deleted successfully.',
+							});
+						} catch (error) {
+							toast({
+								title: 'Failed to delete comment! Please try again.',
+								variant: 'destructive',
+							});
+						}
 					},
 				});
 			},
@@ -70,9 +82,9 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 	];
 
 	return !isEditMode ? (
-		<div key={comment?._id} className='w-full border p-4 rounded-md flex flex-col gap-4'>
-			<div className='comment-header flex items-center gap-4'>
-				<Avatar className='w-6 h-6'>
+		<div key={comment?._id} className='w-full border border-black p-4 rounded-3xl flex flex-col gap-4 '>
+			<div className='comment-header flex items-center gap-2'>
+				<Avatar className='w-8 h-8'>
 					<AvatarImage src={comment?.creator?.profile_img} />
 					<AvatarFallback className='text-xs'>
 						{comment?.creator?.name
@@ -111,23 +123,21 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 			</div>
 
 			{comment.description && (
-				<div className='bg-neutral-200 rounded-md p-2'>
-					<Text className='text-xs '>{comment.description}</Text>
+				<div className=''>
+					<Text className='text-xs font-bold'>{comment.description}</Text>
 				</div>
 			)}
 
 			{comment.image_url && (
 				<Dialog>
 					<DialogTrigger asChild>
-						<div className='w-fit rounded-md p-2'>
-							<Image
-								objectFit='contain'
-								layout='fill'
-								className='!w-[100px] !h-fit rounded-lg !relative'
-								alt='img'
-								src={String(comment.image_url)}
-							/>
-						</div>
+						<Image
+							objectFit='contain'
+							layout='fill'
+							className='!w-[100px] !h-[auto] !relative !rounded-lg '
+							alt='img'
+							src={String(comment.image_url)}
+						/>
 					</DialogTrigger>
 					<DialogContent className='laptop:max-w-[800px]'>
 						<Image

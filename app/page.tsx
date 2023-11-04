@@ -23,7 +23,7 @@ const Home = () => {
 
 	return (
 		<>
-			<div className='flex gap-10 h-[calc(100vh-65px)]'>
+			<div className='flex gap-12 h-[100vh]'>
 				<Sidebar />
 				<Feed />
 			</div>

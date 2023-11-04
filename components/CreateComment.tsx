@@ -11,6 +11,7 @@ import { Dialog, DialogContent } from '@/ui/dialog';
 import Image from 'next/image';
 import { IoCloseCircleSharp } from 'react-icons/io5';
 import { BiLoaderAlt } from 'react-icons/bi';
+import { useToast } from '@/ui/use-toast';
 
 type CreateCommentProps = {
 	post: PostProps;
@@ -21,6 +22,7 @@ type CreateCommentProps = {
 
 const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, onClose }) => {
 	const imageRef = useRef<any>();
+	const { toast } = useToast();
 	const updateCommentMutation = useUpdateComment(post._id);
 	const createCommentMutation = useCreateComment(post._id);
 	const [imagePreview, setImagePreview] = useState(false);
@@ -75,8 +77,15 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 
 				try {
 					createCommentMutation.mutate({ postId: post?._id, body: payload });
+					toast({
+						title: 'Comment created successully.',
+					});
 				} catch (error) {
 					// Handle error
+					toast({
+						title: 'Failed to create comment! Please try again.',
+						variant: 'destructive',
+					});
 				}
 			} else {
 				const payload = {
@@ -89,9 +98,15 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 				try {
 					if (comment?._id) {
 						updateCommentMutation.mutate({ id: comment._id, body: payload });
+						toast({
+							title: 'Comment updated successfully.',
+						});
 					}
 				} catch (error) {
-					// Handle error
+					toast({
+						title: 'Failed to update comment! Please try again.',
+						variant: 'destructive',
+					});
 				}
 			}
 			setImage({ image_url: '', image_text: '', file: undefined });
@@ -107,16 +122,17 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 	return (
 		<div className='flex gap-2 items-start flex-col p-2'>
 			<Textarea
+				autoFocus
 				value={commentValue}
 				onChange={handleCommentValue}
 				rows={4}
-				className='!max-h-[80px] resize-none'
-				placeholder='Type your message here.'
+				className='!max-h-[80px] resize-none rounded-lg'
+				placeholder='Type your comment here.'
 			/>
 			<div className='flex gap-3 w-full'>
 				<Button
 					// disabled={image.image_url ? image.image_url.length > 0 : false}
-					className='transition'
+					className='transition rounded-xl'
 					onClick={(e) => {
 						e.preventDefault();
 						if (image.image_url || image.file) {
@@ -146,12 +162,16 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 									setImagePreview(false);
 								}}
 							>
-								<IoCloseCircleSharp size={20} />
+								<IoCloseCircleSharp size={24} />
 							</div>
 						</div>
 					)}
 				</Button>
-				<Button className='flex-1' disabled={isLoading || checkAddCommentDisabled()} onClick={handlePrimaryCTA}>
+				<Button
+					className='flex-1 rounded-xl'
+					disabled={isLoading || checkAddCommentDisabled()}
+					onClick={handlePrimaryCTA}
+				>
 					{isLoading ? (
 						<BiLoaderAlt className='mr-2 h-4 w-4 animate-spin' />
 					) : isEdit ? (
@@ -162,7 +182,7 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 				</Button>
 
 				{isEdit && (
-					<Button className='p-2' onClick={onClose}>
+					<Button className='p-2 rounded-xl' onClick={onClose}>
 						<IoCloseCircleSharp size={24} />
 					</Button>
 				)}
