@@ -80,7 +80,7 @@ export default function Login() {
 			};
 			try {
 				const res = await register(payload);
-				if (!res.success) {
+				if (res.status > 300) {
 					toast({
 						title: 'Failed to register! Please try again.',
 						variant: 'destructive',

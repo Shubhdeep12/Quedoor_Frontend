@@ -151,7 +151,7 @@ const PostCard = ({ post }: PostCardProps) => {
 				<Tiptap
 					isReadonly
 					ref={editorRef}
-					content={JSON.parse(post.rich_description)}
+					content={post?.rich_description ? JSON.parse(post?.rich_description) : null}
 					defaultImage={{ image_url: post?.image_url || '', image_text: post?.image_text || '' }}
 				/>
 			</div>
