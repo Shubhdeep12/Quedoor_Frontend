@@ -34,7 +34,7 @@ const Sidebar = () => {
 
 	useEffect(() => {
 		if (pathname.startsWith('/profile')) setActiveTab('profile');
-		else if (pathname.startsWith('/friends')) setActiveTab('friends');
+		else if (pathname.startsWith('/people')) setActiveTab('people');
 		else if (pathname.startsWith('/settings')) setActiveTab('settings');
 		else if (pathname.startsWith('/search')) setActiveTab('search');
 		else setActiveTab('feed');
@@ -54,10 +54,10 @@ const Sidebar = () => {
 			route: '/search',
 		},
 		{
-			id: 'friends',
-			title: 'Friends',
+			id: 'people',
+			title: 'People',
 			icon: FaUserFriends,
-			route: '/friends',
+			route: '/people',
 		},
 		{
 			id: 'profile',

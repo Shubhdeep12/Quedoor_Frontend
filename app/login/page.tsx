@@ -15,6 +15,7 @@ import { setCookie, setItem } from '@/lib/misc';
 import { Button } from '@/ui/button';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/ui/use-toast';
+import { BiLoaderAlt } from 'react-icons/bi';
 
 export default function Login() {
 	const { user, updateUser } = useAuth();
@@ -25,6 +26,7 @@ export default function Login() {
 	const [username, setUsername] = useState<string>('');
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [isLoginView, setIsLoginView] = useState<boolean>(true);
+	const [isSubmitting, setIsSubmitting] = useState(false);
 
 	const [error, setError] = useState({
 		name: false,
@@ -69,6 +71,7 @@ export default function Login() {
 
 	const handleSubmit: FormEventHandler = async (e: FormEvent<HTMLInputElement>) => {
 		e.preventDefault();
+		setIsSubmitting(true);
 		if (!isLoginView) {
 			const res = await register({ email, password, name: username });
 			if (!res.success) {
@@ -101,6 +104,7 @@ export default function Login() {
 			}
 		}
 
+		setIsSubmitting(false);
 		return false;
 	};
 
@@ -199,11 +203,12 @@ export default function Login() {
 							(!isLoginView && !username) ||
 							error.email ||
 							error.password ||
-							(!isLoginView && error.name)
+							(!isLoginView && error.name) ||
+							isSubmitting
 						}
 						className='w-full'
 					>
-						Submit
+						{isSubmitting ? <BiLoaderAlt className='mr-2 h-4 w-4 animate-spin' /> : 'Submit'}
 					</Button>
 
 					<TooltipProvider>
