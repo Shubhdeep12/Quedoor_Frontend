@@ -100,7 +100,7 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 					<Text className='text-neutral-500 text-[10px]'>{getRelativeTime(comment?.updated_at)}</Text>
 				</div>
 
-				{user.id == comment?.userId && (
+				{user?.id == comment?.userId && (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<button>

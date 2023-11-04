@@ -86,10 +86,10 @@ const Sidebar = () => {
 						<AvatarImage src={user?.profile_img} />
 						<AvatarFallback className='text-2xl font-bold'>
 							{user?.name
-								.match(/(\b\S)?/g)
-								.join('')
-								.match(/(^\S|\S$)?/g)
-								.join('')
+								?.match(/(\b\S)?/g)
+								?.join('')
+								?.match(/(^\S|\S$)?/g)
+								?.join('')
 								.toUpperCase()}
 						</AvatarFallback>
 					</Avatar>

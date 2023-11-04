@@ -64,7 +64,7 @@ const PostCard = ({ post }: PostCardProps) => {
 	};
 
 	const sendLikeRequest = async (val: boolean) => {
-		likePostMutation.mutate({ postId: post._id, body: { like: val, dislike: !val }, userId: String(user.id) });
+		likePostMutation.mutate({ postId: post._id, body: { like: val, dislike: !val }, userId: String(user?.id) });
 	};
 
 	const debouncedSendLike = useDebounce(sendLikeRequest, 500);
@@ -113,9 +113,9 @@ const PostCard = ({ post }: PostCardProps) => {
 					<AvatarImage src={post?.creator?.profile_img} />
 					<AvatarFallback className='text-base font-semibold'>
 						{post?.creator.name
-							.match(/(\b\S)?/g)
-							.join('')
-							.match(/(^\S|\S$)?/g)
+							?.match(/(\b\S)?/g)
+							?.join('')
+							?.match(/(^\S|\S$)?/g)
 							.join('')
 							.toUpperCase()}
 					</AvatarFallback>
@@ -125,7 +125,7 @@ const PostCard = ({ post }: PostCardProps) => {
 					<Text className='text-gray-500 text-xs'>{getRelativeTime(post?.updated_at)}</Text>
 				</div>
 
-				{user.id == post?.userId && (
+				{user?.id == post?.userId && (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<button>

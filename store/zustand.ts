@@ -1,4 +1,4 @@
-import { UserProps } from "@/utils/constants";
+import { UserProps } from "@/lib/constants";
 import { create } from "zustand";
 
 export type AuthState = {
