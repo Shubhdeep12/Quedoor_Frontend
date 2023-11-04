@@ -17,7 +17,7 @@ export const setCookie = (key: string , value: string, minutes = 365 * 24 * 60) 
     const date = new Date();
     date.setTime(date.getTime() + (minutes * 60 * 1000));
     expires = `; expires=${date.toUTCString()}`;
-    document.cookie = `${key}=${value || ''}${expires}; path=/; domain=${DOMAIN}; ${isProdEnv() && 'SameSite=None; Secure'}`;
+    document.cookie = `${key}=${value || ''}${expires}; path=/; domain=${DOMAIN};`;
     
     console.log('Cookie set successfully:');
   } catch (error) {
