@@ -156,7 +156,7 @@ const Tiptap = forwardRef(
 				attributes: {
 					class: clsx(
 						'prose dark:prose-invert prose-sm transition sm:prose-base overflow-hidden lg:prose-lg xl:prose-2xl mx-1 px-2 focus:outline-none',
-						!isReadonly && 'h-96 !px-0 !mx-0'
+						!isReadonly ? 'h-96' : '!px-0 !mx-0'
 					),
 				},
 			},

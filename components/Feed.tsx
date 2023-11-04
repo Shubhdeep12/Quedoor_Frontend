@@ -11,7 +11,7 @@ import clsx from 'clsx';
 import { useState } from 'react';
 
 const EmptyContainer = () => (
-	<div className='empty-container w-full h-[calc(100vh-85px)]  flex flex-col justify-center items-center'>
+	<div className='empty-container w-full h-[calc(100vh-112px)] flex flex-col justify-center items-center'>
 		<div className='flex flex-col items-center gap-2'>
 			<NoPost />
 			<Text className='text-sm font-semibold text-gray-500'>No Post available.</Text>
@@ -25,7 +25,7 @@ const PostSkeletonLoader = () => (
 		{Array(5)
 			.fill(1)
 			.map((e) => (
-				<div key={e} className='flex flex-col gap-4 p-6 border rounded-lg w-full max-w-[650px] shadow-md'>
+				<div key={e} className='flex flex-col gap-4 p-8 rounded-3xl w-full max-w-[700px]'>
 					<div className='flex items-center gap-4 w-full'>
 						<Skeleton className='rounded-full h-10 w-10' />
 						<div className='flex flex-col gap-2 w-full'>
@@ -56,26 +56,32 @@ const Feed = () => {
 	const [activeFeedType, setActiveFeedType] = useState('following');
 	const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteFeed();
 
+	const isEmpty = () =>
+		data?.pages.every((page: any) => {
+			return page.data && Array.isArray(page.data) && page.data.length === 0;
+		});
 	return (
-		<div className='flex flex-col w-full relative'>
-			<div className='pb-4 pt-10 flex justify-between items-center max-w-[700px]'>
-				<Text className='text-2xl font-bold'>Feeds</Text>
+		<>
+			<div className='pb-4 pt-10 flex justify-between items-end bg-white w-[700px] fixed z-10'>
+				<Text className='text-3xl font-black'>Feeds</Text>
 				<div className='flex items-center gap-3'>
-					{feedTypes.map((type) => (
-						<Text
-							key={type.id}
-							onClick={() => setActiveFeedType(type.id)}
-							className={clsx(
-								activeFeedType === type.id ? 'text-black' : 'text-gray-400',
-								'text-base font-semibold cursor-pointer transition'
-							)}
-						>
-							{type.title}
-						</Text>
-					))}
+					{!isEmpty() &&
+						feedTypes.map((type) => (
+							<Text
+								key={type.id}
+								onClick={() => setActiveFeedType(type.id)}
+								className={clsx(
+									activeFeedType === type.id ? 'text-black' : 'text-gray-400',
+									'text-base font-semibold cursor-pointer transition'
+								)}
+							>
+								{type.title}
+							</Text>
+						))}
 				</div>
 			</div>
-			<div id='feedscrollable' className='main-section flex-1 flex w-full gap-10 overflow-scroll'>
+
+			<div className='flex w-[700px] justify-between mt-28'>
 				<InfiniteScroll
 					next={fetchNextPage}
 					hasMore={hasNextPage || false}
@@ -86,9 +92,7 @@ const Feed = () => {
 				>
 					{isLoading ? (
 						<PostSkeletonLoader />
-					) : data?.pages.every((page: any) => {
-							return page.data && Array.isArray(page.data) && page.data.length === 0;
-					  }) ? (
+					) : isEmpty() ? (
 						<EmptyContainer />
 					) : (
 						<div className='flex flex-col gap-6 w-full'>
@@ -98,9 +102,8 @@ const Feed = () => {
 						</div>
 					)}
 				</InfiniteScroll>
-				<div className='absolute right-0'>aaa</div>
 			</div>
-		</div>
+		</>
 	);
 };
 export default Feed;

@@ -3,22 +3,24 @@
 import Text from '@/ui/Text';
 import useAuth from '@/hooks/useAuth';
 import clsx from 'clsx';
-import { useState } from 'react';
-import { IoCreate } from 'react-icons/io5';
+import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar';
 import { Button } from '@/ui/button';
 import { Dialog, DialogTrigger } from '@/ui/dialog';
 import CreatePost from './CreatePost';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { FaPager, FaUserFriends } from 'react-icons/fa';
 import Filter from './Filter';
 import { AiFillSetting } from 'react-icons/ai';
 import { BiSolidUserCircle } from 'react-icons/bi';
+import { RiSearchEyeLine } from 'react-icons/ri';
 
 const Sidebar = () => {
 	const { user } = useAuth();
 	const router = useRouter();
+	const pathname = usePathname();
+
 	const [postModal, setPostModal] = useState({
 		show: false,
 		action: '',
@@ -29,6 +31,14 @@ const Sidebar = () => {
 		setPostModal({ show: val, action: '' });
 	};
 
+	useEffect(() => {
+		if (pathname.startsWith('/profile')) setActiveTab('profile');
+		else if (pathname.startsWith('/friends')) setActiveTab('friends');
+		else if (pathname.startsWith('/settings')) setActiveTab('settings');
+		else if (pathname.startsWith('/search')) setActiveTab('search');
+		else setActiveTab('feed');
+	}, [pathname]);
+
 	const sidebarOptions = [
 		{
 			id: 'feed',
@@ -37,27 +47,39 @@ const Sidebar = () => {
 			route: '/',
 		},
 		{
+			id: 'search',
+			title: 'Search',
+			icon: RiSearchEyeLine,
+			route: '/search',
+		},
+		{
 			id: 'friends',
 			title: 'Friends',
 			icon: FaUserFriends,
-			route: '/',
+			route: '/friends',
 		},
 		{
 			id: 'profile',
 			title: 'Profile',
 			icon: BiSolidUserCircle,
-			route: '/',
+			route: '/profile',
 		},
 		{
 			id: 'settings',
 			title: 'Settings',
 			icon: AiFillSetting,
-			route: '/',
+			route: '/settings',
 		},
 	];
 
+	const isSearchPage = () => pathname.startsWith('/search');
+
+	if (pathname.startsWith('/login') || !user) {
+		return null;
+	}
+
 	return (
-		<div className={clsx('left-section w-2/4 h-screen sticky flex flex-col')}>
+		<header className={clsx('left-section w-[40%] h-screen sticky flex flex-col')}>
 			<div className='p-10 flex flex-col gap-10 items-center w-80 self-end'>
 				<div className='flex flex-col w-full gap-2 items-center'>
 					<Avatar className='w-24 h-24'>
@@ -76,61 +98,42 @@ const Sidebar = () => {
 				</div>
 
 				<div className='flex flex-col w-full items-center gap-4'>
-					{sidebarOptions.map(({ id, title, icon: Icon }) => (
-						<div
+					{sidebarOptions.map(({ id, title, icon: Icon, route }) => (
+						<Button
 							key={id}
-							onClick={() => setActiveTab(id)}
+							onClick={() => {
+								setActiveTab(id);
+								router.push(route);
+							}}
 							className={clsx(
 								activeTab === id ? 'bg-black' : 'bg-transparent hover:bg-gray-200',
-								'transition p-3 rounded-2xl w-full flex gap-3 cursor-pointer'
+								'transition py-7 rounded-2xl w-full justify-start flex gap-3 cursor-pointer'
 							)}
 						>
 							<Icon size={24} className={clsx(activeTab === id ? '!fill-gray-100' : '!fill-black')} />
 							<Text className={clsx(activeTab === id ? 'text-gray-100' : 'text-black', 'text-base font-semibold ')}>
 								{title}
 							</Text>
-						</div>
+						</Button>
 					))}
 				</div>
 
 				<Dialog open={postModal.show} onOpenChange={handleModalReset}>
 					<DialogTrigger asChild>
-						<div className='w-full flex gap-4 items-center'>
-							<Button
-								className='flex h-fit py-3 px-4 rounded-full items-center gap-1 flex-1 bg-gradient-to-bl from-blue-400 to-red-400'
-								onClick={() =>
-									setPostModal({
-										show: true,
-										action: 'CREATE',
-									})
-								}
-							>
-								<IoCreate size={18} />
-								<Text className='font-bold text-xl'>Create</Text>
-							</Button>
-
-							{/* <FaFilter
-							size={22}
+						<Button
+							className='w-full flex h-fit py-3 px-4 rounded-full items-center gap-1 flex-1 bg-gradient-to-bl from-blue-400 to-red-400'
 							onClick={() =>
 								setPostModal({
 									show: true,
-									action: 'FILTER',
+									action: isSearchPage() ? 'FILTER' : 'CREATE',
 								})
 							}
-						/> */}
-						</div>
+						>
+							<Text className='font-bold text-xl'>{isSearchPage() ? 'Search Post' : 'Create Post'}</Text>
+						</Button>
 					</DialogTrigger>
-					{postModal.show &&
-						(postModal.action === 'CREATE' ? (
-							<CreatePost
-								onClose={() =>
-									setPostModal({
-										show: false,
-										action: '',
-									})
-								}
-							/>
-						) : (
+					{postModal.show ? (
+						postModal.action === 'FILTER' ? (
 							<Filter
 								onClose={() =>
 									setPostModal({
@@ -139,10 +142,20 @@ const Sidebar = () => {
 									})
 								}
 							/>
-						))}
+						) : (
+							<CreatePost
+								onClose={() =>
+									setPostModal({
+										show: false,
+										action: '',
+									})
+								}
+							/>
+						)
+					) : null}
 				</Dialog>
 
-				<div className='absolute bottom-10'>
+				<div className='absolute bottom-10 flex flex-col items-center'>
 					<Image
 						src='/quedoor-navbar.png'
 						alt='quedoor-logo'
@@ -151,9 +164,10 @@ const Sidebar = () => {
 						className='cursor-pointer !w-auto !h-12 !relative'
 						onClick={() => router.push('/')}
 					/>
+					<Text className='text-xs text-gray-400 font-semibold'>v 0.0.1</Text>
 				</div>
 			</div>
-		</div>
+		</header>
 	);
 };
 

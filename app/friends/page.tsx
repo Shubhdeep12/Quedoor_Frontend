@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import PageLoader from '@/components/PageLoader';
 import Text from '@/ui/Text';
 
-const Profile = () => {
+const Friends = () => {
 	const router = useRouter();
 	const { user } = useAuth();
 
@@ -23,7 +23,7 @@ const Profile = () => {
 	return (
 		<>
 			<div className='pb-4 pt-10 flex justify-between items-center bg-white w-[700px] fixed z-10'>
-				<Text className='text-3xl font-black'>Profile</Text>
+				<Text className='text-3xl font-black'>Friends</Text>
 			</div>
 
 			<div className='mt-28'>Coming soon...</div>
@@ -31,4 +31,4 @@ const Profile = () => {
 	);
 };
 
-export default Profile;
+export default Friends;

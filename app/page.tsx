@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 import useAuth from '@/hooks/useAuth';
 import { useEffect } from 'react';
 import PageLoader from '@/components/PageLoader';
-import Sidebar from '@/components/Sidebar';
 import Feed from '@/components/Feed';
 
 const Home = () => {
@@ -21,14 +20,7 @@ const Home = () => {
 		return <PageLoader />;
 	}
 
-	return (
-		<>
-			<div className='flex gap-12 h-[100vh]'>
-				<Sidebar />
-				<Feed />
-			</div>
-		</>
-	);
+	return <Feed />;
 };
 
 export default Home;
