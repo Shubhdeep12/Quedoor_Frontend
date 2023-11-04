@@ -3,7 +3,7 @@
    <img width="200" alt="Quedoor logo" src="https://github.com/Shubhdeep12/Quedoor_Frontend/assets/43654389/4f9f562d-ce75-49be-83ff-25066a36a4bd">
   </a>
   <h1 align="center">Quedoor(Frontend)</h1>
-
+</p>
   <p align="center">
     A social media app specially curated for students preparing for exams
   </p>
@@ -48,4 +48,19 @@
 - [ ] Branding feature for every user
 - [ ] Notifications
 - [ ] Chat 1-1 with video call support
-</p>
+
+<br />
+<br />
+
+## How to setup?
+
+- Clone the repository.
+- Run the Backend locally.
+- Add the relevant environment variables and start the frontend.
+
+<br />
+<br />
+
+## Contribution
+ - Check this hard-to-understand <a href="https://github.com/Shubhdeep12/Quedoor_Frontend/blob/main/CONTRIBUTING.md" target="_blank">Contribution guide</a>
+
