@@ -15,6 +15,7 @@ import Filter from './Filter';
 import { AiFillSetting } from 'react-icons/ai';
 import { BiSolidUserCircle } from 'react-icons/bi';
 import { RiSearchEyeLine } from 'react-icons/ri';
+import Link from 'next/link';
 
 const Sidebar = () => {
 	const { user } = useAuth();
@@ -99,22 +100,19 @@ const Sidebar = () => {
 
 				<div className='flex flex-col w-full items-center gap-4'>
 					{sidebarOptions.map(({ id, title, icon: Icon, route }) => (
-						<Button
+						<Link
 							key={id}
-							onClick={() => {
-								setActiveTab(id);
-								router.push(route);
-							}}
+							href={route}
 							className={clsx(
 								activeTab === id ? 'bg-black' : 'bg-transparent hover:bg-gray-200',
-								'transition py-7 rounded-2xl w-full justify-start flex gap-3 cursor-pointer'
+								'transition p-3 rounded-2xl w-full justify-start flex gap-3 cursor-pointer'
 							)}
 						>
 							<Icon size={24} className={clsx(activeTab === id ? '!fill-gray-100' : '!fill-black')} />
 							<Text className={clsx(activeTab === id ? 'text-gray-100' : 'text-black', 'text-base font-semibold ')}>
 								{title}
 							</Text>
-						</Button>
+						</Link>
 					))}
 				</div>
 

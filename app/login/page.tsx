@@ -184,7 +184,7 @@ export default function Login() {
 						)}
 					</div>
 					{!isLoginView && (
-						<ul className='self-start list-disc relative ml-5 text-secondary'>
+						<ul className='self-start list-disc relative ml-5'>
 							<li className='text-sm font-medium'>Mix of uppercase and lowercase</li>
 							<li className='text-sm font-medium'>Minimum 8 characters long</li>
 							<li className='text-sm font-medium'>Contain at least 1 number</li>
@@ -234,14 +234,8 @@ export default function Login() {
 				</form>
 
 				<footer className='flex flex-col gap-1 items-center'>
-					<Text className='text-sm font-light text-secondary'>
-						{isLoginView ? 'New to Quedoor?' : 'Have an account?'}
-					</Text>
-					<Text
-						className='underline text-xs font-semibold cursor-pointer text-secondary'
-						as='div'
-						onClick={handleChangeView}
-					>
+					<Text className='text-sm font-light'>{isLoginView ? 'New to Quedoor?' : 'Have an account?'}</Text>
+					<Text className='underline text-xs font-semibold cursor-pointer' as='div' onClick={handleChangeView}>
 						{isLoginView ? 'Create an account' : 'Log in'}
 					</Text>
 				</footer>
