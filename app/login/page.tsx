@@ -69,6 +69,40 @@ export default function Login() {
 		}
 	};
 
+	const handleLogin = async (payload: object) => {
+		const res = await login(payload);
+		if (res.status > 300) {
+			toast({
+				title: 'Failed to login! Please try again.',
+				variant: 'destructive',
+			});
+		} else {
+			toast({
+				title: 'User logged in successfully.',
+			});
+			updateUser(res.result);
+			setItem('quedoor-token', res.result.access_token);
+			setCookie('quedoor-token', res.result.access_token);
+			router.push('/');
+		}
+	};
+
+	const handleRegister = async (payload: { email: string; password: string; name: string }) => {
+		const res = await register(payload);
+		if (res.status > 300) {
+			toast({
+				title: 'Failed to register! Please try again.',
+				variant: 'destructive',
+			});
+		} else {
+			toast({
+				title: 'User created successfully.',
+			});
+
+			await handleLogin({ email: payload.email, password: payload.password });
+		}
+	};
+
 	const handleSubmit: FormEventHandler = async (e: FormEvent<HTMLInputElement>) => {
 		e.preventDefault();
 		setIsSubmitting(true);
@@ -79,19 +113,7 @@ export default function Login() {
 				name: username.trim(),
 			};
 			try {
-				const res = await register(payload);
-				if (res.status > 300) {
-					toast({
-						title: 'Failed to register! Please try again.',
-						variant: 'destructive',
-					});
-				} else {
-					toast({
-						title: 'User created successfully.',
-					});
-
-					setIsLoginView(true);
-				}
+				await handleRegister(payload);
 			} catch (error) {
 				toast({
 					title: 'Failed to register! Please try again.',
@@ -104,21 +126,7 @@ export default function Login() {
 				password: password,
 			};
 			try {
-				const res = await login(payload);
-				if (res.status > 300 || !res) {
-					toast({
-						title: 'Failed to login! Please try again.',
-						variant: 'destructive',
-					});
-				} else {
-					toast({
-						title: 'User logged in successfully.',
-					});
-					updateUser(res.result);
-					setItem('quedoor-token', res.result.access_token);
-					setCookie('quedoor-token', res.result.access_token);
-					router.push('/');
-				}
+				await handleLogin(payload);
 			} catch (error) {
 				toast({
 					title: 'Failed to login! Please try again.',

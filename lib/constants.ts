@@ -5,6 +5,8 @@ export type UserProps = {
   profile_img?: string;
   city?: string;
   website?: string;
+  followers?: number[];
+  following?: number[];
 };
 
 export type PostProps = {
@@ -29,6 +31,7 @@ export type CommentProps = {
   userId: string,
   updated_at: string
 }
+
 
 export const bgColors = [
   'bg-[#deebfe]',

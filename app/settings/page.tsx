@@ -9,6 +9,17 @@ import { Button } from '@/ui/button';
 import { logout } from '@/queries/auth';
 import { useToast } from '@/ui/use-toast';
 import { clearItem, removeCookie } from '@/lib/misc';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from '@/ui/alert-dialog';
 
 const Home = () => {
 	const router = useRouter();
@@ -49,8 +60,24 @@ const Home = () => {
 				<Text className='text-3xl font-black'>Settings</Text>
 			</div>
 
-			<div className='mt-28'>
-				<Button onClick={handleLogout}>Log out</Button>
+			<div className='my-28'>
+				<AlertDialog>
+					<AlertDialogTrigger asChild>
+						<Button>Log out</Button>
+					</AlertDialogTrigger>
+					<AlertDialogContent>
+						<AlertDialogHeader>
+							<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+							<AlertDialogDescription>
+								This action cannot be undone. This will log you out from your account.
+							</AlertDialogDescription>
+						</AlertDialogHeader>
+						<AlertDialogFooter>
+							<AlertDialogCancel>Cancel</AlertDialogCancel>
+							<AlertDialogAction onClick={handleLogout}>Log out</AlertDialogAction>
+						</AlertDialogFooter>
+					</AlertDialogContent>
+				</AlertDialog>
 			</div>
 		</>
 	);

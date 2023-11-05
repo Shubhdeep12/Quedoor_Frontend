@@ -12,6 +12,9 @@ class Api {
 		this.instance = axios.create({
 			baseURL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL,
 			withCredentials: true,
+			validateStatus: (status) => {
+				return status >= 200 && status <= 500;
+			},
 		});
 
 		this.instance.interceptors.request.use((config: any) => {
@@ -53,8 +56,13 @@ class Api {
 		});
 		return res;
 	}
-	async post(url: string, data = {}) {
-		const { data: res } = await this.instance.post(url, data);
+	async post(url: string, data = {}, params = {}) {
+		const _params = qs.stringify(params, { arrayFormat: 'repeat' });
+		let _url = url;
+		if (_params) {
+			_url += `?${_params}`;
+		}
+		const { data: res } = await this.instance.post(_url, data);
 		return res;
 	}
 

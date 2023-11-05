@@ -11,7 +11,6 @@ import CreatePost from './CreatePost';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { FaPager, FaUserFriends } from 'react-icons/fa';
-import Filter from './Filter';
 import { AiFillSetting } from 'react-icons/ai';
 import { BiSolidUserCircle } from 'react-icons/bi';
 import { RiSearchEyeLine } from 'react-icons/ri';
@@ -22,14 +21,11 @@ const Sidebar = () => {
 	const router = useRouter();
 	const pathname = usePathname();
 
-	const [postModal, setPostModal] = useState({
-		show: false,
-		action: '',
-	});
+	const [showPostModal, setShowPostModal] = useState(false);
 	const [activeTab, setActiveTab] = useState('feed');
 
 	const handleModalReset = (val: any) => {
-		setPostModal({ show: val, action: '' });
+		setShowPostModal(val);
 	};
 
 	useEffect(() => {
@@ -73,8 +69,6 @@ const Sidebar = () => {
 		},
 	];
 
-	const isSearchPage = () => pathname.startsWith('/search');
-
 	if (pathname.startsWith('/login') || !user) {
 		return null;
 	}
@@ -116,41 +110,16 @@ const Sidebar = () => {
 					))}
 				</div>
 
-				<Dialog open={postModal.show} onOpenChange={handleModalReset}>
+				<Dialog open={showPostModal} onOpenChange={handleModalReset}>
 					<DialogTrigger asChild>
 						<Button
 							className='w-full flex h-fit py-3 px-4 rounded-full items-center gap-1 flex-1 bg-gradient-to-bl from-blue-400 to-red-400'
-							onClick={() =>
-								setPostModal({
-									show: true,
-									action: isSearchPage() ? 'FILTER' : 'CREATE',
-								})
-							}
+							onClick={() => setShowPostModal(true)}
 						>
-							<Text className='font-bold text-xl'>{isSearchPage() ? 'Search Post' : 'Create Post'}</Text>
+							<Text className='font-bold text-xl'>{'Create Post'}</Text>
 						</Button>
 					</DialogTrigger>
-					{postModal.show ? (
-						postModal.action === 'FILTER' ? (
-							<Filter
-								onClose={() =>
-									setPostModal({
-										show: false,
-										action: '',
-									})
-								}
-							/>
-						) : (
-							<CreatePost
-								onClose={() =>
-									setPostModal({
-										show: false,
-										action: '',
-									})
-								}
-							/>
-						)
-					) : null}
+					{showPostModal && <CreatePost onClose={() => setShowPostModal(false)} />}
 				</Dialog>
 
 				<div className='absolute bottom-10 flex flex-col items-center'>
