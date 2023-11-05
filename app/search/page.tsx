@@ -106,7 +106,7 @@ const Search = () => {
 				</Dialog>
 			</div>
 
-			<div className='flex w-[700px] justify-between mt-28'>
+			<div className='flex w-[700px] justify-between my-28'>
 				<InfiniteScroll
 					next={fetchNextPage}
 					hasMore={hasNextPage || false}
@@ -122,7 +122,7 @@ const Search = () => {
 					) : (
 						<div className='flex flex-col gap-6 w-full'>
 							{data?.pages.map((page) =>
-								page.data.map((post: PostProps) => <PostCard key={JSON.stringify(post)} post={post} />)
+								page.data.map((post: PostProps) => <PostCard key={JSON.stringify(post)} filtered post={post} />)
 							)}
 						</div>
 					)}

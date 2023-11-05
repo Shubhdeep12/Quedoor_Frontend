@@ -64,7 +64,7 @@ const Feed = () => {
 		<>
 			<div className='pb-4 pt-10 flex justify-between items-end bg-white w-[700px] fixed z-10'>
 				<Text className='text-3xl font-black'>Feeds</Text>
-				<div className='flex items-center gap-3'>
+				<div className='flex items-center gap-4'>
 					{!isEmpty() &&
 						feedTypes.map((type) => (
 							<Text
@@ -81,7 +81,7 @@ const Feed = () => {
 				</div>
 			</div>
 
-			<div className='flex w-[700px] justify-between mt-28'>
+			<div className='flex w-[700px] justify-between my-28'>
 				<InfiniteScroll
 					next={fetchNextPage}
 					hasMore={hasNextPage || false}

@@ -26,7 +26,7 @@ const Profile = () => {
 				<Text className='text-3xl font-black'>Profile</Text>
 			</div>
 
-			<div className='mt-28'>Coming soon...</div>
+			<div className='my-28'>Coming soon...</div>
 		</>
 	);
 };

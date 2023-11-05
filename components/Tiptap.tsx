@@ -99,6 +99,9 @@ const MenuBar = ({ editor, isLoading, handlePrimaryCTA, image_url }: any) => {
 		},
 	];
 
+	const isPrimaryButtonActive = () =>
+		(image_url && image_url.length > 0) || (editor && (editor.getText() || '')).length > 0;
+
 	return (
 		<div className='flex gap-2 items-center justify-between flex-wrap bg-primary px-2 py-2 relative'>
 			<div className='flex gap-2 items-center '>
@@ -112,7 +115,7 @@ const MenuBar = ({ editor, isLoading, handlePrimaryCTA, image_url }: any) => {
 			<Button
 				variant='secondary'
 				className='transition flex items-center'
-				disabled={isLoading}
+				disabled={isLoading || !isPrimaryButtonActive()}
 				onClick={handlePrimaryCTA}
 			>
 				{isLoading ? (

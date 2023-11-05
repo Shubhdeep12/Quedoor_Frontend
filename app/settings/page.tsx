@@ -49,7 +49,7 @@ const Home = () => {
 				<Text className='text-3xl font-black'>Settings</Text>
 			</div>
 
-			<div className='mt-28'>
+			<div className='my-28'>
 				<Button onClick={handleLogout}>Log out</Button>
 			</div>
 		</>

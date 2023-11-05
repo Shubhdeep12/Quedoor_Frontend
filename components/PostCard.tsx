@@ -2,7 +2,7 @@
 
 import { IoEllipsisHorizontalSharp } from 'react-icons/io5';
 import Text from '../ui/Text';
-import { memo, useEffect, useRef, useState } from 'react';
+import { memo, useRef, useState } from 'react';
 import CreatePost from './CreatePost';
 import { useDeletePost, useLikePost } from '@/queries/feed';
 import { getRandomBGColor, getRelativeTime } from '@/lib/misc';
@@ -30,18 +30,19 @@ import { useToast } from '@/ui/use-toast';
 
 type PostCardProps = {
 	post: any;
+	filtered?: boolean;
 };
 
-const PostCard = ({ post }: PostCardProps) => {
+const PostCard = ({ post, filtered }: PostCardProps) => {
 	const editorRef = useRef<any>();
 	const { toast } = useToast();
+	const bgColor = useRef(getRandomBGColor());
 	const deletePostMutation = useDeletePost();
 	const likePostMutation = useLikePost();
 	const { user } = useAuth();
 	const [isLiked, setIsLiked] = useState<boolean>((post?.reactions || []).includes(post?.userId));
 	const [isCommentsOpen, setIsCommentsOpen] = useState(false);
 	const [isOpen, setIsOpen] = useState(false);
-	const [bgColor, setBgColor] = useState(() => getRandomBGColor());
 
 	const [alert, setAlert] = useState({
 		isOpen: false,
@@ -49,10 +50,6 @@ const PostCard = ({ post }: PostCardProps) => {
 		description: '',
 		action: () => {},
 	});
-
-	useEffect(() => {
-		setBgColor(getRandomBGColor());
-	}, []);
 
 	const handleAlertReset = () => {
 		setAlert({
@@ -107,7 +104,7 @@ const PostCard = ({ post }: PostCardProps) => {
 	];
 
 	return (
-		<div className={clsx(bgColor, 'transition flex flex-col gap-4 p-8 rounded-3xl w-full max-w-[700px]')}>
+		<div className={clsx(bgColor.current, 'transition flex flex-col gap-4 p-8 rounded-3xl w-full max-w-[700px]')}>
 			<div className='post-header flex items-center gap-4'>
 				<Avatar className='w-10 h-10'>
 					<AvatarImage src={post?.creator?.profile_img} />
@@ -125,7 +122,7 @@ const PostCard = ({ post }: PostCardProps) => {
 					<Text className='text-gray-500 text-xs'>{getRelativeTime(post?.updated_at)}</Text>
 				</div>
 
-				{user?.id == post?.userId && (
+				{user?.id == post?.userId && !filtered && (
 					<DropdownMenu>
 						<DropdownMenuTrigger asChild>
 							<button>

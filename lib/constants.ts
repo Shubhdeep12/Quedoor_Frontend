@@ -5,6 +5,8 @@ export type UserProps = {
   profile_img?: string;
   city?: string;
   website?: string;
+  followers?: number[];
+  following?: number[];
 };
 
 export type PostProps = {
