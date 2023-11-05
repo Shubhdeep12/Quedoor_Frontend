@@ -291,3 +291,43 @@ export const useDeleteComment = (postId: string) => {
 		onError: () => {},
 	});
 };
+
+const fetchFilterPosts = async (pageParam = 1, filter: any) => {
+	const params = {
+		limit: 10,
+		page: pageParam,
+	};
+
+	const data = new FormData();
+	data.append('description', filter.description);
+	if (filter.file) {
+		data.append('image', filter.file);
+	}
+	const res = await api.post('/filter/posts', data, params);
+
+	if (res) {
+		console.log(res);
+		return res.result;
+	}
+	return null;
+};
+
+export const useFilteredInfiniteFeed = (filter: any) => {
+	const fetchFilteredPostsQuery = {
+		...useInfiniteQuery({
+			queryKey: ['filteredposts', filter],
+			queryFn: ({ pageParam }) => fetchFilterPosts(pageParam, filter),
+			initialPageParam: 1,
+			getNextPageParam: (lastPage) => {
+				const nextPage = lastPage.page + 1;
+				return lastPage.data.length < 10 ? undefined : nextPage;
+			},
+			staleTime: 5000,
+
+			enabled: !!filter,
+		}),
+	};
+	return {
+		...fetchFilteredPostsQuery,
+	};
+};

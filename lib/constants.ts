@@ -30,6 +30,7 @@ export type CommentProps = {
   updated_at: string
 }
 
+
 export const bgColors = [
   'bg-[#deebfe]',
   'bg-[#fff6e0]',
