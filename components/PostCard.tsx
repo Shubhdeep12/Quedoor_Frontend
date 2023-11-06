@@ -7,7 +7,7 @@ import CreatePost from './CreatePost';
 import { useDeletePost, useLikePost } from '@/queries/feed';
 import { getRandomBGColor, getRelativeTime } from '@/lib/misc';
 import LikeIcon from '@/assets/icons/LikeIcon';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/ui/dropdown-menu';
 import { Dialog } from '@/ui/dialog';
@@ -104,7 +104,7 @@ const PostCard = ({ post, filtered }: PostCardProps) => {
 	];
 
 	return (
-		<div className={clsx(bgColor.current, 'transition flex flex-col gap-4 p-8 rounded-3xl w-full max-w-[700px]')}>
+		<div className={cn(bgColor.current, 'transition flex flex-col gap-4 p-8 rounded-3xl w-full max-w-[700px]')}>
 			<div className='post-header flex items-center gap-4'>
 				<Avatar className='w-10 h-10'>
 					<AvatarImage src={post?.creator?.profile_img} />
@@ -156,13 +156,13 @@ const PostCard = ({ post, filtered }: PostCardProps) => {
 			<div className='flex gap-6 items-end mt-2'>
 				<div className='flex gap-2 items-center group cursor-pointer select-none' onClick={handleLikeClick}>
 					<LikeIcon
-						className={clsx(
+						className={cn(
 							isLiked ? '!fill-red-400 !stroke-red-400' : '!fill-gray-400 !stroke-gray-400',
 							'group-hover:scale-125 transition'
 						)}
 						size={18}
 					/>
-					<Text className={clsx(isLiked ? 'text-red-400' : 'text-gray-400', 'transition font-semibold text-sm')}>
+					<Text className={cn(isLiked ? 'text-red-400' : 'text-gray-400', 'transition font-semibold text-sm')}>
 						Like
 					</Text>
 				</div>

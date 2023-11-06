@@ -11,18 +11,13 @@ import { UserProps } from '@/lib/constants';
 import { Skeleton } from '@/ui/skeleton';
 import NoPost from '@/assets/icons/NoPost';
 import PeopleCard from '@/components/PeopleCard';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 
 const PeopleSkeletonLoader = () => (
 	<div className='flex flex-col gap-6 w-full items-center'>
-		{Array(5)
-			.fill(1)
-			.map((e) => (
-				<div key={e} className='flex flex-col gap-2 w-full'>
-					<Skeleton className='rounded-lg h-4 w-full ' />
-					<Skeleton className='rounded-lg h-4 w-full' />
-				</div>
-			))}
+		{[1, 2, 3, 4, 5].map((e) => (
+			<Skeleton key={e} className='rounded-xl h-24 w-full ' />
+		))}
 	</div>
 );
 
@@ -82,7 +77,7 @@ const People = () => {
 						<Text
 							key={type.id}
 							onClick={() => setActiveListType(type.id)}
-							className={clsx(
+							className={cn(
 								activeListType === type.id ? 'text-black' : 'text-gray-400',
 								'text-base font-semibold cursor-pointer transition'
 							)}

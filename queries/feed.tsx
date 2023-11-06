@@ -306,7 +306,6 @@ const fetchFilterPosts = async (pageParam = 1, filter: any) => {
 	const res = await api.post('/filter/posts', data, params);
 
 	if (res) {
-		console.log(res);
 		return res.result;
 	}
 	return null;

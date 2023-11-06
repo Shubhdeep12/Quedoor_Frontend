@@ -2,7 +2,7 @@
 
 import Text from '@/ui/Text';
 import useAuth from '@/hooks/useAuth';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { useEffect, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar';
 import { Button } from '@/ui/button';
@@ -74,7 +74,7 @@ const Sidebar = () => {
 	}
 
 	return (
-		<header className={clsx('left-section w-[40%] h-screen sticky flex flex-col')}>
+		<header className={cn('left-section w-[40%] h-screen sticky flex flex-col')}>
 			<div className='p-10 flex flex-col gap-10 items-center w-80 self-end'>
 				<div className='flex flex-col w-full gap-2 items-center'>
 					<Avatar className='w-24 h-24'>
@@ -97,13 +97,13 @@ const Sidebar = () => {
 						<Link
 							key={id}
 							href={route}
-							className={clsx(
+							className={cn(
 								activeTab === id ? 'bg-black' : 'bg-transparent hover:bg-gray-200',
 								'transition p-3 rounded-2xl w-full justify-start flex gap-3 cursor-pointer'
 							)}
 						>
-							<Icon size={24} className={clsx(activeTab === id ? '!fill-gray-100' : '!fill-black')} />
-							<Text className={clsx(activeTab === id ? 'text-gray-100' : 'text-black', 'text-base font-semibold ')}>
+							<Icon size={24} className={cn(activeTab === id ? '!fill-gray-100' : '!fill-black')} />
+							<Text className={cn(activeTab === id ? 'text-gray-100' : 'text-black', 'text-base font-semibold ')}>
 								{title}
 							</Text>
 						</Link>

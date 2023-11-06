@@ -2,7 +2,7 @@
 
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { Fragment, forwardRef, useRef, useState } from 'react';
 import { AiOutlineBold, AiOutlineItalic } from 'react-icons/ai';
 import { LuHeading1, LuHeading2 } from 'react-icons/lu';
@@ -19,7 +19,7 @@ import { file2Base64 } from '@/lib/misc';
 
 const MenuItem = ({ Icon, title, action, isActive = null, disabled = false }: any) => (
 	<button
-		className={clsx({
+		className={cn({
 			'rounded-lg p-1 transition hover:bg-gray-400 hover:bg-opacity-50': true,
 			'bg-gray-400 bg-opacity-50': isActive(),
 			'cursor-default': disabled,
@@ -157,7 +157,7 @@ const Tiptap = forwardRef(
 			editable: !isReadonly,
 			editorProps: {
 				attributes: {
-					class: clsx(
+					class: cn(
 						'prose dark:prose-invert prose-sm transition sm:prose-base overflow-hidden lg:prose-lg xl:prose-2xl mx-1 px-2 focus:outline-none',
 						!isReadonly ? 'h-96' : '!px-0 !mx-0'
 					),
@@ -168,7 +168,7 @@ const Tiptap = forwardRef(
 		ref.current = editor;
 		return (
 			<div
-				className={clsx(
+				className={cn(
 					isReadonly ? '' : 'mt-6',
 					'editor-container h-auto overflow-hidden flex flex-col justify-between'
 				)}
@@ -197,7 +197,7 @@ const Tiptap = forwardRef(
 					<Dialog>
 						<DialogTrigger asChild>
 							<div
-								className={clsx(
+								className={cn(
 									!isReadonly ? 'border-2 justify-center border-black m-4' : 'mt-4',
 									'flex relative rounded-xl'
 								)}
@@ -205,7 +205,7 @@ const Tiptap = forwardRef(
 								<Image
 									objectFit='contain'
 									layout='fill'
-									className={clsx(isReadonly ? '!rounded-xl' : '', '!w-[auto] !h-[250px] !relative')}
+									className={cn(isReadonly ? '!rounded-xl' : '', '!w-[auto] !h-[250px] !relative')}
 									alt='img'
 									src={image.image_url}
 								/>
