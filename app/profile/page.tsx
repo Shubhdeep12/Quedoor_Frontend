@@ -214,6 +214,7 @@ const Profile = () => {
 							type='submit'
 							onClick={handleUpdate}
 							disabled={
+								isSubmitting ||
 								!isFormDirty ||
 								error.name ||
 								(userInfo?.website && error.website) ||
