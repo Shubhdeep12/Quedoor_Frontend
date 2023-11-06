@@ -7,7 +7,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import PostCard from './PostCard';
 import { PostProps } from '@/lib/constants';
 import { Skeleton } from '@/ui/skeleton';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
 const EmptyContainer = () => (
@@ -22,22 +22,20 @@ const EmptyContainer = () => (
 
 const PostSkeletonLoader = () => (
 	<div className='flex flex-col gap-6 w-full items-center'>
-		{Array(5)
-			.fill(1)
-			.map((e) => (
-				<div key={e} className='flex flex-col gap-4 p-8 rounded-3xl w-full max-w-[700px]'>
-					<div className='flex items-center gap-4 w-full'>
-						<Skeleton className='rounded-full h-10 w-10' />
-						<div className='flex flex-col gap-2 w-full'>
-							<Skeleton className='rounded-lg h-2 w-full ' />
-							<Skeleton className='rounded-lg h-2 w-full' />
-						</div>
+		{[1, 2, 3, 4, 5].map((e) => (
+			<div key={e} className='flex flex-col gap-4 p-8 rounded-3xl w-full max-w-[700px]'>
+				<div className='flex items-center gap-4 w-full'>
+					<Skeleton className='rounded-full h-10 w-10' />
+					<div className='flex flex-col gap-2 w-full'>
+						<Skeleton className='rounded-lg h-2 w-full ' />
+						<Skeleton className='rounded-lg h-2 w-full' />
 					</div>
-					<Skeleton className='rounded-lg h-3 w-full' />
-					<Skeleton className='rounded-lg h-3 w-full' />
-					<Skeleton className='h-36 w-full' />
 				</div>
-			))}
+				<Skeleton className='rounded-lg h-3 w-full' />
+				<Skeleton className='rounded-lg h-3 w-full' />
+				<Skeleton className='h-36 w-full' />
+			</div>
+		))}
 	</div>
 );
 
@@ -70,7 +68,7 @@ const Feed = () => {
 							<Text
 								key={type.id}
 								onClick={() => setActiveFeedType(type.id)}
-								className={clsx(
+								className={cn(
 									activeFeedType === type.id ? 'text-black' : 'text-gray-400',
 									'text-base font-semibold cursor-pointer transition'
 								)}

@@ -43,3 +43,8 @@ export const followUser = async (payload: any) => {
 	const res = await api.post('/users/follow', payload);
 	return res;
 };
+
+export const updateUser = async (userId?: string, payload?: any) => {
+	const res = await api.put(`/users/${userId}`, payload);
+	return res;
+};

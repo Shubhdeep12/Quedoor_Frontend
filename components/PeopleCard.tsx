@@ -8,7 +8,7 @@ import Text from '@/ui/Text';
 import { Avatar, AvatarFallback, AvatarImage } from '@/ui/avatar';
 import { Button } from '@/ui/button';
 import { useToast } from '@/ui/use-toast';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { memo, useRef, useState } from 'react';
 
 const PeopleCard = ({ user, activeListType }: { user: UserProps; activeListType: string }) => {
@@ -60,7 +60,7 @@ const PeopleCard = ({ user, activeListType }: { user: UserProps; activeListType:
 		}
 	};
 	return (
-		<div className={clsx(bgColor.current, 'flex justify-between items-center rounded-xl p-6')}>
+		<div className={cn(bgColor.current, 'flex justify-between items-center rounded-xl p-6')}>
 			<div className='flex gap-2 items-center'>
 				<Avatar className='w-12 h-12'>
 					<AvatarImage src={user?.profile_img} />

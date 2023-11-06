@@ -4,7 +4,7 @@ import Text from '@/ui/Text';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/ui/tooltip';
 import { ChangeEvent, FormEvent, FormEventHandler, useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { login, register } from '@/queries/auth';
 import useAuth from '@/hooks/useAuth';
 
@@ -13,7 +13,6 @@ import validator from 'validator';
 import { Input } from '@/ui/input';
 import { setCookie, setItem } from '@/lib/misc';
 import { Button } from '@/ui/button';
-import { cn } from '@/lib/utils';
 import { useToast } from '@/ui/use-toast';
 import { BiLoaderAlt } from 'react-icons/bi';
 
@@ -167,7 +166,7 @@ export default function Login() {
 	return (
 		<main className='flex min-h-screen flex-col items-center justify-center'>
 			<div
-				className={clsx(
+				className={cn(
 					'bg-white flex flex-col gap-8 items-center rounded-lg w-[380px] ease-in-out duration-300 shadow-lg p-8 transition-all',
 					isLoginView ? 'h-[485px]' : 'h-[600px]'
 				)}

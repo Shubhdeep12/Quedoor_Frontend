@@ -2,7 +2,7 @@
 
 import { CommentProps } from '@/lib/constants';
 import { Skeleton } from '@/ui/skeleton';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 import { memo, useEffect, useState } from 'react';
 import CreateComment from './CreateComment';
 import CommentCard from './CommentCard';
@@ -31,7 +31,7 @@ const Comments = ({ isCommentsOpen, post }: any) => {
 
 	return (
 		<div
-			className={clsx(
+			className={cn(
 				isCommentsOpen ? `h-auto` : 'h-0 overflow-hidden',
 				' w-full transition-all duration-500 ease-in-out mt-2 flex flex-col gap-4 p-2'
 			)}

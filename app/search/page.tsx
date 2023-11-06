@@ -14,7 +14,7 @@ import PostCard from '@/components/PostCard';
 import { Button } from '@/ui/button';
 import { Dialog, DialogTrigger } from '@/ui/dialog';
 import FilterPost from '@/components/FilterPost';
-import clsx from 'clsx';
+import { cn } from '@/lib/utils';
 
 const EmptyContainer = () => (
 	<div className='empty-container w-full h-[calc(100vh-112px)] flex flex-col justify-center items-center'>
@@ -28,22 +28,20 @@ const EmptyContainer = () => (
 
 const PostSkeletonLoader = () => (
 	<div className='flex flex-col gap-6 w-full items-center'>
-		{Array(5)
-			.fill(1)
-			.map((e) => (
-				<div key={e} className='flex flex-col gap-4 p-8 rounded-3xl w-full max-w-[700px]'>
-					<div className='flex items-center gap-4 w-full'>
-						<Skeleton className='rounded-full h-10 w-10' />
-						<div className='flex flex-col gap-2 w-full'>
-							<Skeleton className='rounded-lg h-2 w-full ' />
-							<Skeleton className='rounded-lg h-2 w-full' />
-						</div>
+		{[1, 2, 3, 4, 5].map((e) => (
+			<div key={e} className='flex flex-col gap-4 p-8 rounded-3xl w-full max-w-[700px]'>
+				<div className='flex items-center gap-4 w-full'>
+					<Skeleton className='rounded-full h-10 w-10' />
+					<div className='flex flex-col gap-2 w-full'>
+						<Skeleton className='rounded-lg h-2 w-full ' />
+						<Skeleton className='rounded-lg h-2 w-full' />
 					</div>
-					<Skeleton className='rounded-lg h-3 w-full' />
-					<Skeleton className='rounded-lg h-3 w-full' />
-					<Skeleton className='h-36 w-full' />
 				</div>
-			))}
+				<Skeleton className='rounded-lg h-3 w-full' />
+				<Skeleton className='rounded-lg h-3 w-full' />
+				<Skeleton className='h-36 w-full' />
+			</div>
+		))}
 	</div>
 );
 
@@ -53,7 +51,6 @@ const Search = () => {
 	const [filter, setFilter] = useState<any>(null);
 	const [showFilterPostModal, setShowFilterPostModal] = useState(false);
 	const { data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage } = useFilteredInfiniteFeed(filter);
-	console.log(data, isLoading, isFetchingNextPage, fetchNextPage, hasNextPage);
 
 	const isFilterApplied = () => filter !== null;
 
@@ -91,7 +88,7 @@ const Search = () => {
 									setFilter(null);
 									e.stopPropagation();
 								}}
-								className={clsx(isFilterApplied() ? 'w-fit' : 'w-0 p-0 m-0', 'transition-all overflow-hidden')}
+								className={cn(isFilterApplied() ? 'w-fit' : 'w-0 p-0 m-0', 'transition-all overflow-hidden')}
 							>
 								Clear Filter
 							</Button>
