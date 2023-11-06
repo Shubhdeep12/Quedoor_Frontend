@@ -36,14 +36,14 @@
   <br />
 
   ## Checkpoints
-- [x] ~~Signup and Login Workflow~~
-- [x] ~~Feed page for the user~~
-- [x] ~~Sidebar for every page~~
-- [ ] Filter page
+- [x] Signup and Login Workflow
+- [x] Feed page for the user
+- [x] Sidebar for every page
+- [x] Filter page~~
+- [x] Settings page
+- [x] People Page
+- [x] Follow/unfollow users
 - [ ] Profile Page
-- [ ] Settings page
-- [ ] People Page
-- [ ] Follow/unfollow users
 - [ ] Theme Support
 - [ ] Branding feature for every user
 - [ ] Notifications
