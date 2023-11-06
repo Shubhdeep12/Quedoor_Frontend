@@ -60,7 +60,7 @@ const Profile = () => {
 			name: userInfo?.name,
 			website: userInfo?.website,
 			city: userInfo?.city,
-			...(user?.profile_img !== profileImg ? { profile_img: profileImg } : {}),
+			...(user?.profile_img !== userInfo?.profile_img ? { profile_img: profileImg } : {}),
 		};
 		const res = await updateUser(user?.id, payload);
 		if (res.status < 300) {
