@@ -20,8 +20,8 @@ export const useInfiniteFeed = () => {
 			queryFn: ({ pageParam }) => fetchPosts(pageParam),
 			initialPageParam: 1,
 			getNextPageParam: (lastPage) => {
-				const nextPage = lastPage.page + 1;
-				return lastPage.data.length < 10 ? undefined : nextPage;
+				const nextPage = lastPage?.page + 1;
+				return lastPage?.data?.length < 10 ? undefined : nextPage;
 			},
 			staleTime: 5000,
 		}),
@@ -318,8 +318,8 @@ export const useFilteredInfiniteFeed = (filter: any) => {
 			queryFn: ({ pageParam }) => fetchFilterPosts(pageParam, filter),
 			initialPageParam: 1,
 			getNextPageParam: (lastPage) => {
-				const nextPage = lastPage.page + 1;
-				return lastPage.data.length < 10 ? undefined : nextPage;
+				const nextPage = lastPage?.page + 1;
+				return lastPage?.data?.length < 10 ? undefined : nextPage;
 			},
 			staleTime: 5000,
 
