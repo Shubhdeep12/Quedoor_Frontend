@@ -44,7 +44,7 @@ export const followUser = async (payload: any) => {
 	return res;
 };
 
-export const updateUser = async (userId?: string, payload?: any) => {
+export const updateUser = async (userId?: number, payload?: any) => {
 	const res = await api.put(`/users/${userId}`, payload);
 	return res;
 };
