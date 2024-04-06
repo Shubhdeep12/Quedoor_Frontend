@@ -42,16 +42,16 @@ const Profile = () => {
 		setIsSubmitting(true);
 
 		let profileImg: string = '';
-		if (user?.profile_img !== userInfo?.profile_img) {
-			if (user?.profile_img && user.profile_img.length > 0) await deleteAttachment({ image_url: user?.profile_img });
+		if (user?.profileImg !== userInfo?.profileImg) {
+			if (user?.profileImg && user.profileImg.length > 0) await deleteAttachment({ imageUrl: user?.profileImg });
 
-			if (userInfo?.profile_img && userInfo?.file) {
+			if (userInfo?.profileImg && userInfo?.file) {
 				const data = new FormData();
-				data.append('with_image_text', 'false');
+				data.append('withmageText', 'false');
 				data.append('image', userInfo?.file);
 				const res = await uploadAttachment(data);
 				if (res.status < 300) {
-					profileImg = res.result.image_url;
+					profileImg = res.result.imageUrl;
 				}
 			}
 		}
@@ -60,7 +60,7 @@ const Profile = () => {
 			name: userInfo?.name,
 			website: userInfo?.website,
 			city: userInfo?.city,
-			...(user?.profile_img !== userInfo?.profile_img ? { profile_img: profileImg } : {}),
+			...(user?.profileImg !== userInfo?.profileImg ? { profileImg: profileImg } : {}),
 		};
 		const res = await updateUser(user?.id, payload);
 		if (res.status < 300) {
@@ -136,17 +136,17 @@ const Profile = () => {
 					<form className='flex flex-col gap-8 p-8' onSubmit={(e) => e.preventDefault()}>
 						<div className='flex justify-between items-center'>
 							<div className='group overflow-hidden w-44 h-44 bg-muted rounded-full flex justify-center items-center relative'>
-								{userInfo?.profile_img ? (
+								{userInfo?.profileImg ? (
 									<Image
 										objectFit='contain'
 										layout='fill'
 										className={cn('!rounded-full !w-44 !h-44 !absolute !top-0 !left-0 !z-10')}
 										alt='img'
-										src={userInfo.profile_img}
+										src={userInfo.profileImg}
 									/>
 								) : (
 									<Avatar className='w-44 h-44 absolute top-0 left-0 z-10'>
-										<AvatarImage src={userInfo?.profile_img} />
+										<AvatarImage src={userInfo?.profileImg} />
 										<AvatarFallback className='text-5xl font-bold'>
 											{userInfo?.name
 												?.match(/(\b\S)?/g)
@@ -219,7 +219,7 @@ const Profile = () => {
 								error.name ||
 								(userInfo?.website && error.website) ||
 								(userInfo?.city && error.city) ||
-								(userInfo?.profile_img && error.image)
+								(userInfo?.profileImg && error.image)
 							}
 							className='w-fit'
 						>
@@ -254,8 +254,8 @@ const Profile = () => {
 				ref={imageRef}
 				onChange={async (event: any) => {
 					const file = event.target.files[0];
-					const profile_img = await file2Base64(file);
-					setUserInfo((prev: any) => ({ ...prev, profile_img: profile_img, file }));
+					const profileImg = await file2Base64(file);
+					setUserInfo((prev: any) => ({ ...prev, profileImg: profileImg, file }));
 					setIsFormDirty(true);
 				}}
 			/>

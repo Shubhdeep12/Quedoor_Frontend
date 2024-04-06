@@ -20,34 +20,33 @@ const CreatePost: FC<CreatePostProps> = ({ onClose, isEdit = false, post }) => {
 	const createMutation = useCreatePost();
 	const updateMutation = useUpdatePost();
 
-	const handlePrimaryCTA = async (currImage: { image_url: string; image_text: string; file?: any }) => {
+	const handlePrimaryCTA = async (currImage: { imageUrl: string; imageText: string; file?: any }) => {
 		setIsLoading(true);
-
-		let image_url = post?.image_url || '';
-		let image_text = post?.image_text || '';
+		let imageUrl = post?.imageUrl || '';
+		let imageText = post?.imageText || '';
 		try {
-			if (post?.image_url !== currImage?.image_url) {
-				if (post?.image_url && post.image_url.length > 0 && isEdit)
-					await deleteAttachment({ image_url: post?.image_url });
+			if (post?.imageUrl !== currImage?.imageUrl) {
+				if (post?.imageUrl && post.imageUrl.length > 0 && isEdit)
+					await deleteAttachment({ imageUrl: post?.imageUrl });
 
-				if (currImage.image_url) {
+				if (currImage.imageUrl) {
 					const data = new FormData();
-					data.append('with_image_text', 'true');
+					data.append('withImageText', 'true');
 					data.append('image', currImage.file);
 					const res = await uploadAttachment(data);
 					if (res.status < 300) {
-						image_text = res.result.image_text;
-						image_url = res.result.image_url;
+						imageText = res.result.imageText;
+						imageUrl = res.result.imageUrl;
 					}
 				}
 			}
 
 			if (!isEdit) {
 				const payload = {
-					image_url,
+					imageUrl,
 					description: editorRef.current && editorRef.current.getText(),
-					rich_description: JSON.stringify((editorRef.current && editorRef.current.getJSON()) || {}),
-					image_text,
+					richDescription: JSON.stringify((editorRef.current && editorRef.current.getJSON()) || {}),
+					imageText,
 				};
 
 				try {
@@ -64,15 +63,15 @@ const CreatePost: FC<CreatePostProps> = ({ onClose, isEdit = false, post }) => {
 				}
 			} else {
 				const payload = {
-					image_url,
+					imageUrl,
 					description: editorRef.current && editorRef.current.getText(),
-					rich_description: JSON.stringify((editorRef.current && editorRef.current.getJSON()) || {}),
-					image_text,
+					richDescription: JSON.stringify((editorRef.current && editorRef.current.getJSON()) || {}),
+					imageText,
 				};
 
 				try {
-					if (post?._id) {
-						updateMutation.mutate({ id: post?._id, body: payload });
+					if (post?.id) {
+						updateMutation.mutate({ id: post?.id, body: payload });
 						toast({
 							title: 'Post updated successfully.',
 						});
@@ -85,8 +84,9 @@ const CreatePost: FC<CreatePostProps> = ({ onClose, isEdit = false, post }) => {
 					});
 				}
 			}
-		} catch (e: any) {
+		} catch (error: any) {
 			/* empty */
+			console.log({error})
 		} finally {
 			setIsLoading(false);
 			onClose();
@@ -96,10 +96,10 @@ const CreatePost: FC<CreatePostProps> = ({ onClose, isEdit = false, post }) => {
 		<DialogContent className='laptop:max-w-[650px] border-4 border-black rounded-xl overflow-hidden p-0 w-40 '>
 			<Tiptap
 				ref={editorRef}
-				content={JSON.parse(post?.rich_description || '{}')}
+				content={JSON.parse(post?.richDescription || '{}')}
 				isLoading={isLoading}
 				handlePrimaryCTA={handlePrimaryCTA}
-				defaultImage={{ image_url: post?.image_url || '', image_text: post?.image_text || '' }}
+				defaultImage={{ imageUrl: post?.imageUrl || '', imageText: post?.imageText || '' }}
 			/>
 		</DialogContent>
 	);

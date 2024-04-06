@@ -23,19 +23,19 @@ type CreateCommentProps = {
 const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, onClose }) => {
 	const imageRef = useRef<any>();
 	const { toast } = useToast();
-	const updateCommentMutation = useUpdateComment(post._id);
-	const createCommentMutation = useCreateComment(post._id);
+	const updateCommentMutation = useUpdateComment(post.id);
+	const createCommentMutation = useCreateComment(post.id);
 	const [imagePreview, setImagePreview] = useState(false);
 	const [commentValue, setCommentValue] = useState<string | undefined>(comment?.description);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [image, setImage] = useState<{ image_url: string; file?: Blob; image_text: string }>({
-		image_url: comment?.image_url || '',
-		image_text: comment?.image_text || '',
+	const [image, setImage] = useState<{ imageUrl: string; file?: Blob; imageText: string }>({
+		imageUrl: comment?.imageUrl || '',
+		imageText: comment?.imageText || '',
 		file: undefined,
 	});
 
 	const checkAddCommentDisabled = () => {
-		if (!(image.image_url || image.file) && (commentValue || '').trim()?.length === 0) {
+		if (!(image.imageUrl || image.file) && (commentValue || '').trim()?.length === 0) {
 			return true;
 		}
 		return false;
@@ -48,35 +48,35 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 	const handlePrimaryCTA = async () => {
 		setIsLoading(true);
 
-		let image_url = comment?.image_url || '';
-		let image_text = comment?.image_text || '';
+		let imageUrl = comment?.imageUrl || '';
+		let imageText = comment?.imageText || '';
 		try {
-			if (comment?.image_url !== image?.image_url) {
-				if (comment?.image_url && comment.image_url.length > 0 && isEdit)
-					await deleteAttachment({ image_url: comment?.image_url });
+			if (comment?.imageUrl !== image?.imageUrl) {
+				if (comment?.imageUrl && comment.imageUrl.length > 0 && isEdit)
+					await deleteAttachment({ imageUrl: comment?.imageUrl });
 
-				if (image.image_url && image.file) {
+				if (image.imageUrl && image.file) {
 					const data = new FormData();
-					data.append('with_image_text', 'true');
+					data.append('withImageText', 'true');
 					data.append('image', image.file);
 					const res = await uploadAttachment(data);
 					if (res.status < 300) {
-						image_text = res.result.image_text;
-						image_url = res.result.image_url;
+						imageText = res.result.imageText;
+						imageUrl = res.result.imageUrl;
 					}
 				}
 			}
 
 			if (!isEdit) {
 				const payload = {
-					image_url,
+					imageUrl,
 					description: (commentValue || '').trim(),
-					rich_description: (commentValue || '').trim(),
-					image_text,
+					richDescription: (commentValue || '').trim(),
+					imageText,
 				};
 
 				try {
-					createCommentMutation.mutate({ postId: post?._id, body: payload });
+					createCommentMutation.mutate({ postId: post?.id, body: payload });
 					toast({
 						title: 'Comment created successully.',
 					});
@@ -89,15 +89,15 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 				}
 			} else {
 				const payload = {
-					image_url,
+					imageUrl,
 					description: (commentValue || '').trim(),
-					rich_description: (commentValue || '').trim(),
-					image_text,
+					richDescription: (commentValue || '').trim(),
+					imageText,
 				};
 
 				try {
-					if (comment?._id) {
-						updateCommentMutation.mutate({ id: comment._id, body: payload });
+					if (comment?.id) {
+						updateCommentMutation.mutate({ id: comment.id, body: payload });
 						toast({
 							title: 'Comment updated successfully.',
 						});
@@ -109,7 +109,7 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 					});
 				}
 			}
-			setImage({ image_url: '', image_text: '', file: undefined });
+			setImage({ imageUrl: '', imageText: '', file: undefined });
 			setCommentValue('');
 		} catch (e: any) {
 			/* empty */
@@ -131,16 +131,16 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 			/>
 			<div className='flex gap-3 w-full'>
 				<Button
-					// disabled={image.image_url ? image.image_url.length > 0 : false}
+					// disabled={image.imageUrl ? image.imageUrl.length > 0 : false}
 					className='transition rounded-xl'
 					onClick={(e) => {
 						e.preventDefault();
-						if (image.image_url || image.file) {
+						if (image.imageUrl || image.file) {
 							setImagePreview(true);
 						} else document.getElementById(isEdit ? 'tiptap-edit-comment-image' : 'tiptap-comment-image')?.click();
 					}}
 				>
-					{!(image.image_url || image.file) ? (
+					{!(image.imageUrl || image.file) ? (
 						<RiImage2Fill size={18} />
 					) : (
 						<div className='flex items-center justify-between min-w-[80px] w-full '>
@@ -150,7 +150,7 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 									layout='fill'
 									className='!w-[25px] !h-[25px] !relative'
 									alt='img'
-									src={image.image_url}
+									src={image.imageUrl}
 								/>
 							</div>
 
@@ -158,7 +158,7 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 								className='cursor-pointer top-2 right-2 rounded-full'
 								onClick={(e) => {
 									e.stopPropagation();
-									setImage({ image_url: '', image_text: '', file: undefined });
+									setImage({ imageUrl: '', imageText: '', file: undefined });
 									setImagePreview(false);
 								}}
 							>
@@ -195,7 +195,7 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 						layout='fill'
 						className='!w-full !h-full !relative mt-2'
 						alt='img'
-						src={image.image_url}
+						src={image.imageUrl}
 					/>
 				</DialogContent>
 			</Dialog>
@@ -208,10 +208,10 @@ const CreateComment: FC<CreateCommentProps> = ({ isEdit = false, post, comment, 
 				ref={imageRef}
 				onChange={async (event: any) => {
 					const file = event.target.files[0];
-					const image_url = await file2Base64(file);
+					const imageUrl = await file2Base64(file);
 					setImage({
-						image_url,
-						image_text: '',
+						imageUrl,
+						imageText: '',
 						file,
 					});
 				}}

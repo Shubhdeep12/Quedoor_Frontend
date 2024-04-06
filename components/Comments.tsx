@@ -14,8 +14,8 @@ const Comments = ({ isCommentsOpen, post }: any) => {
 		page: 1,
 	});
 	const [showAllComments, setShowAllComments] = useState(false);
-	const [currentActiveComment, setCurrentActiveComment] = useState<string | null>(null);
-	const { isFetching, data: comments, fetchComments } = useFetchComments(post._id);
+	const [currentActiveComment, setCurrentActiveComment] = useState<number | null>(null);
+	const { isFetching, data: comments, fetchComments } = useFetchComments(post.id);
 	const handleShowAllComments = () => {
 		setShowAllComments(true);
 		setPayload({
@@ -54,9 +54,9 @@ const Comments = ({ isCommentsOpen, post }: any) => {
 					  ))
 					: comments?.data.map((comment: CommentProps) => (
 							<CommentCard
-								key={comment._id}
-								isEditMode={currentActiveComment === comment._id}
-								setEditMode={(val: string | null) => setCurrentActiveComment(val)}
+								key={comment.id}
+								isEditMode={currentActiveComment === comment.id}
+								setEditMode={(val: number | null) => setCurrentActiveComment(val)}
 								comment={comment}
 								post={post}
 							/>

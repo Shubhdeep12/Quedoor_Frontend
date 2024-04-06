@@ -22,8 +22,8 @@ const PeopleCard = ({ user, activeListType }: { user: UserProps; activeListType:
 
 	const handleActionBtn = async () => {
 		const payload = {
-			follower_id: currentUser?.id,
-			following_id: user?.id,
+			followerId: currentUser?.id,
+			followingId: user?.id,
 		};
 		if (userData.followers?.includes(Number(currentUser?.id))) {
 			const res = await unFollowUser(payload);
@@ -63,7 +63,7 @@ const PeopleCard = ({ user, activeListType }: { user: UserProps; activeListType:
 		<div className={cn(bgColor.current, 'flex justify-between items-center rounded-xl p-6')}>
 			<div className='flex gap-2 items-center'>
 				<Avatar className='w-12 h-12'>
-					<AvatarImage src={user?.profile_img} />
+					<AvatarImage src={user?.profileImg} />
 					<AvatarFallback className='text-xs'>
 						{user?.name
 							?.match(/(\b\S)?/g)
