@@ -1,8 +1,8 @@
 export type UserProps = {
-  id: string;
+  id: number;
   name: string;
   email: string;
-  profile_img?: string;
+  profileImg?: string;
   city?: string;
   website?: string;
   followers?: number[];
@@ -10,26 +10,26 @@ export type UserProps = {
 };
 
 export type PostProps = {
-  _id: string,
+  id: number,
   description?: string,
-  rich_description?: string,
-  image_url?: string,
-  image_text?: string,
+  richDescription?: string,
+  imageUrl?: string,
+  imageText?: string,
   creator: UserProps,
-  userId: string,
-  updated_at: string
+  userId: number,
+  updatedAt: string
 }
 
 export type CommentProps = {
-  _id: string,
-  postId: string,
+  id: number,
+  postId: number,
   description?: string,
-  rich_description?: string,
-  image_url?: string,
-  image_text?: string,
+  richDescription?: string,
+  imageUrl?: string,
+  imageText?: string,
   creator: UserProps,
-  userId: string,
-  updated_at: string
+  userId: number,
+  updatedAt: string
 }
 
 

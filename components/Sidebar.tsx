@@ -78,7 +78,7 @@ const Sidebar = () => {
 			<div className='p-10 flex flex-col gap-10 items-center w-80 self-end'>
 				<div className='flex flex-col w-full gap-2 items-center'>
 					<Avatar className='w-24 h-24'>
-						<AvatarImage src={user?.profile_img} />
+						<AvatarImage src={user?.profileImg} />
 						<AvatarFallback className='text-2xl font-bold'>
 							{user?.name
 								?.match(/(\b\S)?/g)

@@ -32,7 +32,7 @@ type CommentCardProps = {
 const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProps) => {
 	const { user } = useAuth();
 	const { toast } = useToast();
-	const deleteCommentMutation = useDeleteComment(post._id);
+	const deleteCommentMutation = useDeleteComment(post.id);
 	const [alert, setAlert] = useState({
 		isOpen: false,
 		header: '',
@@ -52,7 +52,7 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 	const commentOptions = [
 		{
 			key: 'update',
-			action: () => setEditMode(comment._id),
+			action: () => setEditMode(comment.id),
 			value: 'Update Comment',
 		},
 		{
@@ -64,7 +64,7 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 					description: 'This action cannot be undone. This will permanently delete the comment.',
 					action: () => {
 						try {
-							deleteCommentMutation.mutate(comment._id);
+							deleteCommentMutation.mutate(comment.id);
 							toast({
 								title: 'Comment deleted successfully.',
 							});
@@ -82,10 +82,10 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 	];
 
 	return !isEditMode ? (
-		<div key={comment?._id} className='w-full border border-black p-4 rounded-3xl flex flex-col gap-4 '>
+		<div key={comment?.id} className='w-full border border-black p-4 rounded-3xl flex flex-col gap-4 '>
 			<div className='comment-header flex items-center gap-2'>
 				<Avatar className='w-8 h-8'>
-					<AvatarImage src={comment?.creator?.profile_img} />
+					<AvatarImage src={comment?.creator?.profileImg} />
 					<AvatarFallback className='text-xs'>
 						{comment?.creator?.name
 							?.match(/(\b\S)?/g)
@@ -97,7 +97,7 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 				</Avatar>
 				<div className='flex flex-col gap-1 flex-1'>
 					<Text className='font-bold text-xs'>{comment?.creator?.name}</Text>
-					<Text className='text-neutral-500 text-[10px]'>{getRelativeTime(comment?.updated_at)}</Text>
+					<Text className='text-neutral-500 text-[10px]'>{getRelativeTime(comment?.updatedAt)}</Text>
 				</div>
 
 				{user?.id == comment?.userId && (
@@ -128,7 +128,7 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 				</div>
 			)}
 
-			{comment.image_url && (
+			{comment.imageUrl && (
 				<Dialog>
 					<DialogTrigger asChild>
 						<Image
@@ -136,7 +136,7 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 							layout='fill'
 							className='!w-[100px] !h-[auto] !relative !rounded-lg '
 							alt='img'
-							src={String(comment.image_url)}
+							src={String(comment.imageUrl)}
 						/>
 					</DialogTrigger>
 					<DialogContent className='laptop:max-w-[800px]'>
@@ -145,7 +145,7 @@ const CommentCard = ({ comment, post, isEditMode, setEditMode }: CommentCardProp
 							layout='fill'
 							className='!w-full !h-full !relative mt-2'
 							alt='img'
-							src={String(comment.image_url)}
+							src={String(comment.imageUrl)}
 						/>
 					</DialogContent>
 				</Dialog>

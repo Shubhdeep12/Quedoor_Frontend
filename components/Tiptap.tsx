@@ -31,7 +31,7 @@ const MenuItem = ({ Icon, title, action, isActive = null, disabled = false }: an
 	</button>
 );
 
-const MenuBar = ({ editor, isLoading, handlePrimaryCTA, image_url }: any) => {
+const MenuBar = ({ editor, isLoading, handlePrimaryCTA, imageUrl }: any) => {
 	const items = [
 		{
 			Icon: AiOutlineBold,
@@ -94,13 +94,13 @@ const MenuBar = ({ editor, isLoading, handlePrimaryCTA, image_url }: any) => {
 			Icon: RiImage2Fill,
 			title: 'Upload Image',
 			action: () => document.getElementById('tiptap-image')?.click(),
-			isActive: () => image_url && image_url.length > 0,
-			disabled: image_url && image_url.length > 0,
+			isActive: () => imageUrl && imageUrl.length > 0,
+			disabled: imageUrl && imageUrl.length > 0,
 		},
 	];
 
 	const isPrimaryButtonActive = () =>
-		(image_url && image_url.length > 0) || (editor && (editor.getText() || '')).length > 0;
+		(imageUrl && imageUrl.length > 0) || (editor && (editor.getText() || '')).length > 0;
 
 	return (
 		<div className='flex gap-2 items-center justify-between flex-wrap bg-primary px-2 py-2 relative'>
@@ -135,9 +135,9 @@ const Tiptap = forwardRef(
 		ref: any
 	) => {
 		const imageRef = useRef<any>();
-		const [image, setImage] = useState<{ image_url: string; file?: Blob; image_text: string }>({
-			image_url: defaultImage.image_url,
-			image_text: defaultImage.image_text,
+		const [image, setImage] = useState<{ imageUrl: string; file?: Blob; imageText: string }>({
+			imageUrl: defaultImage.imageUrl,
+			imageText: defaultImage.imageText,
 			file: undefined,
 		});
 
@@ -183,17 +183,17 @@ const Tiptap = forwardRef(
 						ref={imageRef}
 						onChange={async (event: any) => {
 							const file = event.target.files[0];
-							const image_url = await file2Base64(file);
+							const imageUrl = await file2Base64(file);
 							setImage({
-								image_url,
-								image_text: '',
+								imageUrl,
+								imageText: '',
 								file,
 							});
 						}}
 					/>
 				)}
 
-				{image.image_url && (
+				{image.imageUrl && (
 					<Dialog>
 						<DialogTrigger asChild>
 							<div
@@ -207,12 +207,12 @@ const Tiptap = forwardRef(
 									layout='fill'
 									className={cn(isReadonly ? '!rounded-xl' : '', '!w-[auto] !h-[250px] !relative')}
 									alt='img'
-									src={image.image_url}
+									src={image.imageUrl}
 								/>
 								{!isReadonly && (
 									<div
 										className='absolute cursor-pointer top-2 right-2 rounded-full bg-white'
-										onClick={() => setImage({ image_url: '', image_text: '' })}
+										onClick={() => setImage({ imageUrl: '', imageText: '' })}
 									>
 										<IoCloseCircleSharp size={20} />
 									</div>
@@ -226,7 +226,7 @@ const Tiptap = forwardRef(
 								layout='fill'
 								className='!w-full !h-full !relative mt-2'
 								alt='img'
-								src={image.image_url}
+								src={image.imageUrl}
 							/>
 						</DialogContent>
 					</Dialog>
@@ -234,7 +234,7 @@ const Tiptap = forwardRef(
 				{editor && !isReadonly && (
 					<MenuBar
 						editor={editor}
-						image_url={image.image_url}
+						imageUrl={image.imageUrl}
 						isLoading={isLoading}
 						handlePrimaryCTA={() => handlePrimaryCTA(image)}
 					/>

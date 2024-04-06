@@ -33,12 +33,12 @@ export const createPost = async (body: object) => {
 	return res;
 };
 
-export const updatePost = async ({ id, body }: { id: string; body: object }) => {
+export const updatePost = async ({ id, body }: { id: number; body: object }) => {
 	const res = await api.put(`/posts/${id}`, body);
 	return res;
 };
 
-export const deletePost = async (id: string) => {
+export const deletePost = async (id: number) => {
 	const res = await api.delete(`/posts/${id}`);
 	return res;
 };
@@ -58,7 +58,7 @@ export const useUpdatePost = () => {
 					pages: updatedData.pages.map((page: any) => ({
 						...page,
 						data: page.data.map((post: any) => {
-							if (post._id === updatedPost.result._id) {
+							if (post.id === updatedPost.result.id) {
 								return updatedPost.result;
 							}
 							return post;
@@ -97,7 +97,7 @@ export const useDeletePost = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: deletePost,
-		onSuccess: async (_, id: string) => {
+		onSuccess: async (_, id: number) => {
 			const queryKey = ['posts'];
 			const prevData: any = queryClient.getQueryData(queryKey);
 
@@ -109,7 +109,7 @@ export const useDeletePost = () => {
 					pages: updatedData.pages.map((page: any) => ({
 						...page,
 						data: page.data.filter((post: any) => {
-							if (post._id === id) {
+							if (post.id === id) {
 								return false;
 							}
 							return true;
@@ -124,7 +124,7 @@ export const useDeletePost = () => {
 	});
 };
 
-export const likePost = async ({ postId, body, userId }: { postId: string; body: any; userId: string }) => {
+export const likePost = async ({ postId, body, userId }: { postId: number; body: any; userId: number }) => {
 	const res = await api.post(`/posts/${postId}/like`, body);
 	return { ...res, postId, liked: body.like, userId };
 };
@@ -133,7 +133,7 @@ export const useLikePost = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: likePost,
-		onSuccess: async (result: { status: number; postId: string; liked: boolean; userId: string }) => {
+		onSuccess: async (result: { status: number; postId: number; liked: boolean; userId: number }) => {
 			const queryKey = ['posts'];
 			const prevData: any = queryClient.getQueryData(queryKey);
 
@@ -146,7 +146,7 @@ export const useLikePost = () => {
 					pages: updatedData.pages.map((page: any) => ({
 						...page,
 						data: page.data.map((post: any) => {
-							if (post._id === result.postId) {
+							if (post.id === result.postId) {
 								const _prevPost = { ...post };
 								_prevPost.isLiked = result.status < 300 && result.liked;
 								if (_prevPost.isLiked) {
@@ -154,7 +154,7 @@ export const useLikePost = () => {
 									reactions.add(result.userId);
 									_prevPost.reactions = [...reactions];
 								} else {
-									const reactions = _prevPost.reactions.filter((_id: string) => _id !== result.userId);
+									const reactions = _prevPost.reactions.filter((id: number) => id !== result.userId);
 									_prevPost.reactions = reactions;
 								}
 								return _prevPost;
@@ -184,7 +184,7 @@ export const fetchCommentsAPI = async ({ postId, limit = 3, page = 1 }: any) => 
 	return null;
 };
 
-export const useFetchComments = (postId: string) => {
+export const useFetchComments = (postId: number) => {
 	const queryClient = useQueryClient();
 	const fetchCommentsQuery = useQuery({
 		queryKey: ['comment', postId],
@@ -202,22 +202,22 @@ export const useFetchComments = (postId: string) => {
 	};
 };
 
-export const createComment = async ({ postId, body }: { postId: string; body: object }) => {
+export const createComment = async ({ postId, body }: { postId: number; body: object }) => {
 	const res = await api.post(`/posts/${postId}/comment/`, body);
 	return res;
 };
 
-export const updateComment = async ({ id, body }: { id: string; body: object }) => {
+export const updateComment = async ({ id, body }: { id: number; body: object }) => {
 	const res = await api.put(`/comments/${id}`, body);
 	return res;
 };
 
-export const deleteComment = async (id: string) => {
+export const deleteComment = async (id: number) => {
 	const res = await api.delete(`/comments/${id}`);
 	return res.status < 300 ? true : false;
 };
 
-export const useUpdateComment = (postId: string) => {
+export const useUpdateComment = (postId: number) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: updateComment,
@@ -231,7 +231,7 @@ export const useUpdateComment = (postId: string) => {
 				updatedData = {
 					...updatedData,
 					data: updatedData.data.map((comment: any) => {
-						if (comment._id === updatedComment.result._id) {
+						if (comment.id === updatedComment.result.id) {
 							return updatedComment.result;
 						}
 						return comment;
@@ -244,7 +244,7 @@ export const useUpdateComment = (postId: string) => {
 	});
 };
 
-export const useCreateComment = (postId: string) => {
+export const useCreateComment = (postId: number) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: createComment,
@@ -265,11 +265,11 @@ export const useCreateComment = (postId: string) => {
 	});
 };
 
-export const useDeleteComment = (postId: string) => {
+export const useDeleteComment = (postId: number) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: deleteComment,
-		onSuccess: async (_, id: string) => {
+		onSuccess: async (_, id: number) => {
 			const queryKey = ['comment', postId];
 			const prevData: any = queryClient.getQueryData(queryKey);
 
@@ -279,7 +279,7 @@ export const useDeleteComment = (postId: string) => {
 				updatedData = {
 					...updatedData,
 					data: updatedData.data.filter((comment: any) => {
-						if (comment._id === id) {
+						if (comment.id === id) {
 							return false;
 						}
 						return true;
